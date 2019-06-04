@@ -1,4 +1,5 @@
 const pkg = require('./package')
+const bodyParser = require('body-parser');
 
 
 module.exports = {
@@ -51,5 +52,9 @@ module.exports = {
     */
     extend(config, ctx) {
     }
-  }
+  },
+  serverMiddleware: [
+    bodyParser.json(),
+    '~/api'
+  ]
 }
