@@ -1,61 +1,50 @@
-const pkg = require('./package')
-const bodyParser = require('body-parser');
-
+const pkg = require("./package");
+const bodyParser = require("body-parser");
 
 module.exports = {
-  mode: 'universal',
+  mode: "universal",
 
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
     title: "5.pl",
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: pkg.description }
-    ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: pkg.description }],
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
 
   /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
+   ** Customize the progress-bar color
+   */
+  loading: { color: "#fff" },
 
   /*
-  ** Global CSS
-  */
-  css: [
-    '@/assets/css/main.css'
-  ],
+   ** Global CSS
+   */
+  css: ["@/assets/css/main.css"],
 
   /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-  ],
+   ** Plugins to load before mounting the App
+   */
+  plugins: [],
 
   /*
-  ** Nuxt.js modules
-  */
+   ** Nuxt.js modules
+   */
   modules: [
+    ['@nuxtjs/axios', {
+      baseURL: 'http://localhost:3000/'
+    }]
   ],
 
   /*
-  ** Build configuration
-  */
+   ** Build configuration
+   */
   build: {
     /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-    }
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
   },
-  serverMiddleware: [
-    bodyParser.json(),
-    '~/api'
-  ]
-}
+  serverMiddleware: [bodyParser.json(), "~/api"]
+};

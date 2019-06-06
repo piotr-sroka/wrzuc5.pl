@@ -34,43 +34,33 @@ class Users {
       newUser.password = hashed;
       newUser.save().then(
         user => {
-          console.log("succes", user);
-          res.json(user);
+          res.send({user:user, message: "User created with success."});
         },
         err => {
           console.log(err);
-          res.sent(err);
+          res.send(err);
         }
       );
-      // bcrypt.genSalt(saltRounds, (err, salt) => {
-      //   console.log(saltRounds);
-      //   // bcrypt.hash(newUser.password, salt, (err, hash) => {
-      //   //   console.log(hash);
-      //   //   // newUser.password = hash;
-      //   //   // newUser.save().then(
-      //   //   //   user => {
-      //   //   //     console.log("succes", user);
-      //   //   //     res.json(user);
-      //   //   //   },
-      //   //   //   err => {
-      //   //   //     console.log(err);
-      //   //   //     res.sent(err);
-      //   //   //   }
-      //   //   // );
-      //   // });
-      // });
     });
+  }
 
-    // newUser.save().then(
-    //   user => {
-    //     console.log("success", user);
-    //     res.json(user);
-    //   },
-    //   err => {
-    //     console.log(err);
-    //     res.send(err);
-    //   }
-    // );
+  login_user(req, res) {
+    let loggingUser = new User(req.body);
+    User.findOne({email:loggingUser.email}, (err, user) => {
+      if (err) {
+        console.log(err);
+      }
+      if (!user) {
+        res.send({errorMessage: "User not found."});
+        return;
+      }
+      const isProperPassword = bcrypt.compareSync(loggingUser.password, user.password);
+      if (!isProperPassword) {
+        res.send({errorMessage: "Password is incorrect."});
+        return;
+      }
+      res.send({loggedUser: user.email});
+    });
   }
 }
 
