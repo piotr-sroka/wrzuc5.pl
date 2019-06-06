@@ -1,24 +1,13 @@
 <template>
   <section class="container">
-    <h1>hello</h1>
+    <nuxt-link to="/login">Log in</nuxt-link>
+    <nuxt-link to="/signup">Sign up</nuxt-link>
   </section>
 </template>
 
 <script>
 
 export default {
-  components: {
-  }
-}
+	components: {}
+};
 </script>
-
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-</style>

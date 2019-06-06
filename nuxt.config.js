@@ -9,7 +9,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: pkg.name,
+    title: "5.pl",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -29,6 +29,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@/assets/css/main.css'
   ],
 
   /*
