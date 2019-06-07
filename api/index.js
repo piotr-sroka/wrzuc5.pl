@@ -7,7 +7,7 @@ import routes from './routes/appRouter';
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://poncki:Sarkos21@ds233737.mlab.com:33737/for_testing_only?authSource=for_testing_only&w=1', {useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true});
 
 module.exports = {
   path: "/api",

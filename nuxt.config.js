@@ -1,5 +1,6 @@
 const pkg = require("./package");
 const bodyParser = require("body-parser");
+const env = require("dotenv").config();
 
 module.exports = {
   mode: "universal",
@@ -36,6 +37,8 @@ module.exports = {
   axios: {
     baseURL: "http://localhost:3000/"
   },
+
+  env: env.parsed,
 
   /*
    ** Build configuration
