@@ -1,13 +1,14 @@
 <template>
-  <section class="container">
-    <nuxt-link to="/login">Log in</nuxt-link>
-    <nuxt-link to="/signup">Sign up</nuxt-link>
-  </section>
+    <app-home></app-home>
 </template>
 
 <script>
+import AppHome from "@/components/Home";
 
 export default {
-	components: {}
+  middleware: ['check-auth'],
+  components: {
+    AppHome
+  }
 };
 </script>

@@ -3,11 +3,12 @@
 </template>
 
 <script>
-import AppAuthLogin from '@/components/Auth/Login';
+import AppAuthLogin from "@/components/Auth/Login";
 
 export default {
-    components: {
-        AppAuthLogin
-    }  
-}
+  middleware: ['check-auth'],
+	components: {
+		AppAuthLogin
+	}
+};
 </script>

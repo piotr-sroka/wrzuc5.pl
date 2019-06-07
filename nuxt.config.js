@@ -9,14 +9,14 @@ module.exports = {
    */
   head: {
     title: "5.pl",
-    meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: pkg.description }],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    meta: [{charset: "utf-8"}, {name: "viewport", content: "width=device-width, initial-scale=1"}, {hid: "description", name: "description", content: pkg.description}],
+    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}]
   },
 
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: {color: "#fff"},
 
   /*
    ** Global CSS
@@ -31,11 +31,11 @@ module.exports = {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    ['@nuxtjs/axios', {
-      baseURL: 'http://localhost:3000/'
-    }]
-  ],
+  modules: ["@nuxtjs/axios"],
+
+  axios: {
+    baseURL: "http://localhost:3000/"
+  },
 
   /*
    ** Build configuration
