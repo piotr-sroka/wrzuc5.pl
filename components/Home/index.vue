@@ -1,8 +1,8 @@
 <template>
   <section class="container">
     <ul>
-      <li v-for="car in this.$store.cars">
-        car
+      <li v-for="car in this.$store.cars" v-bind:cars>
+        car.brand
       </li>
     </ul>
   </section>

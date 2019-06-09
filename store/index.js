@@ -24,6 +24,9 @@ export const mutations = {
   },
   addNewCar(state, newCar) {
     this.state.cars.push(newCar);
+  },
+  getCars(state, cars) {
+    this.state.cars = cars;
   }
 };
 export const actions = {
@@ -78,14 +81,14 @@ export const actions = {
   },
   getCars({ commit }) {
     this.$axios.get("/api/cars/").then(response => {
-      console.log(response);
+      commit("getCars", response.data);
     }).catch(err => {
       console.log("ERROR");
     });
   },
   addNewCar({ commit }, carInfo) {
     this.$axios.post("/api/cars/add-new-car/", carInfo).then(response => {
-      commit("addNewCar", response.data);
+      console.log(response);
     }).catch(err => {
       console.log(err);
     })
