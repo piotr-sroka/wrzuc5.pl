@@ -7,7 +7,8 @@ export const state = () => {
       isLoggedIn: false,
       user: null,
       token: null
-    }
+    },
+    cars: []
   };
 };
 export const mutations = {
@@ -20,6 +21,9 @@ export const mutations = {
       user: null,
       token: null
     };
+  },
+  addNewCar(state, newCar) {
+    this.state.cars.push(newCar);
   }
 };
 export const actions = {
@@ -81,7 +85,7 @@ export const actions = {
   },
   addNewCar({ commit }, carInfo) {
     this.$axios.post("/api/cars/add-new-car/", carInfo).then(response => {
-      console.log(response);
+      commit("addNewCar", response.data);
     }).catch(err => {
       console.log(err);
     })
