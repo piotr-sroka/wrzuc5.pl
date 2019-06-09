@@ -1,14 +1,14 @@
 <template>
-  <app-auth-signup />
+  <app-auth-signup/>
 </template>
 
 <script>
 import AppAuthSignup from "@/components/Auth/Signup";
 
 export default {
-  middleware: ['check-auth'],
-	components: {
-		AppAuthSignup
-	}
+  middleware: ["check-auth", "notauthenticated"],
+  components: {
+    AppAuthSignup
+  }
 };
 </script>
