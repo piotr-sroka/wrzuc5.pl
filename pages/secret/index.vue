@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  middleware: ["check-auth", "authenticated"],
+  middleware: ["check-auth", "notauthenticated"],
   components: {}
 };
 </script>

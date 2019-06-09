@@ -23,11 +23,11 @@ export const mutations = {
   }
 };
 export const actions = {
-  nuxtServerInit({ commit }, { req }) {},
+  nuxtServerInit({ commit }, { req }) { },
   setAuth({ commit }, req) {
     commit("setAuth", { isLoggedIn: true, user: req.loggedUser.id, token: req.token });
     localStorage.setItem("logged-user", req.loggedUser.id);
-    localStorage.setItem("auth-token", req.token);
+    localStorage.setItem("jwt", req.token);
     Cookie.set("logged-user", req.loggedUser.id);
     Cookie.set("jwt", req.token);
   },
@@ -46,10 +46,10 @@ export const actions = {
         .split(";")
         .find(c => c.trim().startsWith("logged-user="))
         .split("=")[1];
-        console.log("get cookies");
+      console.log("get cookies");
     } else {
-      token = localStorage.getItem("auth-token");
       user = localStorage.getItem("logged-user");
+      token = localStorage.getItem("jwt");
     }
     if (!token || !user) {
       commit("logout");
@@ -66,8 +66,24 @@ export const actions = {
     });
   },
   logout({ commit }) {
-    localStorage.removeItem("auth-token");
     localStorage.removeItem("logged-user");
+    localStorage.removeItem("jwt");
+    Cookie.remove("logged-user");
+    Cookie.remove("jwt");
     commit("logout");
+  },
+  getCars({ commit }) {
+    this.$axios.get("/api/cars/").then(response => {
+      console.log(response);
+    }).catch(err => {
+      console.log("ERROR");
+    });
+  },
+  addNewCar({ commit }, carInfo) {
+    this.$axios.post("/api/cars/add-new-car/", carInfo).then(response => {
+      console.log(response);
+    }).catch(err => {
+      console.log(err);
+    })
   }
 };

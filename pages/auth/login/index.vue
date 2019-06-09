@@ -6,7 +6,7 @@
 import AppAuthLogin from "@/components/Auth/Login";
 
 export default {
-  middleware: ["check-auth", "notauthenticated"],
+  middleware: ["check-auth", "authenticated"],
   components: {
     AppAuthLogin
   }
