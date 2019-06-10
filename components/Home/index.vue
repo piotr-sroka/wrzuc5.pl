@@ -1,10 +1,14 @@
 <template>
   <section class="container">
-    <ul>
-      <li v-for="car in this.$store.cars" v-bind:cars>
-        car.brand
-      </li>
-    </ul>
+      <div v-for="(car, index) in this.$store.state.cars" :key="index">
+        <h3>{{car.title}}</h3>
+        <p>{{car.brand}}</p>
+        <p>{{car.model}}</p>
+        <hr>
+        <p>{{car.description}}</p>
+        <hr>
+        <p>Created {{car.createdTime.toLocaleString('pl-PL', { timeZone: 'UTC' })}} by {{car.createdBy}}</p>
+      </div>
   </section>
 </template>
 
@@ -16,5 +20,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.container {
+  margin-top: 80px;
+  align-items: flex-start;
+}
 </style>

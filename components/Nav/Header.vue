@@ -3,7 +3,7 @@
     <nuxt-link class="nav-top-item" to="/cars/add-car">Dodaj ogłoszenie</nuxt-link>
     <nuxt-link class="nav-top-item" v-if="!$store.state.auth.isLoggedIn" to="/auth/login">Zaloguj się</nuxt-link>
     <nuxt-link class="nav-top-item" v-if="!$store.state.auth.isLoggedIn" to="/auth/signup">Zarejestruj się</nuxt-link>
-    <nuxt-link class="nav-top-item" v-if="$store.state.auth.isLoggedIn" to="/secret">Secret</nuxt-link>
+    <nuxt-link class="nav-top-item" v-if="$store.state.auth.isLoggedIn" to="/user">Moje konto</nuxt-link>
     <nuxt-link class="nav-top-item" v-if="$store.state.auth.isLoggedIn" to="/auth/logout">Wyloguj</nuxt-link>
   </nav>
 </template>
