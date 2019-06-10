@@ -1,5 +1,6 @@
 <template>
   <nav>
+    <nuxt-link class="nav-top-item" to="/" v-if="this.$route.path !== '/'">Strona główna</nuxt-link>
     <nuxt-link class="nav-top-item" to="/cars/add-car">Dodaj ogłoszenie</nuxt-link>
     <nuxt-link class="nav-top-item" v-if="!$store.state.auth.isLoggedIn" to="/auth/login">Zaloguj się</nuxt-link>
     <nuxt-link class="nav-top-item" v-if="!$store.state.auth.isLoggedIn" to="/auth/signup">Zarejestruj się</nuxt-link>
