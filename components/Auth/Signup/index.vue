@@ -59,7 +59,7 @@ export default {
               this.info.error = false;
               this.info.message = response.data.message;
               setTimeout(() => {
-                this.$router.push("/login");
+                this.$router.push("/auth/login");
               }, 2000);
             }
           },

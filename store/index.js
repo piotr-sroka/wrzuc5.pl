@@ -20,9 +20,6 @@ export const mutations = {
     this.state.auth.user = null;
     this.state.auth.token = null;
   },
-  addNewCar(state, newCar) {
-    this.state.cars.push(newCar);
-  },
   getCars(state, cars) {
     this.state.cars = cars;
   }
@@ -85,14 +82,4 @@ export const actions = {
         console.log("ERROR");
       });
   },
-  addNewCar({commit}, carInfo) {
-    this.$axios
-      .post("/api/cars/add-new-car/", carInfo)
-      .then(response => {
-        console.log(response);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
 };

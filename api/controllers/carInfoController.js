@@ -14,7 +14,7 @@ class CarsInfos {
       });
   }
   loadMyCars(req, res) {
-    CarInfo.find({ createdBy: req.body.user })
+    CarInfo.find({createdBy: req.body.user})
       .then(result => {
         res.status(200).send(result);
       })
@@ -50,7 +50,7 @@ class CarsInfos {
         res.status(200).send("Car added correctly.");
       })
       .catch(err => {
-        console.log(err);
+        res.status(200).send(err);
       });
   }
   removeCar(req, res) {
@@ -67,11 +67,14 @@ class CarsInfos {
           return;
         }
         let carToRemove = new CarInfo(result);
-        carToRemove.remove().then(result => {
+        carToRemove
+          .remove()
+          .then(result => {
             res.status(200).send("Car removed");
-        }).catch(err => {
+          })
+          .catch(err => {
             console.log(err);
-        });
+          });
       })
       .catch(err => {
         console.log(err);

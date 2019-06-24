@@ -5,6 +5,7 @@
 import AppAddCar from "@/components/Cars/AddCar";
 
 export default {
+  middleware: ["check-auth"],
     components: {
         AppAddCar
     }
