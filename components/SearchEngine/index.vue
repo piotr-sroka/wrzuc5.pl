@@ -1,7 +1,6 @@
 <template>
   <section class="search-engine">
-      <!-- <input type="text" placeholder="czego dziś szukasz?" class="search-input"> -->
-      <input type="text" placeholder="czego dziś szukasz?" class="search-input">
+      <input type="text" placeholder="czego dziś szukasz?" class="search-input" id="search-input"><label class="search-input--label" for="search-input"></label>
   </section>
 </template>
 <script>
@@ -32,13 +31,26 @@ export default {
         padding-right: 50px;
         position: relative;
     }
-    .search-input::before {
-        display: block;
+    .search-input--label {
+        position: relative;
+    }
+    .search-input--label::before {
+        display: inline-block;
         font-family: 'Flat-UI-Pro-Icons';
         content: "\e630";
         position: absolute;
-        width: 20px;
-        height: 20px;
+        width: 40px;
+        height: 69px;
+        font-size: 30px;
+        line-height: 69px;
+        vertical-align: middle;
+        left: -50px;
+        text-align: center;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        color: #2f4154;
+        opacity: .7;
     }
 </style>
 

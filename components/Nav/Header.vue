@@ -45,6 +45,7 @@ export default {
 .main-navigation {
 	background-color: #2f4154;
 	display: flex;
+	border-radius: 0 0 5px 5px;
 }
 .nav-home {
 	margin-right: auto;
