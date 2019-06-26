@@ -35,7 +35,10 @@
 					<label class="drop-input--label" for="drop-input">Dodaj zdjęcia</label>
 				</div>
 				<div class="images-thumbs">
-					<img class="thumb" v-for="(image, index) in images" :src="image.src" :alt="image.title" :key="index">
+					<div class="thumb-container" v-for="(image, index) in images" :key="index">
+						<span class="progress-bar" v-if="image.isLoading"></span>
+						<img class="thumb" :src="image.src" :alt="image.title" v-if="!image.isLoading">
+					</div>
 				</div>
 			</div>
 		</div>
@@ -45,6 +48,7 @@
 </template>
 <script>
 import {mapGetters} from "vuex";
+import AppImageThumb from "@/components/Cars/AddCar/ImageThumb";
 
 export default {
 	data() {
@@ -118,15 +122,19 @@ export default {
 			this.$axios
 				.post("/api/images/upload/", fileInfo)
 				.then(response => {
-					this.uploadFile(file, response.data.signedRequest, response.data.url);
+					let thumb = {src:"", title:"", isLoading:true};
+					this.images.push(thumb);
+					this.uploadFile(file, response.data.signedRequest, response.data.url, thumb);
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		uploadFile(file, signedRequest, url) {
+		uploadFile(file, signedRequest, url, thumb) {
 			this.$axios.put(signedRequest, file).then(res => {
-				this.images.push({src:url, title:res.config.data.name});
+				thumb.src = url;
+				thumb.title = res.config.data.name;
+				thumb.isLoading = false;
 			});
 		}
 	}
@@ -182,16 +190,6 @@ export default {
 	color: #2f4154;
 	opacity: 0.7;
 	text-align: center;
-}
-.images-thumbs {
-	display: flex;
-	flex-wrap: wrap;
-}
-.thumb {
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	margin: 5px;
 }
 </style>
 
