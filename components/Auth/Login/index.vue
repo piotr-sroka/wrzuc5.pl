@@ -1,86 +1,107 @@
 <template>
   <section class="container">
-    <article class="form">
-      <h2>Log in</h2>
-      <input class="form-item" type="email" v-model="email" placeholder="email">
-      <input class="form-item" type="password" v-model="password" placeholder="password">
-      <button class="form-item btn" @click="login">Log in</button>
-      <div class="form-error" v-if="errorMessage">
-        <hr>
-        <p>{{errorMessage}}</p>
+    <form class="form">
+      <div class="form-group">
+        <input class="form-input" type="email" v-model="email" placeholder="email" id="form-email"><label class="form-input-label form-email-label" for="form-email"></label>
       </div>
-    </article>
+      <div class="form-group">
+        <input class="form-input" type="password" v-model="password" placeholder="hasło" id="form-password"><label class="form-input-label form-password-label" for="form-password"></label>
+      </div>
+      <button class="form-button-submit" @click.prevent="login">Zaloguj się</button>
+			<span class="info-message" v-if="errorMessage">{{errorMessage}}</span>
+    </form>
   </section>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      errorMessage: "",
-      loggedUser: {
-        email: "",
-        id: null
-      }
-    };
-  },
-  methods: {
-    login() {
-      if (!this.email || !this.password) {
-        this.errorMessage = "Please fill in all fields";
-        setTimeout(this.clearErrorMessage, 4500);
-        return;
-      }
-      let user = { email: this.email, password: this.password };
-      this.$axios
-        .post("/api/auth/login/", user)
-        .then(response => {
-          if (response.data.errorMessage) {
-            this.errorMessage = response.data.errorMessage;
-            setTimeout(this.clearErrorMessage, 4500);
-            return;
-          }
-          this.$store.dispatch("setAuth", response.data);
-          this.$router.push("/");
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    clearErrorMessage() {
-      this.errorMessage = "";
-    }
-  }
+	data() {
+		return {
+			email: "",
+			password: "",
+			errorMessage: "",
+			loggedUser: {
+				email: "",
+				id: null
+			}
+		};
+	},
+	methods: {
+		login() {
+			if (!this.email || !this.password) {
+				this.errorMessage = "Proszę wypełnić wszystkie pola";
+				setTimeout(this.clearErrorMessage, 4500);
+				return;
+			}
+			let user = {email: this.email, password: this.password};
+			this.$axios
+				.post("/api/auth/login/", user)
+				.then(response => {
+					if (response.data.errorMessage) {
+						this.errorMessage = response.data.errorMessage;
+						setTimeout(this.clearErrorMessage, 4500);
+						return;
+					}
+					this.$store.dispatch("setAuth", response.data);
+					this.$router.push("/");
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		clearErrorMessage() {
+			this.errorMessage = "";
+		}
+	}
 };
 </script>
 
-<style>
+<style scoped>
+.container {
+	padding: 50px;
+}
 .form {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  margin: auto;
-  width: 300px;
-  height: 400px;
+	margin: auto;
+	width: 340px;
 }
-.form-item {
-  margin-top: 22px;
-  padding: 8px;
+.form-input {
+	padding-right: 32px;
 }
-.form-item.btn {
-  background-color: #002f3d;
-  border: none;
-  outline-color: transparent;
-  color: #fff;
-  cursor: pointer;
+.form-input:focus + .form-input-label::before {
+  color: #1abc9c;
 }
-.form-error {
-  margin-top: 24px;
-  color: #ee0011;
+.form .form-group {
+	display: flex;
 }
-.form-error hr {
-  margin-bottom: 10px;
+.form-button-submit {
+	max-width: 100%;
+}
+.form-email-label,
+.form-password-label {
+	position: relative;
+}
+.form-email-label::before,
+.form-password-label::before {
+	display: inline-block;
+	font-family: "Flat-UI-Pro-Icons";
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 24px;
+	vertical-align: middle;
+	left: -30px;
+	text-align: center;
+	top: 0;
+	bottom: 0;
+	margin: auto 0;
+	color: #2f4154;
+	opacity: 0.7;
+}
+.form-email-label::before {
+	content: "\e631";
+}
+.form-password-label::before {
+	content: "\e633";
 }
 </style>

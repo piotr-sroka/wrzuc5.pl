@@ -1,115 +1,138 @@
 <template>
   <section class="container">
-    <article class="form">
-      <h2>Create new user</h2>
-      <input class="form-item" type="email" v-model="email" placeholder="email">
-      <input class="form-item" type="password" v-model="password" placeholder="password">
-      <input
-        class="form-item"
-        type="password"
-        v-model="confirmpassword"
-        placeholder="confirm password"
-      >
-      <button class="form-item btn" @click="signup">Sign up</button>
-      <div class="form-message" :class="{'form-message-error': info.error}" v-if="info.message">
-        <hr>
-        <p>{{info.message}}</p>
+    <form class="form">
+      <div class="form-group">
+        <input class="form-input" type="email" v-model="email" placeholder="email" id="form-email">
+        <label class="form-input-label form-email-label" for="form-email"></label>
       </div>
-    </article>
+      <div class="form-group">
+        <input class="form-input" type="password" v-model="password" placeholder="hasło" id="form-password">
+        <label class="form-input-label form-password-label" for="form-password"></label>
+      </div>
+      <div class="form-group">
+        <input
+          class="form-input"
+          type="password"
+          v-model="confirmpassword"
+          placeholder="potwierdź hasło" id="form-confirm-password"
+        >
+        <label class="form-input-label form-password-label" for="form-password"></label>
+      </div>
+      <button class="form-button-submit" @click.prevent="signup">Zarejestruj się</button>
+			<span class="info-message" :class="{'form-message-error': info.error}" v-if="info.message">{{info.message}}</span>
+    </form>
   </section>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      confirmpassword: "",
-      info: {
-        error: false,
-        message: ""
-      }
-    };
-  },
-  methods: {
-    signup() {
-      if (!this.email || !this.password || !this.confirmpassword) {
-        this.info.error = true;
-        this.info.message = "Please fill in all fields";
-        setTimeout(this.clearErrorMessage, 4500);
-        return;
-      }
-      if (this.password !== this.confirmpassword) {
-        this.info.error = true;
-        this.info.message = "Passwords don't match";
-        setTimeout(this.clearErrorMessage, 4500);
-        return;
-      }
-      let user = {
-        email: this.email,
-        password: this.password,
-        confirmPassword: this.confirmpassword
-      };
-      this.$axios
-        .post("/api/auth/signup/", user)
-        .then(
-          response => {
-            if (response) {
-              this.info.error = false;
-              this.info.message = response.data.message;
-              setTimeout(() => {
-                this.$router.push("/auth/login");
-              }, 2000);
-            }
-          },
-          error => {
-            if (error) {
-              this.info.error = true;
-              this.info.message = error.response.data.errorMessage;
-            }
-          }
-        )
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    clearErrorMessage() {
-      this.info.error = false;
-      this.info.message = "";
-    }
-  }
+	data() {
+		return {
+			email: "",
+			password: "",
+			confirmpassword: "",
+			info: {
+				error: false,
+				message: ""
+			}
+		};
+	},
+	methods: {
+		signup() {
+			if (!this.email || !this.password || !this.confirmpassword) {
+				this.info.error = true;
+				this.info.message = "Proszę wypełnić wszystkie pola";
+				setTimeout(this.clearErrorMessage, 4500);
+				return;
+			}
+			if (this.password !== this.confirmpassword) {
+				this.info.error = true;
+				this.info.message = "Hasła muszą pasować";
+				setTimeout(this.clearErrorMessage, 4500);
+				return;
+			}
+			let user = {
+				email: this.email,
+				password: this.password,
+				confirmPassword: this.confirmpassword
+			};
+			this.$axios
+				.post("/api/auth/signup/", user)
+				.then(
+					response => {
+						if (response) {
+							this.info.error = false;
+							this.info.message = response.data.message;
+							setTimeout(() => {
+								this.$router.push("/auth/login");
+							}, 2000);
+						}
+					},
+					error => {
+						if (error) {
+							this.info.error = true;
+							this.info.message = error.response.data.errorMessage;
+						}
+					}
+				)
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		clearErrorMessage() {
+			this.info.error = false;
+			this.info.message = "";
+		}
+	}
 };
 </script>
 
-<style>
+<style scoped>
+.container {
+	padding: 50px;
+}
 .form {
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  margin: auto;
-  width: 300px;
-  height: 400px;
+	margin: auto;
+	width: 340px;
 }
-.form-item {
-  margin-top: 22px;
-  padding: 8px;
+.form-input {
+	padding-right: 32px;
 }
-.form-item.btn {
-  background-color: #002f3d;
-  border: none;
-  outline-color: transparent;
-  color: #fff;
-  cursor: pointer;
+.form-input:focus + .form-input-label::before {
+  color: #1abc9c;
 }
-.form-message {
-  margin-top: 24px;
-  color: #1144ad;
+.form .form-group {
+	display: flex;
 }
-.form-message.form-message-error {
-  color: #ee0011;
+.form-button-submit {
+	max-width: 100%;
 }
-.form-error hr {
-  margin-bottom: 10px;
+.form-email-label,
+.form-password-label {
+	position: relative;
+}
+.form-email-label::before,
+.form-password-label::before {
+	display: inline-block;
+	font-family: "Flat-UI-Pro-Icons";
+	position: absolute;
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	line-height: 24px;
+	vertical-align: middle;
+	left: -30px;
+	text-align: center;
+	top: 0;
+	bottom: 0;
+	margin: auto 0;
+	color: #2f4154;
+	opacity: 0.7;
+}
+.form-email-label::before {
+	content: "\e631";
+}
+.form-password-label::before {
+	content: "\e633";
 }
 </style>

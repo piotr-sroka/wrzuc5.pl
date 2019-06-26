@@ -34,12 +34,14 @@ class CarsInfos {
   addCar(req, res) {
     const brand = req.body.brand;
     const model = req.body.model;
+    const version = req.body.version;
     const title = req.body.title;
     const description = req.body.description;
     const createdBy = req.body.user;
     const newCar = new CarInfo({
       brand: brand,
       model: model,
+      version: version,
       title: title,
       description: description,
       createdBy: createdBy

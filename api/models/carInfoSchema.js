@@ -5,20 +5,24 @@ let Schema = mongoose.Schema;
 let CarInfoSchema = new Schema({
     brand: {
         type: String,
-        required: "Please enter brand"
+        required: "Wybierz markę"
     },
     model: {
         type: String,
-        required: "Please enter model"
+        required: "Wybierz model"
+    },
+    version: {
+        type: String,
+        required: "Wybierz wersję"
     },
     title: {
         type: String,
-        minlength: [10, "Title is too short"],
+        minlength: [10, "Tytuł jest zbyt krótki"],
         maxlength: 40
     },
     description: {
         type: String,
-        minlength: [10, "Description is too short"],
+        minlength: [10, "Opis jest zbyt krótki"],
         maxlength: 20000
     },
     createdBy: {

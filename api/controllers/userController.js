@@ -14,10 +14,10 @@ class Users {
     User.findOne({ email: email })
       .then(user => {
         if (user) {
-          return res.status(409).send({ errorMessage: "User already exists. Please use other email." });
+          return res.status(409).send({ errorMessage: "Podany email został już zarejestrowany, proszę wybrać inny" });
         }
         if (password !== confirmPassword) {
-          return res.status(409).send({ errorMessage: "Passwords don't match" });
+          return res.status(409).send({ errorMessage: "Hasła muszą pasować" });
         }
         return bcrypt
           .hash(password, saltRounds)
@@ -29,7 +29,7 @@ class Users {
             return newUser.save();
           })
           .then(result => {
-            res.status(200).send({ message: "User created with success." });
+            res.status(200).send({ message: "Konto utworzono pomyślnie" });
           });
       })
       .catch(err => {
@@ -43,13 +43,13 @@ class Users {
     User.findOne({ email: email })
       .then(user => {
         if (!user) {
-          return res.send({ errorMessage: "User not found." });
+          return res.send({ errorMessage: "Użytkownik nie został znaleziony" });
         }
         bcrypt
           .compare(password, user.password)
           .then(doMatch => {
             if (!doMatch) {
-              return res.send({ errorMessage: "Password is incorrect." });
+              return res.send({ errorMessage: "Hasło jest niepoprawne" });
             }
             const token = jwt.sign({ email: user.email, id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: "24h" });
             res.status(200).send({ loggedUser: { email: user.email, id: user._id }, token: token });

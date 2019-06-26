@@ -16,6 +16,11 @@ export default {
 	components: {
 		AppShortCarInfo
 	},
+	head() {
+		return {
+			title: "Moje konto"
+		};
+	},
 	data() {
 		return {
 			myCars: []
