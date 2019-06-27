@@ -35,7 +35,7 @@ module.exports = {
   modules: ["@nuxtjs/axios"],
 
   axios: {
-    baseURL: "./"
+    baseURL: "https://wrzuc5.herokuapp.com/"
   },
 
   env: env.parsed,
