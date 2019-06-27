@@ -15,19 +15,23 @@ a:active {
 }
 
 .btn {
-  border: none;
+  background-color: transparent;
   outline-color: transparent;
+  border: 1px solid #2f4154;
   border-radius: 6px;
-  font-size: 1.2em;
+  font-size: 1em;
   cursor: pointer;
   padding: 12px;
-  color: #ffffff;
+  color: #2f4154;
+  transition: all .2s linear;
 }
-.btn.primary {
-  background-color: #1abc9c;
+.btn.primary:hover {
+  border: 1px solid #1abc9c;
+  color: #1abc9c;
 }
-.btn.danger {
-  background-color: #c0392b;
+.btn.danger:hover {
+  border: 1px solid #c0392b;
+  color: #c0392b;
 }
 
 input:-webkit-autofill,
@@ -67,10 +71,17 @@ input:-webkit-autofill:focus {
   border: none;
   outline-color: transparent;
   border-radius: 6px;
-  background-color: #1abc9c;
+  background-color: transparent;
+  border: 1px solid #1abc9c;
   padding: 12px;
-  color: #fff;
+  color: #1abc9c;
   font-size: 1.2em;
+  transition: all .2s linear;
+  cursor: pointer;
+}
+.form-button-submit:hover {
+  background-color: #1abc9c;
+  color: #ffffff;
 }
 .form-input,
 .drop-files-area {
@@ -79,6 +90,9 @@ input:-webkit-autofill:focus {
   padding: 10px;
   width: 100%;
   box-sizing: border-box;
+}
+.drop-input--label {
+  cursor: pointer;
 }
 .info-message {
   display: block;
