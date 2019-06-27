@@ -87,6 +87,7 @@ export default {
 	transition: opacity 0.2s ease-in-out;
 	opacity: 0;
 	pointer-events: none;
+	z-index: 9999;
 }
 .nav-top-divider {
 	height: 2px;

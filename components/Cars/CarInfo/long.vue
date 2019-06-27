@@ -1,5 +1,6 @@
 <template>
     <article>
+		<app-gallery :images="carInfo.images" v-if="imagesLoaded"></app-gallery>
         <h4>{{carInfo.title}}</h4>
         <hr>
         <p>{{carInfo.brand}}</p>
@@ -8,10 +9,16 @@
     </article>
 </template>
 <script>
+import AppGallery from "@/components/Cars/CarInfo/Gallery";
+
 export default {
+	components: {
+		AppGallery
+	},
 	data() {
 		return {
-			carInfo: {}
+			carInfo: {},
+			imagesLoaded: false
 		};
 	},
 	created() {
@@ -19,6 +26,7 @@ export default {
 			.get("/api/cars/" + this.$route.params.id)
 			.then(result => {
 				this.carInfo = result.data;
+				this.imagesLoaded = true;
 			})
 			.catch(err => {
 				console.log(err);

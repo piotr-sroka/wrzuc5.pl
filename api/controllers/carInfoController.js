@@ -37,6 +37,7 @@ class CarsInfos {
     const version = req.body.version;
     const title = req.body.title;
     const description = req.body.description;
+    const price = req.body.price;
     const images = req.body.images;
     const createdBy = req.body.user;
     const newCar = new CarInfo({
@@ -45,6 +46,7 @@ class CarsInfos {
       version: version,
       title: title,
       description: description,
+      price: price,
       images: images,
       createdBy: createdBy
     });

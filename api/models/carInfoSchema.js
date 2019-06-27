@@ -25,6 +25,10 @@ let CarInfoSchema = new Schema({
         minlength: [10, "Opis jest zbyt krótki"],
         maxlength: 20000
     },
+    price: {
+        type: Number,
+        required: "Podaj cenę"
+    },
     images: [{
         type: Object
     }],

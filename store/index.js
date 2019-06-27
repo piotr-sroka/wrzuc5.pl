@@ -161,6 +161,9 @@ export const getters = {
   },
   user: state => {
     return state.auth.user;
+  },
+  cars: state => {
+    return state.cars;
   }
 };
 export const mutations = {

@@ -28,6 +28,9 @@
 
 				<input class="form-input" type="text" placeholder="Opis" v-model="description">
 				<span class="info-message form-message-error" v-if="errors.description !=='' ">{{errors.description}}</span>
+
+				<input class="form-input" type="text" placeholder="Cena" v-model="price">
+				<span class="info-message form-message-error" v-if="errors.price !=='' ">{{errors.price}}</span>
 			</div>
 			<div class="form-group--column info-files">
 				<div class="drop-files-area" :class="isDragOver ? 'dragOver' : ''" @dragover.prevent.stop="onDragOver" @dragleave.prevent.stop="onDragLeave" @drop.prevent.stop="onDrop">
@@ -59,12 +62,14 @@ export default {
 			version: "",
 			title: "",
 			description: "",
+			price: "",
 			errors: {
 				brand: "",
 				model: "",
 				version: "",
 				title: "",
-				description: ""
+				description: "",
+				price: ""
 			},
 			images: [],
 			isDragOver: false,
@@ -99,7 +104,7 @@ export default {
 			this.checkFilesAndResize(e.target.files || e.dataTransfer.files);
 		},
 		addCar() {
-			let newCar = {brand: this.brand, model: this.model, version: this.version, title: this.title, description: this.description, user: this.$store.state.auth.user, images: this.images};
+			let newCar = {brand: this.brand, model: this.model, version: this.version, title: this.title, description: this.description, price: this.price, user: this.$store.state.auth.user, images: this.images};
 			console.log(newCar);
 			this.$axios
 				.post("/api/cars/add-new-car/", newCar)
@@ -111,6 +116,7 @@ export default {
 						this.errors.version = response.data.errors.version ? response.data.errors.version.message : "";
 						this.errors.title = response.data.errors.title ? response.data.errors.title.message : "";
 						this.errors.description = response.data.errors.description ? response.data.errors.description.message : "";
+						this.errors.price = response.data.errors.price ? response.data.errors.price.message : "";
 						return;
 					}
 					this.$router.push("/");
