@@ -35,7 +35,7 @@ module.exports = {
   modules: ["@nuxtjs/axios"],
 
   axios: {
-    baseURL: "http://localhost:3000/"
+    baseURL: "./"
   },
 
   env: env.parsed,
