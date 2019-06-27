@@ -216,7 +216,7 @@ export const actions = {
         console.log(err.message);
         return;
       }
-      // console.log(decoded);
+      console.log(decoded);
       commit("setAuth", {isLoggedIn: true, user: user, token: token});
     });
   },
