@@ -19,5 +19,6 @@ router.post("/cars/", carsInfos.loadMyCars);
 router.post("/cars/add-new-car/", carsInfos.addCar);
 
 router.post("/images/upload/", images.addImage);
+router.post("/images/remove/", images.removeImage);
 
 export default router;

@@ -2,7 +2,7 @@
   <section>
     <h3>Moje ogłoszenia:</h3>
     <hr>
-    <section>
+    <section class="cars-list">
       <app-short-car-info v-for="(car, index) in myCars" :key="index" :mycar="car"></app-short-car-info>
     </section>
   </section>
@@ -38,3 +38,12 @@ export default {
 	}
 };
 </script>
+<style>
+.cars-list {
+	padding: 40px 0;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+</style>
+

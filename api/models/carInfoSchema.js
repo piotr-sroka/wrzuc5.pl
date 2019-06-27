@@ -13,7 +13,7 @@ let CarInfoSchema = new Schema({
     },
     version: {
         type: String,
-        required: "Wybierz wersję"
+        default: "NO_VERSION"
     },
     title: {
         type: String,
@@ -25,6 +25,9 @@ let CarInfoSchema = new Schema({
         minlength: [10, "Opis jest zbyt krótki"],
         maxlength: 20000
     },
+    images: [{
+        type: Object
+    }],
     createdBy: {
         type: mongoose.Schema.Types.ObjectId
     },

@@ -10,6 +10,22 @@ a:active {
   text-decoration: none;
 }
 
+.btn {
+  border: none;
+  outline-color: transparent;
+  border-radius: 6px;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 12px;
+  color: #ffffff;
+}
+.btn.primary {
+  background-color: #1abc9c;
+}
+.btn.danger {
+  background-color: #c0392b;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:active,

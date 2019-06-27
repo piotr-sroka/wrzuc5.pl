@@ -30,15 +30,12 @@
 				<span class="info-message form-message-error" v-if="errors.description !=='' ">{{errors.description}}</span>
 			</div>
 			<div class="form-group--column info-files">
-				<div class="drop-files-area">
-					<input id="drop-input" class="drop-input" type="file" @change="onFileSelect" multiple accept="image/x-png,image/jpeg">
+				<div class="drop-files-area" :class="isDragOver ? 'dragOver' : ''" @dragover.prevent.stop="onDragOver" @dragleave.prevent.stop="onDragLeave" @drop.prevent.stop="onDrop">
+					<input id="drop-input" class="drop-input" type="file" @change="onFileSelect" multiple accept="image/x-png,image/jpeg,image/png">
 					<label class="drop-input--label" for="drop-input">Dodaj zdjęcia</label>
 				</div>
 				<div class="images-thumbs">
-					<div class="thumb-container" v-for="(image, index) in images" :key="index">
-						<span class="progress-bar" v-if="image.isLoading"></span>
-						<img class="thumb" :src="image.src" :alt="image.title" v-if="!image.isLoading">
-					</div>
+					<app-image-thumb v-for="(image, index) in images" :key="index" :image="image.thumb" @click.native="removeImage(image)"></app-image-thumb>
 				</div>
 			</div>
 		</div>
@@ -49,8 +46,12 @@
 <script>
 import {mapGetters} from "vuex";
 import AppImageThumb from "@/components/Cars/AddCar/ImageThumb";
+import path from "path";
 
 export default {
+	components: {
+		AppImageThumb
+	},
 	data() {
 		return {
 			brand: "",
@@ -65,11 +66,13 @@ export default {
 				title: "",
 				description: ""
 			},
-			images: []
+			images: [],
+			isDragOver: false,
+			MAX_IMAGE_DIMENSION: 800
 		};
 	},
 	computed: {
-		...mapGetters(["brands"]),
+		...mapGetters(["brands", "user"]),
 		models() {
 			if (this.brands.filter(brand => brand.brand === this.brand)[0]) {
 				return this.brands.filter(brand => brand.brand === this.brand)[0].models;
@@ -85,25 +88,36 @@ export default {
 		}
 	},
 	methods: {
+		onDragOver() {
+			this.isDragOver = true;
+		},
+		onDragLeave() {
+			this.isDragOver = false;
+		},
+		onDrop(e) {
+			this.isDragOver = false;
+			this.checkFilesAndResize(e.target.files || e.dataTransfer.files);
+		},
 		addCar() {
-			let newCar = {brand: this.brand, model: this.model, version: this.version, title: this.title, description: this.description, user: this.$store.state.auth.user};
+			let newCar = {brand: this.brand, model: this.model, version: this.version, title: this.title, description: this.description, user: this.$store.state.auth.user, images: this.images};
 			console.log(newCar);
-			// this.$axios
-			// 	.post("/api/cars/add-new-car/", newCar)
-			// 	.then(response => {
-			// 		if (response.data.errors) {
-			// 			this.errors.brand = response.data.errors.brand ? response.data.errors.brand.message : "";
-			// 			this.errors.model = response.data.errors.model ? response.data.errors.model.message : "";
-			// 			this.errors.version = response.data.errors.version ? response.data.errors.version.message : "";
-			// 			this.errors.title = response.data.errors.title ? response.data.errors.title.message : "";
-			// 			this.errors.description = response.data.errors.description ? response.data.errors.description.message : "";
-			// 			return;
-			// 		}
-			// 		this.$router.push("/");
-			// 	})
-			// 	.catch(err => {
-			// 		console.log("ERROR", err);
-			// 	});
+			this.$axios
+				.post("/api/cars/add-new-car/", newCar)
+				.then(response => {
+					if (response.data.errors) {
+						console.log(response.data.errors);
+						this.errors.brand = response.data.errors.brand ? response.data.errors.brand.message : "";
+						this.errors.model = response.data.errors.model ? response.data.errors.model.message : "";
+						this.errors.version = response.data.errors.version ? response.data.errors.version.message : "";
+						this.errors.title = response.data.errors.title ? response.data.errors.title.message : "";
+						this.errors.description = response.data.errors.description ? response.data.errors.description.message : "";
+						return;
+					}
+					this.$router.push("/");
+				})
+				.catch(err => {
+					console.log("ERROR", err);
+				});
 		},
 		brandChanged() {
 			this.model = "";
@@ -112,30 +126,82 @@ export default {
 			this.version = "";
 		},
 		onFileSelect(e) {
-			let files = Array.from(e.target.files);
-			files.forEach(file => {
-				this.getSignedRequest(file);
+			this.checkFilesAndResize(e.target.files);
+		},
+		checkFilesAndResize(files) {
+			let filesArray = Array.from(files);
+			filesArray.splice(20, filesArray.length - 5);
+			Array.from(filesArray).forEach(file => {
+				let canvas = document.createElement("CANVAS");
+				let ctx = canvas.getContext("2d");
+				let image = new Image();
+				let newDimension = {width: this.MAX_IMAGE_DIMENSION, height: this.MAX_IMAGE_DIMENSION};
+				image.onload = e => {
+					let ratio = 1;
+					if (image.width < image.height) {
+						ratio = image.width / image.height;
+						newDimension = {width: this.MAX_IMAGE_DIMENSION * ratio, height: this.MAX_IMAGE_DIMENSION};
+					}
+					if (image.width > image.height) {
+						ratio = image.height / image.width;
+						newDimension = {width: this.MAX_IMAGE_DIMENSION, height: this.MAX_IMAGE_DIMENSION * ratio};
+					}
+					canvas.width = newDimension.width;
+					canvas.height = newDimension.height;
+					ctx.drawImage(image, 0, 0, newDimension.width, newDimension.height);
+					this.getSignedRequest({file: file, fileData: canvas.toDataURL(file.type)});
+				};
+				image.src = URL.createObjectURL(file);
 			});
 		},
-		getSignedRequest(file) {
-			let fileInfo = {fileName: file.name, fileType: file.type};
+		getSignedRequest(config) {
+			let file = config.file;
+			let fileData = config.fileData;
+			let fileExt = path.extname(file.name);
+			let fileName = path.basename(file.name, fileExt);
+			let fileInfo = {fileName: fileName, fileExt: fileExt, fileType: file.type, directory: this.user};
 			this.$axios
 				.post("/api/images/upload/", fileInfo)
 				.then(response => {
-					let thumb = {src:"", title:"", isLoading:true};
-					this.images.push(thumb);
-					this.uploadFile(file, response.data.signedRequest, response.data.url, thumb);
+					let thumb = {src: "", title: "", isLoading: true};
+					this.images.push({thumb: thumb, fileKey: response.data.key});
+					this.uploadFile(fileData, fileName, response.data.signedRequest, response.data.url, thumb, file.type);
 				})
 				.catch(err => {
 					console.log(err);
 				});
 		},
-		uploadFile(file, signedRequest, url, thumb) {
-			this.$axios.put(signedRequest, file).then(res => {
-				thumb.src = url;
-				thumb.title = res.config.data.name;
-				thumb.isLoading = false;
+		uploadFile(fileData, fileName, signedRequest, url, thumb, type) {
+			this.urltoFile(fileData, fileName).then(file => {
+				this.$axios.put(signedRequest, file).then(res => {
+					thumb.src = url;
+					thumb.title = res.config.data.name;
+					thumb.isLoading = false;
+				});
 			});
+		},
+		removeImage(image) {
+			let urlInfo = {key: image.fileKey, url: image.thumb.src};
+			this.$axios
+				.post("/api/images/remove/", urlInfo)
+				.then(response => {
+					if (response.statusText === "OK") {
+						this.images.splice(this.images.indexOf(image), 1);
+					}
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		urltoFile(url, filename, mimeType) {
+			mimeType = mimeType || (url.match(/^data:([^;]+);/) || "")[1];
+			return fetch(url)
+				.then(function(res) {
+					return res.arrayBuffer();
+				})
+				.then(function(buf) {
+					return new File([buf], filename, {type: mimeType});
+				});
 		}
 	}
 };
@@ -164,6 +230,9 @@ export default {
 	justify-content: center;
 	align-items: center;
 	border-radius: 6px;
+}
+.drop-files-area.dragOver {
+	opacity: 0.6;
 }
 .drop-input {
 	position: absolute;

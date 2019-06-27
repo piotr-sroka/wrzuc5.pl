@@ -1,30 +1,47 @@
 <template>
-    <div></div>
-  <!-- <div class="thumb-container" v-for="(image, index) in images" :key="index">
+  <div class="thumb-container" :class="image.isLoading ? '' : 'loaded'">
     <span class="progress-bar" v-if="image.isLoading"></span>
     <img class="thumb" :src="image.src" :alt="image.title" v-if="!image.isLoading">
-  </div> -->
+  </div>
 </template>
 <script>
 export default {
-    props: ['image']
+	props: ["image"]
 };
 </script>
 <style>
 .thumb-container {
-  position: relative;
-  width: 90px;
-  height: 90px;
+	position: relative;
+	width: 90px;
+	height: 90px;
 }
 .images-thumbs {
-  display: flex;
-  flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 .thumb {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  margin: 5px;
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	margin: 5px;
+}
+.thumb-container.loaded:hover .thumb {
+  opacity: .4;
+}
+.thumb-container.loaded:hover::after {
+  content: "\e609";
+  font-family: "Flat-UI-Pro-Icons";
+  font-size: 2em;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #c0392b;
+  top: 0;
+  left: 0;
+  cursor: pointer;
 }
 </style>
 

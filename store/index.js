@@ -158,6 +158,9 @@ export const state = () => {
 export const getters = {
   brands: state => {
     return state.brands;
+  },
+  user: state => {
+    return state.auth.user;
   }
 };
 export const mutations = {
