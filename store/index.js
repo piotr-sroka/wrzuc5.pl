@@ -213,10 +213,10 @@ export const actions = {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
-        console.log(err.message);
+        // console.log(err.message);
         return;
       }
-      console.log(decoded);
+      // console.log(decoded);
       commit("setAuth", {isLoggedIn: true, user: user, token: token});
     });
   },
