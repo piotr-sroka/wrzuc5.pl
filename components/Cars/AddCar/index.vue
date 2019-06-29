@@ -73,7 +73,7 @@ export default {
 			},
 			images: [],
 			isDragOver: false,
-			MAX_IMAGE_DIMENSION: 800
+			MAX_IMAGE_DIMENSION: 1024
 		};
 	},
 	computed: {
