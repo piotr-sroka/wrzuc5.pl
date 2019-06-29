@@ -99,6 +99,7 @@ export default {
   font-size: 1.6em;
   border-radius: 50%;
   border: 4px solid #34495e;
+  background-color: #ffffff;
   padding: 10px;
   text-align: center;
   opacity: 0;
@@ -106,7 +107,7 @@ export default {
   color: #34495e;
 }
 .gallery-nav--btn:hover::before {
-  opacity: 1;
+  opacity: .5;
 }
 .gallery-nav--btn.nav-btn--prev::before {
   content: "\e606";
