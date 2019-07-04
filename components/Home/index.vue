@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import AppSearchEngine from "@/components/SearchEngine";
+import AppSearchEngine from "@/components/UI/MainSearchEngine";
 import AppMainPageCarInfo from "@/components/Cars/CarInfo/mainpage";
 
 export default {

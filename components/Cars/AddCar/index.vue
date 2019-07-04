@@ -3,25 +3,29 @@
     <form class="form">
 		<div class="form-group">
 			<div class="form-group--column info-text">
-				<select class="form-input" v-model="brand" @change="brandChanged">
-					<option value="" disabled selected>Marka pojazdu</option>
-					<option v-for="(brand, index) in brands" :value="brand.brand" :key="index">{{brand.brand}}</option>
-					<option value="other">Inny</option>
-				</select>
+				<app-select-with-search-input v-model="brand" :selectTitle="brand" :selectItems="brands" itemToShow="brand"></app-select-with-search-input>
 				<span class="info-message form-message-error" v-if="errors.brand !=='' ">{{errors.brand}}</span>
+				<!-- <select class="form-input" v-model="brand" @change="brandChanged"> -->
+					<!-- <div data-simplebar class="select-scrolled"> -->
+						<!-- <option value="" disabled selected>Marka pojazdu</option>
+						<option v-for="(brand, index) in brands" :value="brand.brand" :key="index">{{brand.brand}}</option>
+						<option value="other">Inny</option> -->
+					<!-- </div> -->
+				<!-- </select> -->
 
-				<select class="form-input" v-model="model" :disabled="this.brand === '' || !this.models.length" @change="modelChanged">
-					<option value="" disabled :selected="!this.models.length">Model pojazdu</option>
-					<option v-for="(model, index) in this.models" :value="model" :key="index">{{model}}</option>
-					<option value="other">Inny</option>
-				</select>
+				<app-select-with-search-input v-model="model" :selectTitle="model" :selectItems="models" itemToShow="model"></app-select-with-search-input>
 				<span class="info-message form-message-error" v-if="errors.model !=='' ">{{errors.model}}</span>
+				<!-- <select class="form-input" v-model="model" :disabled="brand === '' || !models.length" @change="modelChanged">
+					<option value="" disabled :selected="!models.length">Model pojazdu</option>
+					<option v-for="(model, index) in models" :value="model" :key="index">{{model}}</option>
+					<option value="other">Inny</option>
+				</select> -->
 
-				<select class="form-input" v-model="version" v-if="this.versions.length">
-					<option value="" disabled :selected="!this.version.length">Wersja</option>
-					<option v-for="(version, index) in this.versions" :value="version" :key="index">{{version}}</option>
+				<select class="form-input" v-model="version" v-if="versions.length">
+					<option value="" disabled :selected="!version.length">Wersja</option>
+					<option v-for="(version, index) in versions" :value="version" :key="index">{{version}}</option>
 				</select>
-				<span class="info-message form-message-error" v-if="errors.version !=='' && this.versions.length ">{{errors.version}}</span>
+				<span class="info-message form-message-error" v-if="errors.version !=='' && versions.length ">{{errors.version}}</span>
 
 				<input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title">
 				<span class="info-message form-message-error" v-if="errors.title !=='' ">{{errors.title}}</span>
@@ -49,16 +53,18 @@
 <script>
 import {mapGetters} from "vuex";
 import AppImageThumb from "@/components/Cars/AddCar/ImageThumb";
+import AppSelectWithSearchInput from "@/components/UI/SelectWithSearchInput";
 import path from "path";
 
 export default {
 	components: {
-		AppImageThumb
+		AppImageThumb,
+		AppSelectWithSearchInput
 	},
 	data() {
 		return {
-			brand: "",
-			model: "",
+			brand: "Marka samochodu",
+			model: "Model samochodu",
 			version: "",
 			title: "",
 			description: "",
@@ -125,9 +131,9 @@ export default {
 					console.log("ERROR", err);
 				});
 		},
-		brandChanged() {
-			this.model = "";
-		},
+		// brandChanged() {
+		// 	this.model = "";
+		// },
 		modelChanged() {
 			this.version = "";
 		},
