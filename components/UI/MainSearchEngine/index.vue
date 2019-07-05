@@ -32,11 +32,11 @@ export default {};
   transition: all 0.2s linear;
 }
 .search-input:focus {
-  border: 1px solid #1abc9c;
+  border: 1px solid #3498db;
 }
 .search-input:focus +
 .search-input--label::before {
-    color: #1abc9c;
+    color: #3498db;
 }
 .search-input--label {
   position: relative;

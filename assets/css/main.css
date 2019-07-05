@@ -7,7 +7,7 @@
 
 ::selection {
   color: #fff;
-  background-color: #1abc9c;
+  background-color: #3498db;
 }
 img {
   max-width: 100%;
@@ -31,8 +31,8 @@ a:active {
   transition: all .2s linear;
 }
 .btn.primary:hover {
-  border: 1px solid #1abc9c;
-  color: #1abc9c;
+  border: 1px solid #3498db;
+  color: #3498db;
 }
 .btn.danger:hover {
   border: 1px solid #c0392b;
@@ -66,7 +66,7 @@ input:-webkit-autofill:focus {
   font-size: 1em;
 }
 .form .form-input:focus {
-  border-color: #1abc9c;
+  border-color: #3498db;
 }
 
 .form-button-submit {
@@ -77,15 +77,15 @@ input:-webkit-autofill:focus {
   outline-color: transparent;
   border-radius: 6px;
   background-color: transparent;
-  border: 1px solid #1abc9c;
+  border: 1px solid #3498db;
   padding: 12px;
-  color: #1abc9c;
+  color: #3498db;
   font-size: 1.2em;
   transition: all .2s linear;
   cursor: pointer;
 }
 .form-button-submit:hover {
-  background-color: #1abc9c;
+  background-color: #3498db;
   color: #ffffff;
 }
 .form-input,
@@ -117,7 +117,7 @@ input:-webkit-autofill:focus {
   border: 5px solid rgba(26, 188, 156, .2);
   border-radius: 50%;
   margin: auto;
-  border-right-color: #1abc9c;
+  border-right-color: #3498db;
   animation: loading 2s linear infinite;
   left: 0;
   top: 0;

@@ -158,7 +158,7 @@ export default {
 }
 .info-equipment--item {
   padding: 8px 12px;
-  border: 1px solid #1abc9c;
+  border: 1px solid #3498db;
   border-radius: 6px;
   display: inline-block;
   margin-right: 8px;

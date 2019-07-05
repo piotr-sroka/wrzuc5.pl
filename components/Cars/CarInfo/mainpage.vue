@@ -36,7 +36,6 @@ export default {
 
 <style scoped>
 .car {
-  padding: 16px;
   border-radius: 6px;
   display: flex;
   width: 100%;
@@ -49,6 +48,7 @@ export default {
   background-color: #f5f5f5;
 }
 .car .info {
+  padding: 16px;
   flex: 100%;
   display: flex;
   justify-content: space-between;
@@ -91,12 +91,12 @@ export default {
   font-size: 0.8em;
 }
 .car .thumb {
+  margin: 0;
   min-width: 260px;
   width: 260px;
   min-height: 180px;
   height: 180px;
   object-fit: cover;
   border-radius: 6px;
-  margin-right: 20px;
 }
 </style>

@@ -66,7 +66,7 @@ export default {
 	transition: all 0.2s ease-in-out;
 }
 .nav-top-item:hover {
-	color: #1abc9c;
+	color: #3498db;
 }
 .nav-top-dropdown {
 	position: relative;
@@ -106,7 +106,7 @@ export default {
 	transition: all 0.2s ease-in-out;
 }
 .nav-top-item:hover .dropdown-arrow {
-	border-top-color: #1abc9c;
+	border-top-color: #3498db;
 }
 .nav-top-dropdown.toggle .dropdown-arrow {
 	transform: rotate(180deg);
