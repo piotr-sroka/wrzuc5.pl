@@ -10,7 +10,7 @@
     </button>
     <div class="select-items" :class="isSelectOpened ? 'opened' : ''">
       <input type="text" class="form-input search" ref="searchInput" @input="findItems" :value="searchValue" />
-      <div data-simplebar class="select-scrolled" :setTop="scrollTop">
+      <div data-simplebar class="select-scrolled">
         <div>
           <p
             class="select-item"
@@ -35,9 +35,6 @@ import {directive as onClickaway} from "vue-clickaway";
 
 export default {
 	props: ["selectTitle", "selectItems", "itemToShow"],
-	components: {
-		SimpleBar
-	},
 	directives: {
 		onClickaway: onClickaway
 	},
@@ -98,8 +95,8 @@ export default {
 				}
             }
 			this.focusedItem = this.$refs[`item-${this.focusedItemIndex}`][0];
-			this.focusOnItem(this.focusedItem);
-            this.scrollTop = this.focusedItem.offsetTop;
+            this.focusOnItem(this.focusedItem);
+            document.querySelector(".simplebar-content-wrapper").scrollTop = this.focusedItem.offsetTop;
 		},
 		focusOnItem(el) {
 			this.focusedItemIndex = el.dataset.itemIndex;
@@ -126,12 +123,10 @@ export default {
 				this.isArrowKeyDown = true;
 				setTimeout(() => {
 					this.onDocumentKeyUp(e);
-				}, 200);
+				}, 50);
 			}
 			if (this.isSelectOpened && e.keyCode === 13) {
-				// console.log(this.focusedItem);
 				if (this.focusedItem) {
-					// this.selectItem(this.focusedItem.dataset.itemValue);
 					this.focusedItem.click();
 				}
 			}
