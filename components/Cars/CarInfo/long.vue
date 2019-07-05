@@ -117,6 +117,11 @@ export default {
   components: {
     AppGallery
   },
+	head() {
+		return {
+			title: this.carInfo.title
+		};
+	},
   data() {
     return {
       carInfo: {},
