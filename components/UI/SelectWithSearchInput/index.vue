@@ -3,20 +3,24 @@
     <button
       class="form-input select"
       :class="isSelectOpened ? 'opened': ''"
-      @click.prevent="isSelectOpened = !isSelectOpened"
+      @click.prevent="toggleSelect"
     >
       {{selectTitle}}
       <span class="dropdown-arrow"></span>
     </button>
     <div class="select-items" :class="isSelectOpened ? 'opened' : ''">
-      <input type="text" class="form-input search" @input="findItems" :value="searchValue" />
-      <div data-simplebar class="select-scrolled">
+      <input type="text" class="form-input search" ref="searchInput" @input="findItems" :value="searchValue" />
+      <div data-simplebar class="select-scrolled" :setTop="scrollTop">
         <div>
           <p
             class="select-item"
             v-for="(item, index) in itemsToDisplay"
             :key="index"
+            :ref="'item-' + index"
             @click="selectItem(item[itemToShow] || item)"
+            @mouseover="focusOnItem($event.target)"
+            :data-item-index="index"
+            :data-item-value="item[itemToShow] || item"
           >{{item[itemToShow] || item}}</p>
         </div>
       </div>
@@ -27,113 +31,184 @@
 <script>
 import SimpleBar from "simplebar-vue";
 import "simplebar/dist/simplebar.css";
-import { directive as onClickaway } from "vue-clickaway";
+import {directive as onClickaway} from "vue-clickaway";
 
 export default {
-  props: ["selectTitle", "selectItems", "itemToShow"],
-  components: {
-    SimpleBar
-  },
-  directives: {
-    onClickaway: onClickaway
-  },
-  data() {
-    return {
-      isSelectOpened: false,
-      searchValue: "",
-      itemsToDisplay: []
-    };
-  },
-  methods: {
-    hideDropdown() {
-      this.isSelectOpened = false;
-    },
-    selectItem(value) {
-      setTimeout(this.findItems, 200);
-      this.$emit("input", value);
-      this.hideDropdown();
-    },
-    findItems(e) {
-      if (!e || !e.target.value.length) {
-        this.searchValue = "";
-        this.itemsToDisplay = this.selectItems;
-        return;
-	  }
-      this.searchValue = e.target.value;
-      this.itemsToDisplay = this.selectItems.filter(el => {
-		  let theEl = el[this.itemToShow] || el;
-		  return (
-          theEl
-            .toLowerCase()
-            .indexOf(e.target.value.toLowerCase()) > -1
-        );
-	  });
-    }
-  },
-  created() {
-    this.itemsToDisplay = this.selectItems;
-  }
+	props: ["selectTitle", "selectItems", "itemToShow"],
+	components: {
+		SimpleBar
+	},
+	directives: {
+		onClickaway: onClickaway
+	},
+	data() {
+		return {
+			isSelectOpened: false,
+			searchValue: "",
+			itemsToDisplay: [],
+			focusedItem: null,
+			focusedItemIndex: -1,
+            isArrowKeyDown: false,
+            scrollTop: 50
+		};
+	},
+	methods: {
+		toggleSelect() {
+			this.isSelectOpened = !this.isSelectOpened;
+			setTimeout(() => {
+				if (this.isSelectOpened) this.$refs.searchInput.focus();
+			}, 200);
+		},
+		hideDropdown() {
+			this.isSelectOpened = false;
+			this.focusedItem = null;
+			try {
+				document.querySelector(".select-item.hover").classList.remove("hover");
+			} catch (e) {}
+		},
+		selectItem(value) {
+			this.$root.$emit("selectChanged", this.itemToShow);
+			this.$emit("input", value);
+			this.findItems();
+			setTimeout(this.hideDropdown, 50);
+		},
+		findItems(e) {
+			if (!e || !e.target.value.length) {
+				this.searchValue = "";
+				this.itemsToDisplay = this.selectItems;
+				return;
+			}
+			this.searchValue = e.target.value;
+			this.itemsToDisplay = this.selectItems.filter(el => {
+				let theEl = el[this.itemToShow] || el;
+				return theEl.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1;
+			});
+		},
+		tryToChangeSelectPosition(keyCode) {
+			if (keyCode === 38) {
+				this.focusedItemIndex--;
+				if (this.focusedItemIndex < 0) {
+					this.focusedItemIndex = this.itemsToDisplay.length - 1;
+				}
+			}
+			if (keyCode === 40) {
+				this.focusedItemIndex++;
+				if (this.focusedItemIndex > this.itemsToDisplay.length - 1) {
+					this.focusedItemIndex = 0;
+				}
+            }
+			this.focusedItem = this.$refs[`item-${this.focusedItemIndex}`][0];
+			this.focusOnItem(this.focusedItem);
+            this.scrollTop = this.focusedItem.offsetTop;
+		},
+		focusOnItem(el) {
+			this.focusedItemIndex = el.dataset.itemIndex;
+			try {
+				document.querySelector(".select-item.hover").classList.remove("hover");
+			} catch (e) {}
+			el.classList.add("hover");
+		},
+		onDocumentKeyUp(e) {
+			if (this.isArrowKeyDown) {
+				if (e.keyCode === 27) {
+					this.hideDropdown();
+				}
+				if (e.keyCode === 38 || e.keyCode === 40) {
+					if (this.isSelectOpened) {
+						this.tryToChangeSelectPosition(e.keyCode);
+					}
+				}
+				this.isArrowKeyDown = false;
+			}
+		},
+		onDocumentKeyDown(e) {
+			if (!this.isArrowKeyDown && (e.keyCode === 38 || e.keyCode === 40)) {
+				this.isArrowKeyDown = true;
+				setTimeout(() => {
+					this.onDocumentKeyUp(e);
+				}, 200);
+			}
+			if (this.isSelectOpened && e.keyCode === 13) {
+				// console.log(this.focusedItem);
+				if (this.focusedItem) {
+					// this.selectItem(this.focusedItem.dataset.itemValue);
+					this.focusedItem.click();
+				}
+			}
+		}
+	},
+	created() {
+		this.itemsToDisplay = this.selectItems;
+	},
+	mounted() {
+		document.addEventListener("keyup", this.onDocumentKeyUp);
+        document.addEventListener("keydown", this.onDocumentKeyDown);
+	},
+	beforeDestroy() {
+		document.removeEventListener("keyup", this.onDocumentKeyUp);
+		document.removeEventListener("keydown", this.onDocumentKeyDown);
+	}
 };
 </script>
 
 <style>
 .select-container {
-  position: relative;
+	position: relative;
 }
 .form-input.select {
-  color: #ffffff;
-  text-align: left;
-  -webkit-box-shadow: inset 0 0 0px 9999px #1abc9c;
-  border: 2px solid #1abc9c;
-  display: flex;
-  align-items: center;
+	color: #ffffff;
+	text-align: left;
+	-webkit-box-shadow: inset 0 0 0px 9999px #1abc9c;
+	border: 2px solid #1abc9c;
+	display: flex;
+	align-items: center;
 }
 .select .dropdown-arrow {
-  border-color: #1abc9c;
-  border-top-color: #ffffff;
-  margin-left: auto;
+	border-color: #1abc9c;
+	border-top-color: #ffffff;
+	margin-left: auto;
 }
 .select.opened .dropdown-arrow {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 .select-scrolled {
-  max-height: 170px;
+	max-height: 170px;
 }
 .simplebar-scrollbar:before {
-  background: #1abc9c;
+	background: #1abc9c;
 }
 .select-items {
-  width: 100%;
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  background-color: #ffffff;
-  border-radius: 6px;
-  transition: all 0.2s linear;
-  box-sizing: border-box;
-  pointer-events: none;
-  padding-bottom: 10px;
-  z-index: 999;
+	width: 100%;
+	visibility: hidden;
+	opacity: 0;
+	position: absolute;
+	background-color: #ffffff;
+	border-radius: 6px;
+	transition: all 0.2s linear;
+	box-sizing: border-box;
+	pointer-events: none;
+	padding-bottom: 10px;
+	z-index: 999;
 }
 .select.opened + .select-items {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: all;
+	visibility: visible;
+	opacity: 1;
+	pointer-events: all;
 }
 .select-item {
-  cursor: pointer;
-  padding: 4px 10px;
+	cursor: pointer;
+	padding: 4px 10px;
 }
-.select-item:hover {
-  background-color: #1abc9c;
-  color: #ffffff;
+.select-item.hover {
+	background-color: #1abc9c;
+	color: #ffffff;
 }
 .form-input.search {
-  border: 2px solid #1abc9c;
-  font-size: 0.8em;
-  padding: 6px;
-  margin: 10px;
-  width: calc(100% - 20px);
+	border: 2px solid #1abc9c;
+	font-size: 0.8em;
+	padding: 6px;
+	margin: 10px;
+	width: calc(100% - 20px);
 }
 </style>

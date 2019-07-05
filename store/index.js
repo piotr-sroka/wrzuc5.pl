@@ -151,7 +151,8 @@ export const state = () => {
       {brand: "Yugo", models: ["Model A", "Model B"]},
       {brand: "Zaporożec", models: ["Model A", "Model B"]},
       {brand: "Zastava", models: ["Model A", "Model B"]},
-      {brand: "Żuk", models: ["Model A", "Model B"]}
+      {brand: "Żuk", models: ["Model A", "Model B"]},
+      {brand: "Inny", models: []}
     ]
   };
 };
