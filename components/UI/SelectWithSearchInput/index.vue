@@ -15,6 +15,7 @@
           <p
             class="select-item"
             v-for="(item, index) in itemsToDisplay"
+			:class="item.visible && item.visible === 'hidden' ? 'hidden' : ''"
             :key="index"
             :ref="'item-' + index"
             @click="selectItem(item[itemToShow] || item)"

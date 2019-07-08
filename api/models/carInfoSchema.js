@@ -29,6 +29,9 @@ let CarInfoSchema = new Schema({
         type: Number,
         required: "Podaj cenę"
     },
+    equipment: [{
+        type: Object
+    }],
     images: [{
         type: Object
     }],

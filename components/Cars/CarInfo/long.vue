@@ -89,21 +89,7 @@
     <span class="divider divider-light"></span>
     <p class="info-subtitle">Wyposażenie</p>
     <article class="info-equipment">
-      <span class="info-equipment--item">ABS</span>
-      <span class="info-equipment--item">Wspomaganie kierownicy</span>
-      <span class="info-equipment--item">Poduszka powietrzna kierowcy</span>
-      <span class="info-equipment--item">CD</span>
-      <span class="info-equipment--item">Alarm</span>
-      <span class="info-equipment--item">Centralny zamek</span>
-      <span class="info-equipment--item">Immobilizer</span>
-      <span class="info-equipment--item">Alufelgi</span>
-      <span class="info-equipment--item">Elektryczne szyby tylne</span>
-      <span class="info-equipment--item">Czujniki parkowania tylne</span>
-      <span class="info-equipment--item">Poduszka powietrzna pasażera</span>
-      <span class="info-equipment--item">Światła do jazdy dziennej</span>
-      <span class="info-equipment--item">Tapicerka welurowa</span>
-      <span class="info-equipment--item">Komputer pokładowy</span>
-      <span class="info-equipment--item">Podgrzewane lusterka boczne</span>
+      <span v-for="(item, index) in carInfo.equipment" :key="index" class="info-equipment--item readonly">{{item.name}}</span>
     </article>
     <span class="divider divider-light"></span>
     <p class="info-subtitle">Opis</p>
