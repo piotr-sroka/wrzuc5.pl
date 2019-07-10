@@ -35,9 +35,12 @@ class CarsInfos {
     const brand = req.body.brand;
     const model = req.body.model;
     const version = req.body.version;
+    const fuel = req.body.fuel;
     const title = req.body.title;
     const description = req.body.description;
     const price = req.body.price;
+    const mileage = req.body.mileage;
+    const yearOfProd = req.body.yearOfProd;
     const equipment = req.body.equipment;
     const images = req.body.images;
     const createdBy = req.body.user;
@@ -45,9 +48,12 @@ class CarsInfos {
       brand: brand,
       model: model,
       version: version,
+      fuel: fuel,
       title: title,
       description: description,
       price: price,
+      mileage: mileage,
+      yearOfProd: yearOfProd,
       equipment: equipment,
       images: images,
       createdBy: createdBy
@@ -76,7 +82,8 @@ class CarsInfos {
         }
         let carToRemove = new CarInfo(result);
         carToRemove
-          .remove()
+          .updateOne({isDeleted:true})
+          // .remove()
           .then(result => {
             res.status(200).send("Car removed");
           })
