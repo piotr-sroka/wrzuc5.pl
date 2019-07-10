@@ -3,7 +3,7 @@
     <h3>Moje ogłoszenia:</h3>
     <hr>
     <section class="cars-list">
-      <app-short-car-info v-if="!car.isDeleted" v-for="(car, index) in myCars" :key="index" :mycar="car"></app-short-car-info>
+      <app-short-car-info v-for="(car, index) in myCars" :key="index" :mycar="car"></app-short-car-info>
     </section>
   </section>
 </template>
@@ -30,7 +30,9 @@ export default {
 		this.$axios
 			.post("/api/cars/", {user: this.$store.state.auth.user})
 			.then(response => {
-				this.myCars = response.data;
+				this.myCars = response.data.filter(car => {
+					return !car.isDeleted;
+				});
 			})
 			.catch(err => {
 				console.log(err);
