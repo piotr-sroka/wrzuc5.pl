@@ -2,7 +2,7 @@
   <section class="container">
     <app-search-engine></app-search-engine>
     <div class="cars-list">
-      <app-main-page-car-info v-for="(car, index) in this.cars" :key="index" :car="car"></app-main-page-car-info>
+      <app-main-page-car-info v-if="!car.isDeleted" v-for="(car, index) in this.cars" :key="index" :car="car"></app-main-page-car-info>
     </div>
   </section>
 </template>

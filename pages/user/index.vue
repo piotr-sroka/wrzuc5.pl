@@ -30,7 +30,9 @@ export default {
 		this.$axios
 			.post("/api/cars/", {user: this.$store.state.auth.user})
 			.then(response => {
-				this.myCars = response.data;
+				this.myCars = response.data.filter(car => {
+					return !car.isDeleted;
+				});
 			})
 			.catch(err => {
 				console.log(err);

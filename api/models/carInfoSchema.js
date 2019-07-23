@@ -15,6 +15,10 @@ let CarInfoSchema = new Schema({
         type: String,
         default: "NO_VERSION"
     },
+    fuel: {
+        type: String,
+        default: "Wybierz rodzaj paliwa"
+    },
     title: {
         type: String,
         minlength: [10, "Tytuł jest zbyt krótki"],
@@ -29,6 +33,20 @@ let CarInfoSchema = new Schema({
         type: Number,
         required: "Podaj cenę"
     },
+    mileage: {
+        type: Number,
+        required: "Podaj przebieg"
+    },
+    yearOfProd: {
+        type: Number,
+        required: "Podaj rok produkcji"
+    },
+    color: {
+        type: String
+    },
+    engineCode: {
+        type: String
+    },
     equipment: [{
         type: Object
     }],
@@ -41,6 +59,10 @@ let CarInfoSchema = new Schema({
     createdTime: {
         type: Date,
         default: Date.now
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 });
 

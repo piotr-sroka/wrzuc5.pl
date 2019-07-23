@@ -9,6 +9,7 @@ import routes from './routes/appRouter';
 
 mongoose.Promise = global.Promise;
 
+mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true});
 
 module.exports = {

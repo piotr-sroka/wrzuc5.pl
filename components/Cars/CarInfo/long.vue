@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="car-page">
     <app-gallery :images="carInfo.images" v-if="imagesLoaded"></app-gallery>
     <h3 class="info-title">
       <span class="info-title--tag">{{carInfo.brand}}</span>
@@ -89,7 +89,7 @@
     <span class="divider divider-light"></span>
     <p class="info-subtitle">Wyposażenie</p>
     <article class="info-equipment">
-      <span v-for="(item, index) in carInfo.equipment" :key="index" class="info-equipment--item readonly">{{item.name}}</span>
+      <span v-for="(item, index) in carInfo.equipment" :key="index" class="info-equipment--item readonly">{{item.equipmentName}}</span>
     </article>
     <span class="divider divider-light"></span>
     <p class="info-subtitle">Opis</p>
@@ -129,6 +129,9 @@ export default {
 </script>
 
 <style>
+.car-page {
+  padding-bottom: 40px;
+}
 .info-lists,
 .info-equipment,
 .info-description {

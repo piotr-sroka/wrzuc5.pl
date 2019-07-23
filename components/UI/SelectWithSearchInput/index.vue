@@ -46,12 +46,13 @@ export default {
 			itemsToDisplay: [],
 			focusedItem: null,
 			focusedItemIndex: -1,
-            isArrowKeyDown: false,
-            scrollTop: 50
+			isArrowKeyDown: false,
+			scrollTop: 50
 		};
 	},
 	methods: {
 		toggleSelect() {
+			// console.log(this.selectItems);
 			this.isSelectOpened = !this.isSelectOpened;
 			setTimeout(() => {
 				if (this.isSelectOpened) this.$refs.searchInput.focus();
@@ -66,7 +67,7 @@ export default {
 		},
 		selectItem(value) {
 			this.$root.$emit("selectChanged", this.itemToShow);
-			this.$emit("input", value);
+			this.$emit("input", value, this.selectTitle);
 			this.findItems();
 			setTimeout(this.hideDropdown, 50);
 		},
@@ -79,7 +80,12 @@ export default {
 			this.searchValue = e.target.value;
 			this.itemsToDisplay = this.selectItems.filter(el => {
 				let theEl = el[this.itemToShow] || el;
-				return theEl.toLowerCase().indexOf(e.target.value.toLowerCase()) > -1;
+				return (
+					theEl
+						.toString()
+						.toLowerCase()
+						.indexOf(e.target.value.toLowerCase()) > -1
+				);
 			});
 		},
 		tryToChangeSelectPosition(keyCode) {
@@ -94,10 +100,10 @@ export default {
 				if (this.focusedItemIndex > this.itemsToDisplay.length - 1) {
 					this.focusedItemIndex = 0;
 				}
-            }
+			}
 			this.focusedItem = this.$refs[`item-${this.focusedItemIndex}`][0];
-            this.focusOnItem(this.focusedItem);
-            document.querySelector(".simplebar-content-wrapper").scrollTop = this.focusedItem.offsetTop;
+			this.focusOnItem(this.focusedItem);
+			document.querySelector(".simplebar-content-wrapper").scrollTop = this.focusedItem.offsetTop;
 		},
 		focusOnItem(el) {
 			this.focusedItemIndex = el.dataset.itemIndex;
@@ -107,10 +113,10 @@ export default {
 			el.classList.add("hover");
 		},
 		onDocumentKeyUp(e) {
+			if (e.keyCode === 27) {
+				this.hideDropdown();
+			}
 			if (this.isArrowKeyDown) {
-				if (e.keyCode === 27) {
-					this.hideDropdown();
-				}
 				if (e.keyCode === 38 || e.keyCode === 40) {
 					if (this.isSelectOpened) {
 						this.tryToChangeSelectPosition(e.keyCode);
@@ -138,7 +144,7 @@ export default {
 	},
 	mounted() {
 		document.addEventListener("keyup", this.onDocumentKeyUp);
-        document.addEventListener("keydown", this.onDocumentKeyDown);
+		document.addEventListener("keydown", this.onDocumentKeyDown);
 	},
 	beforeDestroy() {
 		document.removeEventListener("keyup", this.onDocumentKeyUp);
@@ -186,6 +192,7 @@ export default {
 	pointer-events: none;
 	padding-bottom: 10px;
 	z-index: 999;
+	margin-top: 50px;
 }
 .select.opened + .select-items {
 	visibility: visible;

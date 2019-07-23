@@ -1,5 +1,5 @@
 <template>
-  <article class="car" @click="gotoCarPage">
+  <nuxt-link :to="carLink" class="car">
     <img class="thumb" :src="car.images[0].thumb.src" alt />
     <div class="info">
       <div class="info-group group-left">
@@ -10,25 +10,25 @@
         </h3>
         <p class="info-title">{{car.title}}</p>
         <p class="info-others">
-          <span class="info-others--item">2004</span>
-          <span class="info-others--item">Diesel</span>
-          <span class="info-others--item">1.9 TDI</span>
-          <span class="info-others--item">199 000 km</span>
+          <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>
+          <span class="info-others--item" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>
+          <span class="info-others--item" v-if="car.engineCode">{{car.engineCode}}</span>
+          <span class="info-others--item" v-if="car.mileage">{{car.mileage}} km</span>
         </p>
       </div>
       <div class="info-group group-right">
         <p class="info-price">{{car.price}} PLN</p>
       </div>
     </div>
-  </article>
+  </nuxt-link>
 </template>
 
 <script>
 export default {
-  props: ["car"],
-  methods: {
-    gotoCarPage() {
-      this.$router.push("/cars/" + this.car._id);
+	props: ["car"],
+  data() {
+    return {
+      carLink: "/cars/" + this.car._id
     }
   }
 };
@@ -36,67 +36,67 @@ export default {
 
 <style scoped>
 .car {
-  border-radius: 6px;
-  display: flex;
-  width: 100%;
-  margin-bottom: 5px;
+	border-radius: 6px;
+	display: flex;
+	width: 100%;
+	margin-bottom: 5px;
 }
 .car:nth-child(even) {
-  background-color: #ebebeb;
+	background-color: #ebebeb;
 }
 .car:nth-child(odd) {
-  background-color: #f5f5f5;
+	background-color: #f5f5f5;
 }
 .car .info {
-  padding: 16px;
-  flex: 100%;
-  display: flex;
-  justify-content: space-between;
-  color: #34495e;
-  font-size: 1.2em;
+	padding: 16px;
+	flex: 100%;
+	display: flex;
+	justify-content: space-between;
+	color: #34495e;
+	font-size: 1.2em;
 }
 .info-group {
-  display: flex;
-  flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 .info-brand {
-  font-weight: bold;
+	font-weight: bold;
 }
 .info-model,
 .info-version {
-  font-weight: lighter;
+	font-weight: lighter;
 }
 .info-title {
-  color: #6d6d6d;
-  font-size: 0.8em;
-  margin-top: 6px;
+	color: #6d6d6d;
+	font-size: 0.8em;
+	margin-top: 6px;
 }
 .info-price {
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #e74c3c;
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #e74c3c;
 }
 .info-others {
-  margin-top: auto;
-  font-size: 0.8em;
-  color: #6d6d6d;
+	margin-top: auto;
+	font-size: 0.8em;
+	color: #6d6d6d;
 }
 .info-others--item {
-  margin-right: 8px;
+	margin-right: 8px;
 }
 .info-others--item::before {
-  font-family: "Flat-UI-Pro-Icons";
-  content: "\e63e";
-  margin-right: 5px;
-  font-size: 0.8em;
+	font-family: "Flat-UI-Pro-Icons";
+	content: "\e63e";
+	margin-right: 5px;
+	font-size: 0.8em;
 }
 .car .thumb {
-  margin: 0;
-  min-width: 260px;
-  width: 260px;
-  min-height: 180px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 6px;
+	margin: 0;
+	min-width: 260px;
+	width: 260px;
+	min-height: 180px;
+	height: 180px;
+	object-fit: cover;
+	border-radius: 6px;
 }
 </style>
