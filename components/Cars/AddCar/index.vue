@@ -80,6 +80,10 @@
           <span class="info-message form-message-error" v-if="errors.description !=='' ">{{errors.description}}</span>
 
           <div class="form-group">
+            <input class="form-input" type="text" placeholder="Kod silnika" v-model="engineCode" />
+          </div>
+
+          <div class="form-group">
             <input
               class="form-input price-input"
               type="text"
@@ -90,6 +94,15 @@
             <label for="price" class="price-input--label"></label>
           </div>
           <span class="info-message form-message-error" v-if="errors.price !=='' ">{{errors.price}}</span>
+
+          <app-select-with-search-input
+            v-if="colors.length && isReRendered"
+						v-model="color"
+            :selectTitle="color"
+            :selectItems="colors"
+            itemToShow="colorName"
+          ></app-select-with-search-input>
+          <span class="info-message form-message-error" v-if="errors.color !=='' && colors.length ">{{errors.color}}</span>
 
           <app-select-with-search-input
             v-if="equipment.length && isReRendered"
@@ -152,10 +165,11 @@ export default {
 			productionsYears: [],
 			mileage: "",
 			vin: "",
-			color: "Kolor",
+			engineCode: "",
 			title: "",
 			description: "",
 			price: "",
+			color: "Kolor",
 			carEquipment: [],
 			errors: {
 				brand: "",
@@ -176,7 +190,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["brands", "equipment", "fuelTypes", "user"]),
+		...mapGetters(["brands", "equipment", "fuelTypes", "colors", "user"]),
 		models() {
 			let brandModels = [];
 			if (this.brands.filter(brand => brand.brand === this.brand)[0]) {
@@ -214,9 +228,11 @@ export default {
 				fuel: this.fuel === "Rodzaj paliwa" ? "" : this.fuel,
 				title: this.title,
 				description: this.description,
+				engineCode: this.engineCode,
 				price: this.price,
 				mileage: this.mileage,
 				yearOfProd: this.yearOfProd === "Rok produkcji" ? "" : this.yearOfProd,
+				color: this.color === "Kolor" ? "" : this.color,
 				equipment: this.carEquipment,
 				user: this.$store.state.auth.user,
 				images: this.images

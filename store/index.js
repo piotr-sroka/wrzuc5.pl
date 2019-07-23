@@ -226,7 +226,8 @@ export const state = () => {
       {equipmentName: "Wielofunkcyjna kierownica", visible: "visible"},
       {equipmentName: "Zmieniarka CD", visible: "visible"}
     ],
-    fuelTypes: [{fuelType: "Benzyna"}, {fuelType: "Benzyna + LPG"}, {fuelType: "Benzyna + CNG"}, {fuelType: "Diesel"}, {fuelType: "Hybryda"}, {fuelType: "Elektryczny"}, {fuelType: "Etanol"}, {fuelType: "Wodór"}]
+    fuelTypes: [{fuelType: "Benzyna"}, {fuelType: "Benzyna + LPG"}, {fuelType: "Benzyna + CNG"}, {fuelType: "Diesel"}, {fuelType: "Hybryda"}, {fuelType: "Elektryczny"}, {fuelType: "Etanol"}, {fuelType: "Wodór"}],
+    colors: [{colorName: "Beżowy"}, {colorName: "Biały"}, {colorName: "Brązowy"}, {colorName: "Czarny"}, {colorName: "Czerwony"}, {colorName: "Niebieski"}, {colorName: "Srebrny"}, {colorName: "Szary"}, {colorName: "Zielony"}, {colorName: "Złoty"}, {colorName: "Żółty"}, {colorName: "Inny"}]
   };
 };
 export const getters = {
@@ -244,6 +245,9 @@ export const getters = {
   },
   cars: state => {
     return state.cars;
+  },
+  colors: state => {
+    return state.colors;
   }
 };
 export const mutations = {

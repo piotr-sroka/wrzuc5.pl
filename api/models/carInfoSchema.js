@@ -41,6 +41,12 @@ let CarInfoSchema = new Schema({
         type: Number,
         required: "Podaj rok produkcji"
     },
+    color: {
+        type: String
+    },
+    engineCode: {
+        type: String
+    },
     equipment: [{
         type: Object
     }],

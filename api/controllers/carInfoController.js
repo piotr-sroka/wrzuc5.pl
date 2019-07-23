@@ -39,6 +39,8 @@ class CarsInfos {
     const title = req.body.title;
     const description = req.body.description;
     const price = req.body.price;
+    const color = req.body.color;
+    const engineCode = req.body.engineCode;
     const mileage = req.body.mileage;
     const yearOfProd = req.body.yearOfProd;
     const equipment = req.body.equipment;
@@ -52,6 +54,8 @@ class CarsInfos {
       title: title,
       description: description,
       price: price,
+      color: color,
+      engineCode: engineCode,
       mileage: mileage,
       yearOfProd: yearOfProd,
       equipment: equipment,
