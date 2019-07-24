@@ -22,11 +22,11 @@ export default {};
 .search-input {
   padding: 12px;
   font-size: 1.4em;
-  color: #2f4154;
+  color: #1a2229;
   width: 100%;
   border-radius: 6px;
   outline-color: transparent;
-  border: 1px solid #2f4154;
+  border: 1px solid #1a2229;
   padding-right: 40px;
   position: relative;
   transition: all 0.2s linear;
@@ -56,7 +56,7 @@ export default {};
   top: 0;
   bottom: 0;
   margin: auto 0;
-  color: #2f4154;
+  color: #1a2229;
   opacity: 0.7;
   transition: all 0.2s linear;
 }

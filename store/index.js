@@ -227,7 +227,8 @@ export const state = () => {
       {equipmentName: "Zmieniarka CD", visible: "visible"}
     ],
     fuelTypes: [{fuelType: "Benzyna"}, {fuelType: "Benzyna + LPG"}, {fuelType: "Benzyna + CNG"}, {fuelType: "Diesel"}, {fuelType: "Hybryda"}, {fuelType: "Elektryczny"}, {fuelType: "Etanol"}, {fuelType: "Wodór"}],
-    colors: [{colorName: "Beżowy"}, {colorName: "Biały"}, {colorName: "Brązowy"}, {colorName: "Czarny"}, {colorName: "Czerwony"}, {colorName: "Niebieski"}, {colorName: "Srebrny"}, {colorName: "Szary"}, {colorName: "Zielony"}, {colorName: "Złoty"}, {colorName: "Żółty"}, {colorName: "Inny"}]
+    colors: [{colorName: "Beżowy"}, {colorName: "Biały"}, {colorName: "Brązowy"}, {colorName: "Czarny"}, {colorName: "Czerwony"}, {colorName: "Niebieski"}, {colorName: "Srebrny"}, {colorName: "Szary"}, {colorName: "Zielony"}, {colorName: "Złoty"}, {colorName: "Żółty"}, {colorName: "Inny"}],
+    gearboxTypes: [{gearboxType: "Automatyczna hydrauliczna"}, {gearboxType: "Automatyczna bezstopniowa"}, {gearboxType: "Automatyczna dwusprzęgłowa"}, {gearboxType: "Manualna"}, {gearboxType: "Półautomatycza"}]
   };
 };
 export const getters = {
@@ -239,6 +240,9 @@ export const getters = {
   },
   fuelTypes: state => {
     return state.fuelTypes;
+  },
+  gearboxTypes: state => {
+    return state.gearboxTypes;
   },
   user: state => {
     return state.auth.user;

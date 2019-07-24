@@ -8,7 +8,7 @@
           <span class="info-model">{{car.model}}</span>
           <span class="info-version">{{car.version}}</span>
         </h3>
-        <p class="info-title">{{car.title}}</p>
+        <p class="info-title" v-if="car.title">{{car.title}}</p>
         <p class="info-others">
           <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>
           <span class="info-others--item" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>

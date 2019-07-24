@@ -160,13 +160,13 @@ export default {
 .form-input.select {
 	color: #ffffff;
 	text-align: left;
-	-webkit-box-shadow: inset 0 0 0px 9999px #3498db;
-	border: 2px solid #3498db;
+	-webkit-box-shadow: inset 0 0 0px 9999px #2C3E50;
+	border: 2px solid #2C3E50;
 	display: flex;
 	align-items: center;
 }
 .select .dropdown-arrow {
-	border-color: #3498db;
+	border-color: #2C3E50;
 	border-top-color: #ffffff;
 	margin-left: auto;
 }
@@ -178,7 +178,7 @@ export default {
 	max-height: 170px;
 }
 .simplebar-scrollbar:before {
-	background: #3498db;
+	background: #2C3E50;
 }
 .select-items {
 	width: 100%;
@@ -204,11 +204,11 @@ export default {
 	padding: 4px 10px;
 }
 .select-item.hover {
-	background-color: #3498db;
+	background-color: #2C3E50;
 	color: #ffffff;
 }
 .form-input.search {
-	border: 2px solid #3498db;
+	border: 2px solid #2C3E50;
 	font-size: 0.8em;
 	padding: 6px;
 	margin: 10px;

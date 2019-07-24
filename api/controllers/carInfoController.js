@@ -36,12 +36,17 @@ class CarsInfos {
     const model = req.body.model;
     const version = req.body.version;
     const fuel = req.body.fuel;
+    const gearbox = req.body.gearbox;
     const title = req.body.title;
     const description = req.body.description;
     const price = req.body.price;
     const color = req.body.color;
     const engineCode = req.body.engineCode;
     const mileage = req.body.mileage;
+    const power = req.body.power;
+    const capacity = req.body.capacity;
+    const numOfDoors = req.body.numOfDoors;
+    const numOfSeats = req.body.numOfSeats;
     const yearOfProd = req.body.yearOfProd;
     const equipment = req.body.equipment;
     const images = req.body.images;
@@ -51,12 +56,17 @@ class CarsInfos {
       model: model,
       version: version,
       fuel: fuel,
+      gearbox: gearbox,
       title: title,
       description: description,
       price: price,
       color: color,
       engineCode: engineCode,
       mileage: mileage,
+      power: power,
+      capacity: capacity,
+      numOfDoors: numOfDoors,
+      numOfSeats: numOfSeats,
       yearOfProd: yearOfProd,
       equipment: equipment,
       images: images,

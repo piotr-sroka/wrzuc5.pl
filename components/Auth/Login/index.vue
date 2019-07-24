@@ -76,7 +76,7 @@ export default {
   padding-right: 32px;
 }
 .form-input:focus + .form-input-label::before {
-  color: #3498db;
+  color: #2C3E50;
 }
 .form .form-group {
   display: flex;
@@ -103,7 +103,7 @@ export default {
   top: 0;
   bottom: 0;
   margin: auto 0;
-  color: #2f4154;
+  color: #1a2229;
   opacity: 0.7;
   transition: all 0.2s linear;
 }

@@ -19,15 +19,14 @@ let CarInfoSchema = new Schema({
         type: String,
         default: "Wybierz rodzaj paliwa"
     },
+    gearbox: {
+        type: String
+    },
     title: {
-        type: String,
-        minlength: [10, "Tytuł jest zbyt krótki"],
-        maxlength: 40
+        type: String
     },
     description: {
-        type: String,
-        minlength: [10, "Opis jest zbyt krótki"],
-        maxlength: 20000
+        type: String
     },
     price: {
         type: Number,
@@ -46,6 +45,18 @@ let CarInfoSchema = new Schema({
     },
     engineCode: {
         type: String
+    },
+    power: {
+        type: Number
+    },
+    capacity: {
+        type: Number
+    },
+    numOfDoors: {
+        type: Number
+    },
+    numOfSeats: {
+        type: Number
     },
     equipment: [{
         type: Object

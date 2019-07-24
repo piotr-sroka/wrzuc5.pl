@@ -51,9 +51,11 @@ export default {
 				this.canChangeImage = false;
 				setTimeout(() => {
 					this.currentImage = index;
-					this.imageIsChanging = false;
+					setTimeout(() => {
+						this.imageIsChanging = false;						
+					}, 200);
 					this.canChangeImage = true;
-				}, 200);
+				}, 100);
 			}
 		},
 		changeGalleryPreview(e) {
@@ -75,9 +77,11 @@ export default {
 							}
 							break;
 					}
-					this.imageIsChanging = false;
+					setTimeout(() => {
+						this.imageIsChanging = false;						
+					}, 200);
 					this.canChangeImage = true;
-				}, 200);
+				}, 100);
 			}
 		}
 	}
@@ -94,9 +98,9 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: #edeff1;
+	background-color: #ECF0F1;
 	position: relative;
-	height: 480px;
+	height: 580px;
 }
 .gallery-nav {
 	position: absolute;
@@ -126,6 +130,7 @@ export default {
 	opacity: 0;
 	transition: opacity 0.2s linear;
 	color: #34495e;
+	transform: translateY(-50%);
 }
 .gallery-nav--btn:hover::before {
 	opacity: 0.5;

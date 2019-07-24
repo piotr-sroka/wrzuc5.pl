@@ -1,5 +1,5 @@
 <template>
-  <nav class="main-navigation">
+  <nav class="main-navigation sticky" ref="mainNav">
     <nuxt-link class="nav-top-item nav-home" to="/">Wrzuć 5.</nuxt-link>
     <nuxt-link
       class="nav-top-item"
@@ -39,6 +39,7 @@
 </template>
 <script>
 import { directive as onClickaway } from "vue-clickaway";
+import Stickyfill from 'stickyfill';
 
 export default {
   directives: {
@@ -56,13 +57,16 @@ export default {
     },
     hideDropdown: function() {
       this.navTopToggled = false;
-	}
+	  }
+  },
+  mounted() {
+    Stickyfill().add(this.$refs.mainNav);
   }
 };
 </script>
 <style>
 .main-navigation {
-  background-color: #2f4154;
+  background-color: #1a2229;
   display: flex;
   border-radius: 0 0 5px 5px;
 }
@@ -85,7 +89,7 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 .nav-top-item:hover {
-  color: #3498db;
+  color: #2980B9;
 }
 .nav-top-dropdown {
   position: relative;
@@ -99,7 +103,7 @@ export default {
   list-style-type: none;
   text-align: right;
   position: absolute;
-  background-color: #34495e;
+  background-color: #1a2229;
   width: 100%;
   margin-top: 5px;
   border-radius: 5px;
@@ -112,10 +116,10 @@ export default {
   height: 2px;
   margin-left: 4px;
   margin-right: 4px;
-  background-color: #2f4154;
+  background-color: #34495e;
 }
 .dropdown-arrow {
-  border-color: #34495e;
+  border-color: #1a2229;
   border-top-color: #ffffff;
   border-style: solid;
   border-bottom-style: none;
@@ -125,7 +129,7 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 .nav-top-item:hover .dropdown-arrow {
-  border-top-color: #3498db;
+  border-top-color: #2980B9;
 }
 .nav-top-dropdown.toggle .dropdown-arrow {
   transform: rotate(180deg);

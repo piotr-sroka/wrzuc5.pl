@@ -72,16 +72,48 @@
           <div class="form-group">
             <input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title" />
           </div>
-          <span class="info-message form-message-error" v-if="errors.title !=='' ">{{errors.title}}</span>
 
           <div class="form-group">
             <input class="form-input" type="text" placeholder="Opis" v-model="description" />
           </div>
-          <span class="info-message form-message-error" v-if="errors.description !=='' ">{{errors.description}}</span>
 
           <div class="form-group">
             <input class="form-input" type="text" placeholder="Kod silnika" v-model="engineCode" />
           </div>
+
+          <div class="form-group">
+            <input class="form-input capacity-input" type="text" placeholder="Pojemność skokowa" v-model="capacity" id="capacity" />
+            <label for="capacity" class="capacity-input--label"></label>
+          </div>
+
+          <div class="form-group">
+            <input class="form-input power-input" type="text" placeholder="Moc" v-model="power" id="power" />
+            <label for="power" class="power-input--label"></label>
+          </div>
+					
+					<app-select-with-search-input
+            v-if="doorsNum.length && isReRendered"
+            v-model="numOfDoors"
+            :selectTitle="numOfDoors"
+            :selectItems="doorsNum"
+            itemToShow="door"
+          ></app-select-with-search-input>
+					
+					<app-select-with-search-input
+            v-if="seatsNum.length && isReRendered"
+            v-model="numOfSeats"
+            :selectTitle="numOfSeats"
+            :selectItems="seatsNum"
+            itemToShow="seat"
+          ></app-select-with-search-input>
+					
+					<app-select-with-search-input
+            v-if="gearboxTypes.length && isReRendered"
+            v-model="gearbox"
+            :selectTitle="gearbox"
+            :selectItems="gearboxTypes"
+            itemToShow="gearboxType"
+          ></app-select-with-search-input>
 
           <div class="form-group">
             <input
@@ -161,14 +193,21 @@ export default {
 			model: "Model samochodu",
       version: "Wersja",
       yearOfProd: "Rok produkcji",
-      fuel: "Rodzaj paliwa",
 			productionsYears: [],
+      fuel: "Rodzaj paliwa",
+      gearbox: "Skrzynia biegów",
 			mileage: "",
 			vin: "",
 			engineCode: "",
+			capacity: "",
+			power: "",
 			title: "",
 			description: "",
 			price: "",
+			numOfDoors: "Liczba drzwi",
+			doors: [],
+			numOfSeats: "Liczba miejsc",
+			seats: [],
 			color: "Kolor",
 			carEquipment: [],
 			errors: {
@@ -176,8 +215,6 @@ export default {
 				model: "",
         version: "",
         fuel: "",
-				title: "",
-				description: "",
         price: "",
         yearOfProd: "",
 				mileage: "",
@@ -190,7 +227,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["brands", "equipment", "fuelTypes", "colors", "user"]),
+		...mapGetters(["brands", "equipment", "fuelTypes", "gearboxTypes", "colors", "user"]),
 		models() {
 			let brandModels = [];
 			if (this.brands.filter(brand => brand.brand === this.brand)[0]) {
@@ -207,6 +244,12 @@ export default {
     },
     yearsOfProd() {
       return this.productionsYears;
+    },
+    doorsNum() {
+      return this.doors;
+    },
+    seatsNum() {
+      return this.seats;
     }
 	},
 	methods: {
@@ -226,11 +269,15 @@ export default {
 				model: this.model === "Model samochodu" ? "" : this.model,
 				version: this.version === "Wersja" ? "" : this.version,
 				fuel: this.fuel === "Rodzaj paliwa" ? "" : this.fuel,
+				gearbox: this.gearbox === "Skrzynia biegów" ? "" : this.gearbox,
 				title: this.title,
 				description: this.description,
 				engineCode: this.engineCode,
 				price: this.price,
 				mileage: this.mileage,
+				power: this.power,
+				numOfDoors: this.doors === "Liczba drzwi" ? "" : this.doors,
+				numOfSeats: this.seats === "Liczba miejsc" ? "" : this.seats,
 				yearOfProd: this.yearOfProd === "Rok produkcji" ? "" : this.yearOfProd,
 				color: this.color === "Kolor" ? "" : this.color,
 				equipment: this.carEquipment,
@@ -247,8 +294,6 @@ export default {
 						this.errors.model = response.data.errors.model ? response.data.errors.model.message : "";
 						this.errors.version = response.data.errors.version ? response.data.errors.version.message : "";
 						this.errors.fuel = response.data.errors.fuel ? response.data.errors.fuel.message : "";
-						this.errors.title = response.data.errors.title ? response.data.errors.title.message : "";
-						this.errors.description = response.data.errors.description ? response.data.errors.description.message : "";
 						this.errors.price = response.data.errors.price ? response.data.errors.price.message : "";
 						this.errors.mileage = response.data.errors.mileage ? response.data.errors.mileage.message : "";
 						this.errors.yearOfProd = response.data.errors.yearOfProd ? response.data.errors.yearOfProd.message : "";
@@ -386,7 +431,11 @@ export default {
     let currentYear = new Date().getFullYear();
     for (let i = currentYear; i > 1900; i--) {
       this.productionsYears.push({yearOfProd: i});
-    }
+		}
+		for (let i = 0; i < 10; i++) {
+			this.doorsNum.push({door: (i+1)});
+			this.seatsNum.push({seat: (i+1)});
+		}
 	}
 };
 </script>
@@ -433,25 +482,26 @@ export default {
 }
 .drop-input--label::before {
 	font-family: "Flat-UI-Pro-Icons";
-	content: "\e608";
+	content: "\e645";
 	display: inline-block;
 	width: 40px;
 	height: 40px;
 	font-size: 20px;
 	line-height: 40px;
 	vertical-align: middle;
-	color: #2f4154;
+	color: #1a2229;
 	opacity: 0.7;
 	text-align: center;
 }
-.price-input, .mileage-input {
+.price-input, .mileage-input, .capacity-input, .power-input {
 	padding-right: 40px;
 	position: relative;
+	line-height: 22px;
 }
-.price-input--label, .mileage-input--label {
+.price-input--label, .mileage-input--label, .capacity-input--label, .power-input--label {
 	position: relative;
 }
-.price-input--label::before, .mileage-input--label::before {
+.price-input--label::before, .mileage-input--label::before, .capacity-input--label::before, .power-input--label::before {
 	content: "PLN";
 	display: inline-block;
 	position: absolute;
@@ -465,12 +515,18 @@ export default {
 	top: 0;
 	bottom: 0;
 	margin: auto 0;
-	color: #2f4154;
+	color: #1a2229;
 	opacity: 0.7;
 	transition: all 0.2s linear;
 }
 .mileage-input--label::before {
   content: "km"
+}
+.capacity-input--label::before {
+	content: "cm\00B3";
+}
+.power-input--label::before {
+	content: "KM";
 }
 </style>
 

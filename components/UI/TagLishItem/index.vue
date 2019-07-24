@@ -37,7 +37,7 @@ export default {
   outline-color: transparent;
   top: 0;
 	right: 0;
-	z-index: 999;
+	/* z-index: 999; */
 	background-color: transparent;
 	padding: 0;
 	cursor: pointer;
