@@ -22,6 +22,9 @@ let CarInfoSchema = new Schema({
     gearbox: {
         type: String
     },
+    drive: {
+        type: String
+    },
     title: {
         type: String
     },
@@ -39,6 +42,39 @@ let CarInfoSchema = new Schema({
     yearOfProd: {
         type: Number,
         required: "Podaj rok produkcji"
+    },
+    countryOfProd: {
+        type: String
+    },
+    firstRegistration: {
+        type: Date
+    },
+    registerInPoland: {
+        type: Boolean
+    },
+    firstOwner: {
+        type: Boolean
+    },
+    damaged: {
+        type: Boolean
+    },
+    dpf: {
+        type: Boolean
+    },
+    noAccidents: {
+        type: Boolean
+    },
+    servisedInAso: {
+        type: Boolean
+    },
+    registerAsAntique: {
+        type: Boolean
+    },
+    tunned: {
+        type: Boolean
+    },
+    homologated: {
+        type: Boolean
     },
     color: {
         type: String

@@ -1,201 +1,160 @@
 <template>
   <section class="container">
-    <form class="form">
-      <div class="form-group">
-        <div class="form-group--column info-text">
-          <app-select-with-search-input
-            v-model="brand"
-            :selectTitle="brand"
-            :selectItems="brands"
-            itemToShow="brand"
-          ></app-select-with-search-input>
-          <span class="info-message form-message-error" v-if="errors.brand !=='' ">{{errors.brand}}</span>
+		<form class="form">
+			<div class="form-group info">
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="brands.length && isReRendered" v-model="brand" :selectTitle="brand" :selectItems="brands" itemToShow="brand"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.brand !=='' ">{{ errors.brand }}</span>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="brand != 'Marka samochodu' && models.length && isReRendered" v-model="model" :selectTitle="model" :selectItems="models" itemToShow="model"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.model !=='' && brand != 'Marka samochodu'">{{ errors.model }}</span>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="versions.length && isReRendered" v-model="version" :selectTitle="version" :selectItems="versions" itemToShow="version"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.version !=='' && versions.length ">{{ errors.version }}</span>
+				</div>
+			</div>
+			<div class="form-group info">
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-model="yearOfProd" :selectTitle="yearOfProd" :selectItems="productionsYears" itemToShow="yearOfProd"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.yearOfProd !== ''">{{ errors.yearOfProd }}</span>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input mileage-input" type="text" placeholder="Przebieg" v-model="mileage" id="mileage" />
+						<label for="mileage" class="mileage-input--label"></label>
+					</div>
+					<span class="info-message form-message-error" v-if="errors.mileage !=='' ">{{ errors.mileage }}</span>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="fuelTypes.length && isReRendered" v-model="fuel" :selectTitle="fuel" :selectItems="fuelTypes" itemToShow="fuelType"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.fuel !== ''">{{ errors.fuel }}</span>
+				</div>
+			</div>
+			<div class="form-group info">
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input price-input" type="text" placeholder="Cena" v-model="price" id="price" />
+						<label for="price" class="price-input--label"></label>
+					</div>
+					<span class="info-message form-message-error" v-if="errors.price !=='' ">{{ errors.price }}</span>
+				</div>
+			</div>
+			<div class="form-group info">
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input" type="text" placeholder="VIN" v-model="vin" />
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title" />
+					</div>
+				</div>
+				<div class="info-item full-width">
+					<div class="form-group">
+							<textarea class="form-input form-textarea" type="text" placeholder="Dodatkowy opis" v-model="description"></textarea>
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input" type="text" placeholder="Kod silnika" v-model="engineCode" />
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input capacity-input" type="text" placeholder="Pojemność skokowa" v-model="capacity" id="capacity" />
+						<label for="capacity" class="capacity-input--label"></label>
+					</div>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input power-input" type="text" placeholder="Moc" v-model="power" id="power" />
+						<label for="power" class="power-input--label"></label>
+					</div>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="gearboxTypes.length && isReRendered" v-model="gearbox" :selectTitle="gearbox" :selectItems="gearboxTypes" itemToShow="gearboxType"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="driveTypes.length && isReRendered" v-model="drive" :selectTitle="drive" :selectItems="driveTypes" itemToShow="driveType"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="countriesOfProd.length && isReRendered" v-model="countryOfProd" :selectTitle="countryOfProd" :selectItems="countriesOfProd" itemToShow="countryName"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="doors.length && isReRendered" v-model="numOfDoors" :selectTitle="numOfDoors" :selectItems="doors" itemToShow="numOfDoors"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="seats.length && isReRendered" v-model="numOfSeats" :selectTitle="numOfSeats" :selectItems="seats" itemToShow="numOfSeats"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-if="colors.length && isReRendered" v-model="color" :selectTitle="color" :selectItems="colors" itemToShow="colorName"></app-select-with-search-input>
+				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<no-ssr>
+							<date-picker :lang="lang" v-model="firstRegistration"></date-picker>
+						</no-ssr>
+					</div>
+				</div>
+			</div>				
+			<div class="form-group info">
+				<div class="form-group info-item" v-for="(info, index) in additionalInfo" :key="index">
+					<app-check-box :itemTitle="info.label" v-model="info.value"></app-check-box>
+				</div>
+			</div>
+			<div class="form-group info">
+				<div class="info-item">
+					<app-select-with-search-input :autoclose="false" v-if="equipment.length && isReRendered" selectTitle="Wyposażenie" :selectItems="equipment" itemToShow="equipmentName" @input="onEquipmentInput"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.equipment !=='' && equipment.length ">{{ errors.equipment }}</span>
+				</div>
+				<div v-if="carEquipment.length" class="info-item full-width">
+					<app-tag-lish-item v-for="(item, index) in carEquipment" :key="index" :item="item" @removeTagLishItem="onTagLishItemRemoveClick"></app-tag-lish-item>
+				</div>
+			</div>
 
-          <app-select-with-search-input
-            v-if="brand != 'Marka samochodu' && models.length && isReRendered"
-            v-model="model"
-            :selectTitle="model"
-            :selectItems="models"
-            itemToShow="model"
-          ></app-select-with-search-input>
-          <span
-            class="info-message form-message-error"
-            v-if="errors.model !=='' && brand != 'Marka samochodu'"
-          >{{errors.model}}</span>
-
-          <app-select-with-search-input
-            v-if="versions.length && isReRendered"
-            v-model="version"
-            :selectTitle="version"
-            :selectItems="versions"
-            itemToShow="version"
-          ></app-select-with-search-input>
-          <span
-            class="info-message form-message-error"
-            v-if="errors.version !=='' && versions.length "
-          >{{errors.version}}</span>
-
-          <app-select-with-search-input
-            v-if="productionsYears.length && isReRendered"
-            v-model="yearOfProd"
-            :selectTitle="yearOfProd"
-            :selectItems="productionsYears"
-            itemToShow="yearOfProd"
-          ></app-select-with-search-input>
-          <span class="info-message form-message-error" v-if="errors.yearOfProd !== ''">{{errors.yearOfProd}}</span>
-
-          <div class="form-group">
-            <input
-              class="form-input mileage-input"
-              type="text"
-              placeholder="Przebieg"
-              v-model="mileage"
-              id="mileage"
-            />
-            <label for="mileage" class="mileage-input--label"></label>
-          </div>
-          <span class="info-message form-message-error" v-if="errors.mileage !=='' ">{{errors.mileage}}</span>
-
-          <div class="form-group">
-            <input class="form-input" type="text" placeholder="VIN" v-model="vin" />
-          </div>
-          
-          <app-select-with-search-input
-            v-if="fuelTypes.length && isReRendered"
-            v-model="fuel"
-            :selectTitle="fuel"
-            :selectItems="fuelTypes"
-            itemToShow="fuelType"
-          ></app-select-with-search-input>
-          <span class="info-message form-message-error" v-if="errors.fuel !== ''">{{errors.fuel}}</span>
-
-          <div class="form-group">
-            <input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title" />
-          </div>
-
-          <div class="form-group">
-            <input class="form-input" type="text" placeholder="Opis" v-model="description" />
-          </div>
-
-          <div class="form-group">
-            <input class="form-input" type="text" placeholder="Kod silnika" v-model="engineCode" />
-          </div>
-
-          <div class="form-group">
-            <input class="form-input capacity-input" type="text" placeholder="Pojemność skokowa" v-model="capacity" id="capacity" />
-            <label for="capacity" class="capacity-input--label"></label>
-          </div>
-
-          <div class="form-group">
-            <input class="form-input power-input" type="text" placeholder="Moc" v-model="power" id="power" />
-            <label for="power" class="power-input--label"></label>
-          </div>
-					
-					<app-select-with-search-input
-            v-if="doorsNum.length && isReRendered"
-            v-model="numOfDoors"
-            :selectTitle="numOfDoors"
-            :selectItems="doorsNum"
-            itemToShow="door"
-          ></app-select-with-search-input>
-					
-					<app-select-with-search-input
-            v-if="seatsNum.length && isReRendered"
-            v-model="numOfSeats"
-            :selectTitle="numOfSeats"
-            :selectItems="seatsNum"
-            itemToShow="seat"
-          ></app-select-with-search-input>
-					
-					<app-select-with-search-input
-            v-if="gearboxTypes.length && isReRendered"
-            v-model="gearbox"
-            :selectTitle="gearbox"
-            :selectItems="gearboxTypes"
-            itemToShow="gearboxType"
-          ></app-select-with-search-input>
-
-          <div class="form-group">
-            <input
-              class="form-input price-input"
-              type="text"
-              placeholder="Cena"
-              v-model="price"
-              id="price"
-            />
-            <label for="price" class="price-input--label"></label>
-          </div>
-          <span class="info-message form-message-error" v-if="errors.price !=='' ">{{errors.price}}</span>
-
-          <app-select-with-search-input
-            v-if="colors.length && isReRendered"
-						v-model="color"
-            :selectTitle="color"
-            :selectItems="colors"
-            itemToShow="colorName"
-          ></app-select-with-search-input>
-          <span class="info-message form-message-error" v-if="errors.color !=='' && colors.length ">{{errors.color}}</span>
-
-          <app-select-with-search-input
-            v-if="equipment.length && isReRendered"
-            selectTitle="Wyposażenie"
-            :selectItems="equipment"
-            itemToShow="equipmentName"
-            @input="onEquipmentInput"
-          ></app-select-with-search-input>
-          <span class="info-message form-message-error" v-if="errors.equipment !=='' && equipment.length ">{{errors.equipment}}</span>
-          <div v-if="carEquipment.length">
-            <app-tag-lish-item v-for="(item, index) in carEquipment" :key="index" :item="item" @removeTagLishItem="onTagLishItemRemoveClick"></app-tag-lish-item>
-          </div>
-        </div>
-
-        <div class="form-group--column info-files">
-          <div
-            class="drop-files-area"
-            :class="isDragOver ? 'dragOver' : ''"
-            @dragover.prevent.stop="onDragOver"
-            @dragleave.prevent.stop="onDragLeave"
-            @drop.prevent.stop="onDrop"
-          >
-            <input id="drop-input" class="drop-input" type="file" @change="onFileSelect" multiple accept="image/x-png, image/jpeg, image/png" />
-            <label class="drop-input--label" for="drop-input">Dodaj zdjęcia</label>
-          </div>
-          <div class="images-thumbs">
-            <app-image-thumb
-              v-for="(image, index) in images"
-              :key="index"
-              :image="image.thumb"
-              @click.native="removeImage(image)"
-            ></app-image-thumb>
-          </div>
-        </div>
-      </div>
-      <button class="form-button-submit" @click.prevent="addCar">Dodaj ogłoszenie</button>
-    </form>
-  </section>
+			<div class="form-group info">
+				<div class="drop-files-area" :class="isDragOver ? 'dragOver' : ''" @dragover.prevent.stop="onDragOver" @dragleave.prevent.stop="onDragLeave" @drop.prevent.stop="onDrop">
+					<input id="drop-input" class="drop-input" type="file" @change="onFileSelect" multiple accept="image/x-png, image/jpeg, image/png" />
+					<label class="drop-input--label" for="drop-input">Dodaj zdjęcia</label>
+				</div>
+				<div class="images-thumbs">
+					<app-image-thumb v-for="(image, index) in images" :key="index" :image="image.thumb" @click.native="removeImage(image)"></app-image-thumb>
+				</div>
+			</div>
+			<button class="form-button-submit" @click.prevent="addCar">Dodaj ogłoszenie</button>
+		</form>
+	</section>
 </template>
 <script>
 import {mapGetters} from "vuex";
 import AppImageThumb from "@/components/Cars/AddCar/ImageThumb";
 import AppSelectWithSearchInput from "@/components/UI/SelectWithSearchInput";
 import AppTagLishItem from "@/components/UI/TagLishItem";
+import AppCheckBox from "@/components/UI/CheckBox";
 import path from "path";
+import OverlayScrollbars from "os-vue/overlay-scrollbars";
 
 export default {
 	components: {
 		AppImageThumb,
 		AppSelectWithSearchInput,
-		AppTagLishItem
+		AppTagLishItem,
+		AppCheckBox,
+		OverlayScrollbars
 	},
 	data() {
 		return {
 			brand: "Marka samochodu",
 			model: "Model samochodu",
-      version: "Wersja",
-      yearOfProd: "Rok produkcji",
+			version: "Wersja",
+			yearOfProd: "Rok produkcji",
 			productionsYears: [],
-      fuel: "Rodzaj paliwa",
-      gearbox: "Skrzynia biegów",
+			fuel: "Rodzaj paliwa",
+			gearbox: "Skrzynia biegów",
+			drive: "Napęd",
 			mileage: "",
 			vin: "",
 			engineCode: "",
@@ -204,6 +163,46 @@ export default {
 			title: "",
 			description: "",
 			price: "",
+			countryOfProd: "Kraj pochodzenia",
+			firstRegistration: "",
+			additionalInfo: {
+				registerInPoland: {
+					label: "Zarejestrowany w Polsce",
+					value: false
+				},
+				firstOwner: {
+					label: "Pierwszy właściciel",
+					value: false
+				},
+				damaged: {
+					label: "Uszkodzony",
+					value: false
+				},
+				dpf: {
+					label: "Filtr cząstek stałych (DPF)",
+					value: false
+				},
+				noAccidents: {
+					label: "Bezwypadkowy",
+					value: false
+				},
+				servisedInAso: {
+					label: "Serwisowany w ASO",
+					value: false
+				},
+				registerAsAntique: {
+					label: "Zarejestrowany jako zabytek",
+					value: false
+				},
+				tunned: {
+					label: "Tuningowany",
+					value: false
+				},
+				homologated: {
+					label: "Posiada homologację",
+					value: false
+				}
+			},
 			numOfDoors: "Liczba drzwi",
 			doors: [],
 			numOfSeats: "Liczba miejsc",
@@ -213,21 +212,30 @@ export default {
 			errors: {
 				brand: "",
 				model: "",
-        version: "",
-        fuel: "",
-        price: "",
-        yearOfProd: "",
+				version: "",
+				fuel: "",
+				price: "",
+				yearOfProd: "",
 				mileage: "",
 				equipment: ""
 			},
 			images: [],
 			isDragOver: false,
 			MAX_IMAGE_DIMENSION: 1024,
-			isReRendered: true
+			isReRendered: true,
+			lang: {
+				days: ["Nd", "Pn", "Wt", "Śr", "Czw", "Pt", "Sb"],
+				pickers: ["następne 7 dni", "następne 30 dni", "poprzednie 7 dni", "poprzenie 30 dni"],
+				months: ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"],
+				placeholder: {
+					date: "Data pierwszej rejestracji",
+					dateRange: "Wybierz przedział czasowy"
+				}
+			}
 		};
 	},
 	computed: {
-		...mapGetters(["brands", "equipment", "fuelTypes", "gearboxTypes", "colors", "user"]),
+		...mapGetters(["brands", "equipment", "fuelTypes", "gearboxTypes", "driveTypes", "countriesOfProd", "colors", "user"]),
 		models() {
 			let brandModels = [];
 			if (this.brands.filter(brand => brand.brand === this.brand)[0]) {
@@ -241,16 +249,7 @@ export default {
 				return selectedBrand.versions[this.model];
 			}
 			return [];
-    },
-    yearsOfProd() {
-      return this.productionsYears;
-    },
-    doorsNum() {
-      return this.doors;
-    },
-    seatsNum() {
-      return this.seats;
-    }
+		}
 	},
 	methods: {
 		onDragOver() {
@@ -270,14 +269,26 @@ export default {
 				version: this.version === "Wersja" ? "" : this.version,
 				fuel: this.fuel === "Rodzaj paliwa" ? "" : this.fuel,
 				gearbox: this.gearbox === "Skrzynia biegów" ? "" : this.gearbox,
+				countryOfProd: this.countryOfProd === "Kraj pochodzenia" ? "" : this.countryOfProd,
+				firstRegistration: this.firstRegistration,
+				registerInPoland: this.additionalInfo.registerInPoland.value,
+				firstOwner: this.additionalInfo.firstOwner.value,
+				damaged: this.additionalInfo.damaged.value,
+				dpf: this.additionalInfo.dpf.value,
+				noAccidents: this.additionalInfo.noAccidents.value,
+				servisedInAso: this.additionalInfo.servisedInAso.value,
+				registerAsAntique: this.additionalInfo.registerAsAntique.value,
+				tunned: this.additionalInfo.tunned.value,
+				homologated: this.additionalInfo.homologated.value,
+				drive: this.drive === "Napęd" ? "" : this.drive,
 				title: this.title,
 				description: this.description,
 				engineCode: this.engineCode,
 				price: this.price,
 				mileage: this.mileage,
 				power: this.power,
-				numOfDoors: this.doors === "Liczba drzwi" ? "" : this.doors,
-				numOfSeats: this.seats === "Liczba miejsc" ? "" : this.seats,
+				numOfDoors: this.numOfDoors === "Liczba drzwi" ? "" : this.numOfDoors,
+				numOfSeats: this.numOfSeats === "Liczba miejsc" ? "" : this.numOfSeats,
 				yearOfProd: this.yearOfProd === "Rok produkcji" ? "" : this.yearOfProd,
 				color: this.color === "Kolor" ? "" : this.color,
 				equipment: this.carEquipment,
@@ -423,31 +434,45 @@ export default {
 			if (data === "model") {
 				this.version = "Wersja";
 			}
-			this.isReRendered = false;
-			this.$nextTick(() => {
-				this.isReRendered = true;
-			});
-    });
-    let currentYear = new Date().getFullYear();
-    for (let i = currentYear; i > 1900; i--) {
-      this.productionsYears.push({yearOfProd: i});
+			if (data === "brand" || data === "model" || data === "fuel") {
+				this.isReRendered = false;
+				this.$nextTick(() => {
+					this.isReRendered = true;
+				});
+			}
+		});
+		let currentYear = new Date().getFullYear();
+		for (let i = currentYear; i > 1900; i--) {
+			this.productionsYears.push({yearOfProd: i});
 		}
 		for (let i = 0; i < 10; i++) {
-			this.doorsNum.push({door: (i+1)});
-			this.seatsNum.push({seat: (i+1)});
+			this.doors.push({numOfDoors: i + 1});
+			this.seats.push({numOfSeats: i + 1});
 		}
 	}
 };
 </script>
 <style scoped>
 .container {
-	padding: 50px;
 	margin: 0 auto;
 	max-width: 900px;
 }
 .form .form-group {
 	display: flex;
 	justify-content: space-between;
+}
+.form-group.info {
+	flex-wrap: wrap;
+}
+.info-item {
+	width: 30%;
+}
+.info-item.full-width {
+	width: 100%;
+}
+.form-textarea {
+	height: 220px;
+	resize: none;
 }
 .form .form-group .form-group--column {
 	flex: 1;
@@ -457,15 +482,19 @@ export default {
 }
 .drop-files-area {
 	background-color: #bdc3c7;
+	color: #2C3E50;
 	width: 100%;
 	height: 80px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 6px;
+	margin-top: 12px;
+	transition: all .2s linear;
 }
-.drop-files-area.dragOver {
-	opacity: 0.6;
+.drop-files-area.dragOver, .drop-files-area:hover {
+	background-color: #2C3E50;
+	color: #edeff1;
 }
 .drop-input {
 	position: absolute;
@@ -484,24 +513,36 @@ export default {
 	font-family: "Flat-UI-Pro-Icons";
 	content: "\e645";
 	display: inline-block;
-	width: 40px;
-	height: 40px;
-	font-size: 20px;
-	line-height: 40px;
+	width: 60px;
+	height: 60px;
+	font-size: 40px;
+	line-height: 60px;
 	vertical-align: middle;
-	color: #1a2229;
+	color: #2C3E50;
 	opacity: 0.7;
 	text-align: center;
+	transition: all .2s linear;
 }
-.price-input, .mileage-input, .capacity-input, .power-input {
+.drop-files-area.dragOver .drop-input--label::before, .drop-files-area:hover .drop-input--label::before {
+	color: #edeff1;
+}
+.price-input,
+.mileage-input,
+.capacity-input,
+.power-input {
 	padding-right: 40px;
 	position: relative;
-	line-height: 22px;
 }
-.price-input--label, .mileage-input--label, .capacity-input--label, .power-input--label {
+.price-input--label,
+.mileage-input--label,
+.capacity-input--label,
+.power-input--label {
 	position: relative;
 }
-.price-input--label::before, .mileage-input--label::before, .capacity-input--label::before, .power-input--label::before {
+.price-input--label::before,
+.mileage-input--label::before,
+.capacity-input--label::before,
+.power-input--label::before {
 	content: "PLN";
 	display: inline-block;
 	position: absolute;
@@ -520,13 +561,26 @@ export default {
 	transition: all 0.2s linear;
 }
 .mileage-input--label::before {
-  content: "km"
+	content: "km";
 }
 .capacity-input--label::before {
 	content: "cm\00B3";
 }
 .power-input--label::before {
 	content: "KM";
+}
+.mx-datepicker {
+	font: inherit;
+	width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+	.form {
+		padding: 5px;
+	}
+	.info-item {
+		width: 100%;
+	}	
 }
 </style>
 

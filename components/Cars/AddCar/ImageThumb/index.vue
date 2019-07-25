@@ -11,13 +11,16 @@ export default {
 </script>
 <style>
 .thumb-container {
-	position: relative;
-	width: 90px;
-	height: 90px;
+  position: relative;
+  width: 10%;
+  max-width: 10%;
+  min-width: 90px;
 }
 .images-thumbs {
+  width: 100%;
 	display: flex;
 	flex-wrap: wrap;
+  justify-content: flex-start;
 }
 .thumb {
 	width: 80px;
@@ -42,6 +45,11 @@ export default {
   top: 0;
   left: 0;
   cursor: pointer;
+}
+@media screen and (max-width:600px) {
+    .images-thumbs {
+      justify-content: space-between;
+    }
 }
 </style>
 

@@ -23,7 +23,7 @@ export default {
 	border-radius: 6px;
 	display: inline-block;
 	margin-right: 8px;
-	margin-bottom: 8px;
+	margin-top: 8px;
 	font-size: 0.9em;
 	position: relative;
 	transition: all 0.2s linear;

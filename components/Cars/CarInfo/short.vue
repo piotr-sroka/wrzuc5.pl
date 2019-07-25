@@ -3,8 +3,8 @@
     <div class="car-info">
       <nuxt-link class="car-info--link" :to="'/cars/' + mycar._id">
         <img class="car-thumb" :src="mycar.images[0].thumb.src" alt="" v-if="mycar.images.length">
-        <span class="car-title">{{mycar.title}}</span>
         <span class="car-brand">{{mycar.brand}} {{mycar.model}}</span>
+        <span class="car-title">{{mycar.title}}</span>
       </nuxt-link>
     </div>
     <div class="action-buttons">
@@ -29,7 +29,15 @@ export default {
 				});
 		},
 		editCar() {
-			console.log("edit");
+      this.$axios
+				.get("/api/cars/edit/" + this.mycar._id)
+				.then(response => {
+          console.log(response);
+					// this.$router.go();
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		}
 	}
 };
@@ -41,7 +49,11 @@ export default {
 	background-color: #eff0f2;
 	max-width: 240px;
   border-radius: 6px;
-  margin: 0 20px;
+  margin: 0 10px;
+  transition: background-color .2s linear;
+}
+.car:hover {
+  background-color: rgba(44, 62, 80, .1);
 }
 .car-info .car-info--link {
   display: flex;
@@ -49,27 +61,28 @@ export default {
   align-items: center;
 }
 .car-info {
-  font-size: 1.2em;
+  font-size: .8em;
   color: #34495e;
 }
 .car-info--link {
   color: #34495e;
 }
 .car-title, .car-brand {
-  padding: 18px 12px 0 12px;
+  padding: 12px 8px 0 8px;
 }
 .car-title {
-  font-weight: bold;
   max-width: 100%;
+  height: 34px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
 .car-brand {
-  font-size: .8em;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 .action-buttons {
-  margin-top: 32px;
+  margin-top: 22px;
   display: flex;
   justify-content: space-between;
 }

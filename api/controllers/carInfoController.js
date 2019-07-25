@@ -37,6 +37,7 @@ class CarsInfos {
     const version = req.body.version;
     const fuel = req.body.fuel;
     const gearbox = req.body.gearbox;
+    const drive = req.body.drive;
     const title = req.body.title;
     const description = req.body.description;
     const price = req.body.price;
@@ -51,12 +52,24 @@ class CarsInfos {
     const equipment = req.body.equipment;
     const images = req.body.images;
     const createdBy = req.body.user;
+    const countryOfProd = req.body.countryOfProd;
+    const firstRegistration = req.body.firstRegistration;
+    const registerInPoland = req.body.registerInPoland;
+    const firstOwner = req.body.firstOwner;
+    const damaged = req.body.damaged;
+    const dpf = req.body.dpf;
+    const noAccidents = req.body.noAccidents;
+    const servisedInAso = req.body.servisedInAso;
+    const registerAsAntique = req.body.registerAsAntique;
+    const tunned = req.body.tunned;
+    const homologated = req.body.homologated;
     const newCar = new CarInfo({
       brand: brand,
       model: model,
       version: version,
       fuel: fuel,
       gearbox: gearbox,
+      drive: drive,
       title: title,
       description: description,
       price: price,
@@ -68,6 +81,17 @@ class CarsInfos {
       numOfDoors: numOfDoors,
       numOfSeats: numOfSeats,
       yearOfProd: yearOfProd,
+      countryOfProd: countryOfProd,
+      firstRegistration: firstRegistration,
+      registerInPoland: registerInPoland,
+      firstOwner: firstOwner,
+      damaged: damaged,
+      dpf: dpf,
+      noAccidents: noAccidents,
+      servisedInAso: servisedInAso,
+      registerAsAntique: registerAsAntique,
+      tunned: tunned,
+      homologated: homologated,
       equipment: equipment,
       images: images,
       createdBy: createdBy
@@ -96,7 +120,7 @@ class CarsInfos {
         }
         let carToRemove = new CarInfo(result);
         carToRemove
-          .updateOne({isDeleted:true})
+          .updateOne({isDeleted: true})
           // .remove()
           .then(result => {
             res.status(200).send("Car removed");
@@ -104,6 +128,25 @@ class CarsInfos {
           .catch(err => {
             console.log(err);
           });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  editCar(req, res) {
+    if (!req.headers.cookie) {
+      return;
+    }
+    let token = req.headers.cookie
+      .split(";")
+      .find(c => c.trim().startsWith("jwt="))
+      .split("=")[1];
+    CarInfo.findById(req.params.id)
+      .then(result => {
+        if (jwt.decode(token).id.toString() !== result.createdBy.toString()) {
+          return;
+        }
+        console.log(result);
       })
       .catch(err => {
         console.log(err);

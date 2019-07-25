@@ -10,14 +10,14 @@ module.exports = {
    */
   head: {
     title: "wrzuc5.pl",
-    meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: pkg.description }],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    meta: [{charset: "utf-8"}, {name: "viewport", content: "width=device-width, initial-scale=1"}, {hid: "description", name: "description", content: pkg.description}],
+    link: [{rel: "icon", type: "image/x-icon", href: "/favicon.ico"}]
   },
 
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#3498db"},
+  loading: {color: "#3498db"},
 
   /*
    ** Global CSS
@@ -27,7 +27,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: [{src: "~/plugins/datepicker", ssr: false}],
 
   /*
    ** Nuxt.js modules

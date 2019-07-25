@@ -35,7 +35,7 @@ import "simplebar/dist/simplebar.css";
 import {directive as onClickaway} from "vue-clickaway";
 
 export default {
-	props: ["selectTitle", "selectItems", "itemToShow"],
+	props: ["selectTitle", "selectItems", "itemToShow", "autoclose"],
 	directives: {
 		onClickaway: onClickaway
 	},
@@ -69,7 +69,7 @@ export default {
 			this.$root.$emit("selectChanged", this.itemToShow);
 			this.$emit("input", value, this.selectTitle);
 			this.findItems();
-			setTimeout(this.hideDropdown, 50);
+			if (this.autoclose) setTimeout(this.hideDropdown, 50);
 		},
 		findItems(e) {
 			if (!e || !e.target.value.length) {
@@ -164,6 +164,7 @@ export default {
 	border: 2px solid #2C3E50;
 	display: flex;
 	align-items: center;
+	cursor: pointer;
 }
 .select .dropdown-arrow {
 	border-color: #2C3E50;
@@ -187,12 +188,13 @@ export default {
 	position: absolute;
 	background-color: #ffffff;
 	border-radius: 6px;
+	border: 1px solid #BDC3C7;
 	transition: all 0.2s linear;
 	box-sizing: border-box;
 	pointer-events: none;
 	padding-bottom: 10px;
 	z-index: 999;
-	margin-top: 50px;
+	margin-top: 46px;
 }
 .select.opened + .select-items {
 	visibility: visible;

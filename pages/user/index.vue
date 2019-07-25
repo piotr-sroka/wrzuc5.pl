@@ -44,7 +44,7 @@ export default {
 .cars-list {
 	padding: 40px 0;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	flex-wrap: wrap;
 }
 </style>

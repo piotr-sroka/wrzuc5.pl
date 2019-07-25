@@ -15,6 +15,7 @@ router.post("/auth/login", users.login_user);
 router.get("/cars/", carsInfos.loadAllCars);
 router.get("/cars/:id", carsInfos.loadCar);
 router.delete("/cars/:id", carsInfos.removeCar);
+router.get("/cars/edit/:id", carsInfos.editCar);
 router.post("/cars/", carsInfos.loadMyCars);
 router.post("/cars/add-new-car/", carsInfos.addCar);
 
