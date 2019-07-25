@@ -3,20 +3,21 @@
     <img class="thumb" :src="car.images[0].thumb.src" alt />
     <div class="info">
       <div class="info-group group-left">
-        <h3>
+        <h3 class="info-header">
           <span class="info-brand">{{car.brand}}</span>
           <span class="info-model">{{car.model}}</span>
-          <span class="info-version">{{car.version}}</span>
+          <span class="info-version show-above-720">{{car.version}}</span>
+		  <span class="info-price show-below-720">{{car.price}} PLN</span>
         </h3>
-        <p class="info-title" v-if="car.title">{{car.title}}</p>
+        <p class="info-title show-above-720" v-if="car.title">{{car.title}}</p>
         <p class="info-others">
           <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>
-          <span class="info-others--item" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>
-          <span class="info-others--item" v-if="car.engineCode">{{car.engineCode}}</span>
+          <span class="info-others--item show-above-720" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>
+          <span class="info-others--item show-above-720" v-if="car.engineCode">{{car.engineCode}}</span>
           <span class="info-others--item" v-if="car.mileage">{{car.mileage}} km</span>
         </p>
       </div>
-      <div class="info-group group-right">
+      <div class="info-group group-right show-above-720">
         <p class="info-price">{{car.price}} PLN</p>
       </div>
     </div>
@@ -98,5 +99,27 @@ export default {
 	height: 180px;
 	object-fit: cover;
 	border-radius: 6px;
+}
+
+@media screen and (max-width: 720px) {
+	.car .thumb {
+		width: 140px;
+		min-width: 140px;
+		min-height: 120px;
+		height: 120px;
+	}
+	.show-above-720 {
+		display: none;
+	}
+	.info-header {
+		font-size: .9em;
+	}
+	.show-below-720 {
+		display: block;
+	}
+	.info-price {
+		font-size: 1.2em;
+		padding-top: 8px;
+	}
 }
 </style>

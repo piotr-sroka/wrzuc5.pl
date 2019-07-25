@@ -27,7 +27,12 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  align-items: flex-start;
-}
+  .container {
+    align-items: flex-start;
+  }
+  @media screen and (max-width: 720px) {
+    .cars-list {
+      padding: 0 14px;
+    }    
+  }
 </style>

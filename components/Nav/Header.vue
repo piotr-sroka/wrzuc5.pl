@@ -1,29 +1,25 @@
 <template>
   <nav class="main-navigation sticky" ref="mainNav">
     <nuxt-link class="nav-top-item nav-home" to="/">Wrzuć 5.</nuxt-link>
-    <nuxt-link
-      class="nav-top-item"
-      v-if="$store.state.auth.isLoggedIn"
-      to="/cars/add-car"
-    >Dodaj ogłoszenie</nuxt-link>
-    <nuxt-link
-      class="nav-top-item"
-      v-if="!$store.state.auth.isLoggedIn"
-      to="/auth/login"
-    >Zaloguj się</nuxt-link>
-    <nuxt-link
-      class="nav-top-item"
-      v-if="!$store.state.auth.isLoggedIn"
-      to="/auth/signup"
-    >Zarejestruj się</nuxt-link>
+    <nuxt-link v-if="$store.state.auth.isLoggedIn" to="/cars/add-car">
+      <span class="nav-top-item show-above-720">Dodaj ogłoszenie</span>
+      <span class="nav-top-item plus-icon show-below-720"></span>
+    </nuxt-link>
+    <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/login">
+      <span class="nav-top-item">Zaloguj się</span>
+    </nuxt-link>
+    <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/signup">
+      <span class="nav-top-item">Zarejestruj się</span>
+    </nuxt-link>
     <div
       class="nav-top-dropdown"
       :class="navTopToggled ? 'toggle' : ''"
       v-if="$store.state.auth.isLoggedIn"
     >
       <button class="nav-top-item" @click="toggleUserDropdown" v-on-clickaway="hideDropdown">
-        Moje konto
-        <span class="dropdown-arrow"></span>
+        <span class="show-above-720">Moje konto</span>
+        <span class="dropdown-arrow show-above-720"></span>
+        <span class="user-icon show-below-720"></span>
       </button>
       <ul class="nav-top-dropdown-list" v-if="navTopToggled">
         <li>
@@ -105,12 +101,14 @@ export default {
   position: absolute;
   background-color: #1a2229;
   width: 100%;
+  min-width: 140px;
   margin-top: 5px;
   border-radius: 5px;
   transition: opacity 0.2s ease-in-out;
   opacity: 0;
   pointer-events: none;
   z-index: 9999;
+  right: 5px;
 }
 .nav-top-divider {
   height: 2px;
@@ -133,6 +131,36 @@ export default {
 }
 .nav-top-dropdown.toggle .dropdown-arrow {
   transform: rotate(180deg);
+}
+.plus-icon::before, .user-icon::before {
+  font-family: "Flat-UI-Pro-Icons";
+  content: "\e608";
+  font-size: 1.2em;
+  width: 40px;
+  display: inline-block;
+}
+.plus-icon::before {
+  content: "\e608";
+}
+.user-icon::before {
+  content: "\e631";
+}
+.show-below-720 {
+	display: none;
+}
+@media screen and (max-width: 480px) {
+  .nav-home {
+    /* margin-right: 0; */
+  }
+  .nav-top-item {
+    padding: 14px 10px;
+  }
+	.show-above-720 {
+		display: none;
+	}
+	.show-below-720 {
+		display: block;
+	}
 }
 </style>
 
