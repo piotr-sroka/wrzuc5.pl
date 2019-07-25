@@ -15,6 +15,9 @@ export default {
   width: 10%;
   max-width: 10%;
   min-width: 90px;
+  height: 10%;
+  max-height: 10%;
+  min-height: 90px;
 }
 .images-thumbs {
   width: 100%;

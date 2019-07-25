@@ -18,7 +18,7 @@ export const state = () => {
       {brand: "Aro", models: ["Model A", "Model B"]},
       {brand: "Asia", models: ["Model A", "Model B"]},
       {brand: "Aston Martin", models: ["Model A", "Model B"]},
-      {brand: "Audi", models: ["A1", "A2", "A3"]},
+      {brand: "Audi", models: ["A1", "A2", "A3"], versions: {A3: ["8L (1996-2003)", "8P (2003-2012)", "8V (2012-)"]}},
       {brand: "Austin", models: ["Model A", "Model B"]},
       {brand: "Autobianchi", models: ["Model A", "Model B"]},
       {brand: "Baic", models: ["Model A", "Model B"]},
