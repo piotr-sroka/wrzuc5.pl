@@ -160,6 +160,7 @@ export default {
 	.gallery-preview {
 		max-height: 320px;
 		overflow: hidden;
+		height: unset;
 	}	
 }
 </style>
