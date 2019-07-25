@@ -156,4 +156,10 @@ export default {
 .gallery-preview--image.image-changing {
 	opacity: 0;
 }
+@media screen and (max-width: 720px) {
+	.gallery-preview {
+		max-height: 320px;
+		overflow: hidden;
+	}	
+}
 </style>
