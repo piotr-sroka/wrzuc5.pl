@@ -235,6 +235,10 @@ export default {
 			seats: [],
 			color: "Kolor",
 			carEquipment: [],
+			username: "",
+			email: "",
+			phone: "",
+			location: "",
 			errors: {
 				brand: "",
 				model: "",
