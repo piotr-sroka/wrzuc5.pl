@@ -54,7 +54,7 @@
 				</div>
 				<div class="info-item full-width">
 					<div class="form-group">
-							<textarea class="form-input form-textarea" type="text" placeholder="Dodatkowy opis" v-model="description"></textarea>
+						<textarea class="form-input form-textarea" type="text" placeholder="Dodatkowy opis" v-model="description"></textarea>
 					</div>
 				</div>
 				<div class="info-item">
@@ -122,6 +122,32 @@
 				</div>
 				<div class="images-thumbs">
 					<app-image-thumb v-for="(image, index) in images" :key="index" :image="image.thumb" @click.native="removeImage(image)"></app-image-thumb>
+				</div>
+			</div>
+			<div class="form-group info">
+				<div class="info-item info-item--contact">
+					<div class="form-group">
+						<input class="form-input username-input" type="text" placeholder="Twoje imię" v-model="username" id="username" />
+						<label for="username" class="username-input--label"></label>
+					</div>
+				</div>
+				<div class="info-item info-item--contact">
+					<div class="form-group">
+						<input class="form-input email-input" type="email" placeholder="Twój email" v-model="email" id="email" />
+						<label for="email" class="email-input--label"></label>
+					</div>
+				</div>
+				<div class="info-item info-item--contact">
+					<div class="form-group">
+						<input class="form-input phone-input" type="tel" placeholder="Twój numer telefonu" v-model="phone" id="phone" />
+						<label for="phone" class="phone-input--label"></label>
+					</div>
+				</div>
+				<div class="info-item info-item--contact">
+					<div class="form-group">
+						<input class="form-input location-input" type="text" placeholder="Twoja lokalizacja" v-model="location" id="location" />
+						<label for="location" class="location-input--label"></label>
+					</div>
 				</div>
 			</div>
 			<button class="form-button-submit" @click.prevent="addCar">Dodaj ogłoszenie</button>
@@ -470,6 +496,9 @@ export default {
 .info-item.full-width {
 	width: 100%;
 }
+.info-item.info-item--contact {
+	width: 49%;
+}
 .form-textarea {
 	height: 220px;
 	resize: none;
@@ -484,7 +513,7 @@ export default {
 	background-color: #bdc3c7;
 	color: #2C3E50;
 	width: 100%;
-	height: 80px;
+	height: 140px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -509,8 +538,10 @@ export default {
 	justify-content: center;
 	align-items: center;
 }
-.drop-input--label::before {
+.drop-input--label::before, .username-input--label::before, .email-input--label::before, .phone-input--label::before, .location-input--label::before {	
 	font-family: "Flat-UI-Pro-Icons";
+}
+.drop-input--label::before {
 	content: "\e645";
 	display: inline-block;
 	width: 60px;
@@ -526,6 +557,10 @@ export default {
 .drop-files-area.dragOver .drop-input--label::before, .drop-files-area:hover .drop-input--label::before {
 	color: #edeff1;
 }
+.username-input,
+.email-input,
+.phone-input,
+.location-input,
 .price-input,
 .mileage-input,
 .capacity-input,
@@ -533,17 +568,24 @@ export default {
 	padding-right: 40px;
 	position: relative;
 }
+.username-input--label,
+.email-input--label,
+.phone-input--label,
+.location-input--label,
 .price-input--label,
 .mileage-input--label,
 .capacity-input--label,
 .power-input--label {
 	position: relative;
 }
+.username-input--label::before,
+.email-input--label::before,
+.phone-input--label::before,
+.location-input--label::before,
 .price-input--label::before,
 .mileage-input--label::before,
 .capacity-input--label::before,
 .power-input--label::before {
-	content: "PLN";
 	display: inline-block;
 	position: absolute;
 	width: 24px;
@@ -560,6 +602,9 @@ export default {
 	opacity: 0.7;
 	transition: all 0.2s linear;
 }
+.price-input--label::before {
+	content: "PLN";
+}
 .mileage-input--label::before {
 	content: "km";
 }
@@ -568,6 +613,18 @@ export default {
 }
 .power-input--label::before {
 	content: "KM";
+}
+.username-input--label::before {
+	content: "\e631"
+}
+.email-input--label::before {
+	content: "\e632"
+}
+.phone-input--label::before {
+	content: "\e621"
+}
+.location-input--label::before {
+	content: "\e627"
 }
 .mx-datepicker {
 	font: inherit;
@@ -578,9 +635,9 @@ export default {
 	.form {
 		padding: 5px;
 	}
-	.info-item {
+	.info-item, .info-item.info-item--contact {
 		width: 100%;
-	}	
+	}
 }
 </style>
 

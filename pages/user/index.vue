@@ -1,7 +1,7 @@
 <template>
   <section>
-    <h3>Moje ogłoszenia:</h3>
-    <hr>
+    <h3 class="info-title">Moje ogłoszenia:</h3>
+    <span class="divider"></span>
     <section class="cars-list">
       <app-short-car-info v-for="(car, index) in myCars" :key="index" :mycar="car"></app-short-car-info>
     </section>
@@ -42,10 +42,14 @@ export default {
 </script>
 <style>
 .cars-list {
-	padding: 40px 0;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+}
+@media screen and (max-width: 720px) {
+	.cars-list {
+		flex-direction: column;
+	}	
 }
 </style>
 

@@ -11,77 +11,18 @@
     <p class="info-subtitle">Dane pojazdu</p>
     <article class="info-lists">
       <ul class="info-list info-technical">
-        <li class="info-list--item">
-          <span class="info-item--title">Marka pojazdu</span>
-          <span>{{carInfo.brand}}</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Model pojazdu</span>
-          <span>{{carInfo.model}}</span>
-        </li>
-        <li class="info-list--item" v-if="carInfo.engineCode">
-          <span class="info-item--title">Kod silnika</span>
-          <span>{{carInfo.engineCode}}</span>
-        </li>
-        <li class="info-list--item" v-if="carInfo.fuel">
-          <span class="info-item--title">Rodzaj paliwa</span>
-          <span>{{carInfo.fuel}}</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Rok produkcji</span>
-          <span>{{carInfo.yearOfProd}}</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Przebieg</span>
-          <span>{{carInfo.mileage}} km</span>
-        </li>
-        <li class="info-list--item" v-if="carInfo.capacity">
-          <span class="info-item--title">Pojemność silnika</span>
-          <span>
-            {{carInfo.capacity}} cm<sup>3</sup>
-          </span>
-        </li>
-        <li class="info-list--item" v-if="carInfo.power">
-          <span class="info-item--title">Moc silnika</span>
-          <span>{{carInfo.power}}</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Skrzynia biegów</span>
-          <span>Manualna</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Napęd</span>
-          <span>Przedni</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Typ</span>
-          <span>Sportback</span>
+        <li class="info-list--item" v-for="(item, index) in carInfoDetails.left" :key="index" v-if="item.infoValue">
+          <span class="info-item--title">{{item.infoName}}</span>
+          <span v-if="item.infoName === 'Pojemność skokowa'">{{item.infoValue}} cm<sup>3</sup></span>
+          <span v-else-if="item.infoName === 'Przebieg'">{{item.infoValue}} km</span>
+          <span v-else-if="item.infoName === 'Moc silnika'">{{item.infoValue}} KM</sup></span>
+          <span v-else>{{item.infoValue}}</span> 
         </li>
       </ul>
       <ul class="info-list info-visual">
-        <li class="info-list--item" v-if="carInfo.color">
-          <span class="info-item--title">Kolor</span>
-          <span>{{carInfo.color}}</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Liczba drzwi</span>
-          <span>5</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Liczba miejsc</span>
-          <span>5</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Kraj pochodzenia</span>
-          <span>Szwajcaria</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Bezwypadkowy</span>
-          <span>Tak</span>
-        </li>
-        <li class="info-list--item">
-          <span class="info-item--title">Stan</span>
-          <span>Używany</span>
+        <li class="info-list--item" v-for="(item, index) in carInfoDetails.right" :key="index" v-if="item.infoValue">
+          <span class="info-item--title">{{item.infoName}}</span>
+          <span>{{item.infoValue}}</span>
         </li>
       </ul>
     </article>
@@ -117,7 +58,39 @@ export default {
 			imagesLoaded: false,
 			pageName: ""
 		};
-	},
+  },
+  computed: {
+    carInfoDetails() {
+      let info = {left:[], right:[]};
+      info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand ? this.carInfo.brand : null});
+      info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model ? this.carInfo.model : null});
+      info.left.push({infoName: "Wersja", infoValue: this.carInfo.version ? this.carInfo.version : null});
+      info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd ? this.carInfo.yearOfProd : null});
+      info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage ? this.carInfo.mileage : null});
+      info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode ? this.carInfo.engineCode : null});
+      info.left.push({infoName: "Pojemność skokowa", infoValue: this.carInfo.capacity ? this.carInfo.capacity : null});
+      info.left.push({infoName: "Moc silnika", infoValue: this.carInfo.power ? this.carInfo.power : null});
+      info.left.push({infoName: "Rodzaj paliwa", infoValue: this.carInfo.fuel ? this.carInfo.fuel : null});
+      info.left.push({infoName: "Skrzynia biegów", infoValue: this.carInfo.gearbox ? this.carInfo.gearbox : null});
+      info.left.push({infoName: "Napęd", infoValue: this.carInfo.drive ? this.carInfo.drive : null});
+
+      info.right.push({infoName: "Kolor", infoValue: this.carInfo.color ? this.carInfo.color : null});
+      info.right.push({infoName: "Liczba drzwi", infoValue: this.carInfo.numOfDoors ? this.carInfo.numOfDoors : null});
+      info.right.push({infoName: "Liczba miejsc", infoValue: this.carInfo.numOfSeats ? this.carInfo.numOfSeats : null});
+      info.right.push({infoName: "Kraj pochodzenia", infoValue: this.carInfo.countryOfProd ? this.carInfo.countryOfProd : null});
+      info.right.push({infoName: "Pierwsza rejestracja", infoValue: this.carInfo.firstRegistration ? this.carInfo.firstRegistration : null});
+      info.right.push({infoName: "Zarejestrowany w Polsce", infoValue: this.carInfo.registerInPoland ? "Tak" : "Nie"});
+      info.right.push({infoName: "Pierwszy właściciel", infoValue: this.carInfo.firstOwner ? "Tak" : "Nie"});
+      info.right.push({infoName: "Uszkodzony", infoValue: this.carInfo.damaged ? "Tak" : "Nie"});
+      info.right.push({infoName: "Bezwypadkowy", infoValue: this.carInfo.noAccidents ? "Tak" : "Nie"});
+      info.right.push({infoName: "Serwisowany w ASO", infoValue: this.carInfo.servisedInAso ? "Tak" : "Nie"});
+      info.right.push({infoName: "Filtr cząstek stałych (DPF)", infoValue: this.carInfo.dpf ? "Tak" : "Nie"});
+      info.right.push({infoName: "Zarejestrowany jako zabytek", infoValue: this.carInfo.registerAsAntique ? "Tak" : "Nie"});
+      info.right.push({infoName: "Tuningowany", infoValue: this.carInfo.tunned ? "Tak" : "Nie"});
+      info.right.push({infoName: "Posiada homologację", infoValue: this.carInfo.homologated ? "Tak" : "Nie"});
+      return info;
+    }
+  },
 	methods: {
 		checkPageTitle() {
 			if (document && document.title === "" && !this.carInfo.brand) {
@@ -204,7 +177,13 @@ export default {
 	flex: 1;
 }
 .info-item--title {
-	color: #c2c2c2;
+  color: #c2c2c2;
+  padding-right: 10px;
+}
+@media screen and (max-width: 960px) {
+  .info-lists, .info-equipment, .info-description {
+    width: 100%;
+  }
 }
 
 @media screen and (max-width: 720px) {
@@ -212,9 +191,6 @@ export default {
     padding: 4px 10px;
     margin-right: 4px;
     margin-top: 4px;
-  }
-  .info-lists, .info-equipment, .info-description {
-    width: 100%;
   }
   .info-list--item {
     flex-direction: column;
