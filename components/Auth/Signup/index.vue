@@ -147,4 +147,14 @@ export default {
 .form-password-label::before {
   content: "\e633";
 }
+
+@media screen and (max-width: 720px) {  
+  .container {
+    padding: 0;
+  }  
+  .form {
+    max-width: 340px;
+    width: 100%;
+  }
+}
 </style>

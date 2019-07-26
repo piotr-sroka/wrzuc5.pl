@@ -206,4 +206,24 @@ export default {
 .info-item--title {
 	color: #c2c2c2;
 }
+
+@media screen and (max-width: 720px) {
+  .info-equipment--item.readonly {
+    padding: 4px 10px;
+    margin-right: 4px;
+    margin-top: 4px;
+  }
+  .info-lists, .info-equipment, .info-description {
+    width: 100%;
+  }
+  .info-list--item {
+    flex-direction: column;
+  }
+  .info-title {
+    margin: 4px 0;
+  }
+  .info-title, .info-subtitle {
+    padding: 0 10px;
+  }
+}
 </style>

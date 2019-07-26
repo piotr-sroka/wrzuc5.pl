@@ -158,9 +158,12 @@ export default {
 }
 @media screen and (max-width: 720px) {
 	.gallery-preview {
-		max-height: 320px;
+		max-height: 250px;
 		overflow: hidden;
-		height: unset;
-	}	
+		height: 250px;
+	}
+	.gallery-nav--btn::before {
+		display: none;
+	}
 }
 </style>
