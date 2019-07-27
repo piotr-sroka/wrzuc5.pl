@@ -1,4 +1,6 @@
 ☐ search engine @critical 
 ☐ editing car page @critical 
-☐ add rest inputs to create car page @low 
-☐ display all car fields from db @low 
+✔ add rest inputs to create car page @low @done (27.07.2019, 15:45:42)
+✔ display all car fields from db @low @done (27.07.2019, 15:45:46)
+☐ add contact info to car model
+☐ display contact info on car page
