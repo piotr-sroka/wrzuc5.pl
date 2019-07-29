@@ -28,7 +28,7 @@
           <span class="info-item--title">{{item.infoName}}</span>
           <span v-if="item.infoName === 'Pojemność skokowa'">{{item.infoValue}} cm<sup>3</sup></span>
           <span v-else-if="item.infoName === 'Przebieg'">{{item.infoValue}} km</span>
-          <span v-else-if="item.infoName === 'Moc silnika'">{{item.infoValue}} KM</sup></span>
+          <span v-else-if="item.infoName === 'Moc silnika'">{{item.infoValue}} KM</span>
           <span v-else>{{item.infoValue}}</span> 
         </li>
       </ul>
