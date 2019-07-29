@@ -7,16 +7,16 @@
       <span class="info-title--tag">{{carInfo.version}}</span>
       <span class="info-title--tag title-tag--price">{{carInfo.price}} PLN</span>
     </h3>
-    <span class="divider"></span>
-    <p class="info-subtitle">Sprzedający</p>
-    <article class="info-contact">
+    <span class="divider" v-if="carInfo.email"></span>
+    <p class="info-subtitle" v-if="carInfo.email">Sprzedający</p>
+    <article class="info-contact" v-if="carInfo.email">
       <div class="info-contact--user">
         <p class="info-contact--item info-contact--username" v-if="carInfo.username">{{carInfo.username}}</p>
         <p class="info-contact--item info-contact--email" v-if="carInfo.email"><a :href="`mailto:${carInfo.email}`">{{carInfo.email}}</a></p>
         <p class="info-contact--item info-contact--phone" v-if="carInfo.phone">{{carInfo.phone}}</p>
         <p class="info-contact--item info-contact--location" v-if="carInfo.location">{{carInfo.location.name}}</p>
       </div>
-      <div class="info-contact--map">
+      <div class="info-contact--map" v-if="carInfo.location">
         <GmapMap :center="{lat:mapInfo.lat, lng:mapInfo.lng}" :zoom="15" map-type-id="terrain" style="width: 500px; height: 240px"></GmapMap>
       </div>
     </article>
