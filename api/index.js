@@ -7,6 +7,10 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import routes from './routes/appRouter';
 
+const app = express();
+
+app.use(express.static(__dirname + '/public'));
+
 mongoose.Promise = global.Promise;
 
 mongoose.set('useCreateIndex', true);
