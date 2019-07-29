@@ -64,7 +64,7 @@ export default {
 .main-navigation {
   background-color: #1a2229;
   display: flex;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 6px 6px;
 }
 .nav-home {
   margin-right: auto;

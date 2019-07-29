@@ -4,14 +4,17 @@
     <transition name="fade">
     <nuxt/>
     </transition>
+	<app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import AppHeader from "@/components/Nav/Header";
+import AppFooter from "@/components/Nav/Footer";
 export default {
 	components: {
-		AppHeader
+		AppHeader,
+		AppFooter
 	}
 };
 </script>
@@ -33,6 +36,9 @@ body {
 	width: 100%;
 	max-width: 1280px;
 	margin: 0 auto;
+	margin-bottom: 140px;
+	z-index: 1;
+	background-color: #ecf0f2;
 }
 
 *,

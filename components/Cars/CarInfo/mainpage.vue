@@ -1,15 +1,18 @@
 <template>
   <nuxt-link :to="carLink" class="car">
-    <img class="thumb" :src="car.images[0].thumb.src" alt />
+    <img class="thumb" :src="car.images[0].thumb.src" v-if="car.images.length" />
     <div class="info">
       <div class="info-group group-left">
         <h3 class="info-header">
           <span class="info-brand">{{car.brand}}</span>
           <span class="info-model">{{car.model}}</span>
           <span class="info-version show-above-720">{{car.version}}</span>
-		  <span class="info-price show-below-720">{{car.price}} PLN</span>
+		  		<span class="info-price show-below-720">{{car.price}} PLN</span>
         </h3>
         <p class="info-title show-above-720" v-if="car.title">{{car.title}}</p>
+				<br>
+				<br>
+        <p class="info-title show-above-720 info-location" v-if="car.location">{{car.location.name}}</p>
         <p class="info-others">
           <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>
           <span class="info-others--item show-above-720" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>
@@ -27,11 +30,11 @@
 <script>
 export default {
 	props: ["car"],
-  data() {
-    return {
-      carLink: "/cars/" + this.car._id
-    }
-  }
+	data() {
+		return {
+			carLink: "/cars/" + this.car._id
+		};
+	}
 };
 </script>
 
@@ -85,7 +88,7 @@ export default {
 .info-others--item {
 	margin-right: 8px;
 }
-.info-others--item::before {
+.info-others--item::before, .info-location::before {
 	font-family: "Flat-UI-Pro-Icons";
 	content: "\e63e";
 	margin-right: 5px;
@@ -100,6 +103,9 @@ export default {
 	object-fit: cover;
 	border-radius: 6px;
 }
+.info-location::before {
+	content: "\e627";
+}
 
 @media screen and (max-width: 720px) {
 	.car .thumb {
@@ -112,7 +118,7 @@ export default {
 		display: none;
 	}
 	.info-header {
-		font-size: .9em;
+		font-size: 0.9em;
 	}
 	.show-below-720 {
 		display: block;

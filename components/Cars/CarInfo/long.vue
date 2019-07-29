@@ -1,12 +1,25 @@
 <template>
   <section class="car-page">
-    <app-gallery :images="carInfo.images" v-if="imagesLoaded"></app-gallery>
+    <app-gallery :images="carInfo.images" v-if="imagesLoaded && carInfo.images.length"></app-gallery>
     <h3 class="info-title">
       <span class="info-title--tag">{{carInfo.brand}}</span>
       <span class="info-title--tag">{{carInfo.model}}</span>
       <span class="info-title--tag">{{carInfo.version}}</span>
       <span class="info-title--tag title-tag--price">{{carInfo.price}} PLN</span>
     </h3>
+    <span class="divider"></span>
+    <p class="info-subtitle">Sprzedający</p>
+    <article class="info-contact">
+      <div class="info-contact--user">
+        <p class="info-contact--item info-contact--username" v-if="carInfo.username">{{carInfo.username}}</p>
+        <p class="info-contact--item info-contact--email" v-if="carInfo.email"><a :href="`mailto:${carInfo.email}`">{{carInfo.email}}</a></p>
+        <p class="info-contact--item info-contact--phone" v-if="carInfo.phone">{{carInfo.phone}}</p>
+        <p class="info-contact--item info-contact--location" v-if="carInfo.location">{{carInfo.location.name}}</p>
+      </div>
+      <div class="info-contact--map">
+        <GmapMap :center="{lat:mapInfo.lat, lng:mapInfo.lng}" :zoom="15" map-type-id="terrain" style="width: 500px; height: 240px"></GmapMap>
+      </div>
+    </article>
     <span class="divider"></span>
     <p class="info-subtitle">Dane pojazdu</p>
     <article class="info-lists">
@@ -56,48 +69,72 @@ export default {
 		return {
 			carInfo: {},
 			imagesLoaded: false,
-			pageName: ""
+      pageName: "",
+      mapInfo: {
+        lat: 10,
+        lng: 10
+      },
+      months: ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"]
 		};
-  },
-  computed: {
-    carInfoDetails() {
-      let info = {left:[], right:[]};
-      info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand ? this.carInfo.brand : null});
-      info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model ? this.carInfo.model : null});
-      info.left.push({infoName: "Wersja", infoValue: this.carInfo.version ? this.carInfo.version : null});
-      info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd ? this.carInfo.yearOfProd : null});
-      info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage ? this.carInfo.mileage : null});
-      info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode ? this.carInfo.engineCode : null});
-      info.left.push({infoName: "Pojemność skokowa", infoValue: this.carInfo.capacity ? this.carInfo.capacity : null});
-      info.left.push({infoName: "Moc silnika", infoValue: this.carInfo.power ? this.carInfo.power : null});
-      info.left.push({infoName: "Rodzaj paliwa", infoValue: this.carInfo.fuel ? this.carInfo.fuel : null});
-      info.left.push({infoName: "Skrzynia biegów", infoValue: this.carInfo.gearbox ? this.carInfo.gearbox : null});
-      info.left.push({infoName: "Napęd", infoValue: this.carInfo.drive ? this.carInfo.drive : null});
+	},
+	computed: {
+		carInfoDetails() {
+			let info = {left: [], right: []};
+			info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand ? this.carInfo.brand : null});
+			info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model ? this.carInfo.model : null});
+			info.left.push({infoName: "Wersja", infoValue: this.carInfo.version ? this.carInfo.version : null});
+			info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd ? this.carInfo.yearOfProd : null});
+			info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage ? this.carInfo.mileage : null});
+			info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode ? this.carInfo.engineCode : null});
+			info.left.push({infoName: "Pojemność skokowa", infoValue: this.carInfo.capacity ? this.carInfo.capacity : null});
+			info.left.push({infoName: "Moc silnika", infoValue: this.carInfo.power ? this.carInfo.power : null});
+			info.left.push({infoName: "Rodzaj paliwa", infoValue: this.carInfo.fuel ? this.carInfo.fuel : null});
+			info.left.push({infoName: "Skrzynia biegów", infoValue: this.carInfo.gearbox ? this.carInfo.gearbox : null});
+			info.left.push({infoName: "Napęd", infoValue: this.carInfo.drive ? this.carInfo.drive : null});
 
-      info.right.push({infoName: "Kolor", infoValue: this.carInfo.color ? this.carInfo.color : null});
-      info.right.push({infoName: "Liczba drzwi", infoValue: this.carInfo.numOfDoors ? this.carInfo.numOfDoors : null});
-      info.right.push({infoName: "Liczba miejsc", infoValue: this.carInfo.numOfSeats ? this.carInfo.numOfSeats : null});
-      info.right.push({infoName: "Kraj pochodzenia", infoValue: this.carInfo.countryOfProd ? this.carInfo.countryOfProd : null});
-      info.right.push({infoName: "Pierwsza rejestracja", infoValue: this.carInfo.firstRegistration ? this.carInfo.firstRegistration : null});
-      info.right.push({infoName: "Zarejestrowany w Polsce", infoValue: this.carInfo.registerInPoland ? "Tak" : "Nie"});
-      info.right.push({infoName: "Pierwszy właściciel", infoValue: this.carInfo.firstOwner ? "Tak" : "Nie"});
-      info.right.push({infoName: "Uszkodzony", infoValue: this.carInfo.damaged ? "Tak" : "Nie"});
-      info.right.push({infoName: "Bezwypadkowy", infoValue: this.carInfo.noAccidents ? "Tak" : "Nie"});
-      info.right.push({infoName: "Serwisowany w ASO", infoValue: this.carInfo.servisedInAso ? "Tak" : "Nie"});
-      info.right.push({infoName: "Filtr cząstek stałych (DPF)", infoValue: this.carInfo.dpf ? "Tak" : "Nie"});
-      info.right.push({infoName: "Zarejestrowany jako zabytek", infoValue: this.carInfo.registerAsAntique ? "Tak" : "Nie"});
-      info.right.push({infoName: "Tuningowany", infoValue: this.carInfo.tunned ? "Tak" : "Nie"});
-      info.right.push({infoName: "Posiada homologację", infoValue: this.carInfo.homologated ? "Tak" : "Nie"});
-      return info;
-    }
-  },
+			info.right.push({infoName: "Kolor", infoValue: this.carInfo.color ? this.carInfo.color : null});
+			info.right.push({infoName: "Liczba drzwi", infoValue: this.carInfo.numOfDoors ? this.carInfo.numOfDoors : null});
+			info.right.push({infoName: "Liczba miejsc", infoValue: this.carInfo.numOfSeats ? this.carInfo.numOfSeats : null});
+			info.right.push({infoName: "Kraj pochodzenia", infoValue: this.carInfo.countryOfProd ? this.carInfo.countryOfProd : null});
+			info.right.push({infoName: "Pierwsza rejestracja", infoValue: this.carInfo.firstRegistration ? this.formatDate(this.carInfo.firstRegistration) : null});
+			info.right.push({infoName: "Zarejestrowany w Polsce", infoValue: this.carInfo.registerInPoland ? "Tak" : "Nie"});
+			info.right.push({infoName: "Pierwszy właściciel", infoValue: this.carInfo.firstOwner ? "Tak" : "Nie"});
+			info.right.push({infoName: "Uszkodzony", infoValue: this.carInfo.damaged ? "Tak" : "Nie"});
+			info.right.push({infoName: "Bezwypadkowy", infoValue: this.carInfo.noAccidents ? "Tak" : "Nie"});
+			info.right.push({infoName: "Serwisowany w ASO", infoValue: this.carInfo.servisedInAso ? "Tak" : "Nie"});
+			info.right.push({infoName: "Filtr cząstek stałych (DPF)", infoValue: this.carInfo.dpf ? "Tak" : "Nie"});
+			info.right.push({infoName: "Zarejestrowany jako zabytek", infoValue: this.carInfo.registerAsAntique ? "Tak" : "Nie"});
+			info.right.push({infoName: "Tuningowany", infoValue: this.carInfo.tunned ? "Tak" : "Nie"});
+			info.right.push({infoName: "Posiada homologację", infoValue: this.carInfo.homologated ? "Tak" : "Nie"});
+			return info;
+		}
+	},
 	methods: {
+    formatDate(date){
+      const newDate = new Date(date).toLocaleDateString();
+      const day = +newDate.substring(0, newDate.indexOf("."));
+      const month = this.months[+newDate.substring(newDate.indexOf(".") + 1, newDate.lastIndexOf(".")) - 1];
+      const year = +newDate.substring(newDate.lastIndexOf(".") + 1);
+      return `${day} ${month} ${year}`;
+    },
 		checkPageTitle() {
 			if (document && document.title === "" && !this.carInfo.brand) {
-        setTimeout(this.checkPageTitle, 100);
-      } else {
-        document.title = this.carInfo.title || `${this.carInfo.brand} ${this.carInfo.model} ${this.carInfo.version}`;
+				setTimeout(this.checkPageTitle, 100);
+			} else {
+				document.title = this.carInfo.title || `${this.carInfo.brand} ${this.carInfo.model} ${this.carInfo.version}`;
 			}
+		},
+		loadSavedLocation() {
+			const placeId = this.carInfo.location.placeId;
+			this.$axios
+				.post("/api/place/", {placeId: placeId})
+				.then(result => {
+          this.mapInfo.lat = result.data.result.geometry.location.lat;
+          this.mapInfo.lng = result.data.result.geometry.location.lng;
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		}
 	},
 	created() {
@@ -107,6 +144,9 @@ export default {
 				this.carInfo = result.data;
 				this.imagesLoaded = true;
 				this.pageName = this.carInfo.title || `${this.carInfo.brand} ${this.carInfo.model} ${this.carInfo.version}`;
+				if (this.carInfo.location) {
+					this.loadSavedLocation();
+				}
 			})
 			.catch(err => {
 				console.log(err);
@@ -177,29 +217,81 @@ export default {
 	flex: 1;
 }
 .info-item--title {
-  color: #c2c2c2;
-  padding-right: 10px;
+	color: #c2c2c2;
+	padding-right: 10px;
+}
+.info-contact {
+	padding: 0 10px;
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 900px;
+}
+.info-contact--item {
+	margin: 4px 0;
+}
+.info-contact--username,
+.info-contact--email,
+.info-contact--phone,
+.info-contact--location {
+	font-size: 0.9em;
+}
+.info-contact--username::before,
+.info-contact--email::before,
+.info-contact--phone::before,
+.info-contact--location::before {
+	font-family: "Flat-UI-Pro-Icons";
+	color: #1a2229;
+	margin-right: 12px;
+	opacity: 0.7;
+}
+.info-contact--username::before {
+	content: "\e631";
+}
+.info-contact--email::before {
+	content: "\e632";
+}
+.info-contact--phone::before {
+	content: "\e621";
+}
+.info-contact--location::before {
+	content: "\e627";
+}
+.info-contact--user {
+	margin-right: 80px;
 }
 @media screen and (max-width: 960px) {
-  .info-lists, .info-equipment, .info-description {
-    width: 100%;
-  }
+	.info-lists,
+	.info-equipment,
+	.info-description {
+		width: 100%;
+	}
+}
+@media screen and (max-width: 900px) {
+	.info-contact--map {
+		position: relative;
+		width: 100%;
+	}
+	.vue-map-container {
+		width: 100% !important;
+		margin-top: 12px;
+	}
 }
 
 @media screen and (max-width: 720px) {
-  .info-equipment--item.readonly {
-    padding: 4px 10px;
-    margin-right: 4px;
-    margin-top: 4px;
-  }
-  .info-list--item {
-    flex-direction: column;
-  }
-  .info-title {
-    margin: 4px 0;
-  }
-  .info-title, .info-subtitle {
-    padding: 0 10px;
-  }
+	.info-equipment--item.readonly {
+		padding: 4px 10px;
+		margin-right: 4px;
+		margin-top: 4px;
+	}
+	.info-list--item {
+		flex-direction: column;
+	}
+	.info-title {
+		margin: 4px 0;
+	}
+	.info-title,
+	.info-subtitle {
+		padding: 0 10px;
+	}
 }
 </style>

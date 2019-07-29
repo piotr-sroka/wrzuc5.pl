@@ -41,7 +41,7 @@ let CarInfoSchema = new Schema({
     },
     yearOfProd: {
         type: Number,
-        required: "Podaj rok produkcji"
+        required: "Wybierz rok produkcji"
     },
     countryOfProd: {
         type: String
@@ -97,6 +97,20 @@ let CarInfoSchema = new Schema({
     equipment: [{
         type: Object
     }],
+    username: {
+        type: String
+    },
+    email: {
+        type: String,
+        required: "Podaj swój email"
+    },
+    phone: {
+        type: String
+    },
+    location: {
+        type: Object,
+        required: "Podaj lokalizację"
+    },
     images: [{
         type: Object
     }],

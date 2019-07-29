@@ -27,7 +27,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{src: "~/plugins/datepicker", ssr: false}],
+  plugins: [{src: "~/plugins/datepicker", ssr: false}, {src: "~/plugins/vue2-google-maps", ssr: true}],
 
   /*
    ** Nuxt.js modules
@@ -47,7 +47,9 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    transpile: [/^vue2-google-maps($|\/)/],
     extend(config, ctx) {}
   },
+  vendor: ["vue2-google-maps"],
   serverMiddleware: [bodyParser.json(), "~/api"]
 };

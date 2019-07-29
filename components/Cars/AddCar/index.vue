@@ -108,7 +108,6 @@
 			<div class="form-group info">
 				<div class="info-item">
 					<app-select-with-search-input :autoclose="false" v-if="equipment.length && isReRendered" selectTitle="Wyposażenie" :selectItems="equipment" itemToShow="equipmentName" @input="onEquipmentInput"></app-select-with-search-input>
-					<span class="info-message form-message-error" v-if="errors.equipment !=='' && equipment.length ">{{ errors.equipment }}</span>
 				</div>
 				<div v-if="carEquipment.length" class="info-item full-width">
 					<app-tag-lish-item v-for="(item, index) in carEquipment" :key="index" :item="item" @removeTagLishItem="onTagLishItemRemoveClick"></app-tag-lish-item>
@@ -136,6 +135,7 @@
 						<input class="form-input email-input" type="email" placeholder="Twój email" v-model="email" id="email" />
 						<label for="email" class="email-input--label"></label>
 					</div>
+					<span class="info-message form-message-error" v-if="errors.email">{{ errors.email }}</span>
 				</div>
 				<div class="info-item info-item--contact">
 					<div class="form-group">
@@ -145,8 +145,17 @@
 				</div>
 				<div class="info-item info-item--contact">
 					<div class="form-group">
-						<input class="form-input location-input" type="text" placeholder="Twoja lokalizacja" v-model="location" id="location" />
+						<input class="form-input location-input" type="text" placeholder="Twoja lokalizacja" v-model="location" id="location" @input="findPlace" />
 						<label for="location" class="location-input--label"></label>
+					</div>
+					<span class="info-message form-message-error" v-if="errors.location">{{ errors.location }}</span>
+					<div data-simplebar class="select-scrolled places" v-if="places.length && isLocationOpened">
+						<div>
+							<p class="place" v-for="(place, index) in places" :key="index" @click="selectLocation(place)">
+								<span class="place-name">{{place.name}}</span>
+								<span class="place-description">{{place.description}}</span>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -162,6 +171,7 @@ import AppTagLishItem from "@/components/UI/TagLishItem";
 import AppCheckBox from "@/components/UI/CheckBox";
 import path from "path";
 import OverlayScrollbars from "os-vue/overlay-scrollbars";
+import debounce from "debounce";
 
 export default {
 	components: {
@@ -247,7 +257,8 @@ export default {
 				price: "",
 				yearOfProd: "",
 				mileage: "",
-				equipment: ""
+				location: "",
+				email: ""
 			},
 			images: [],
 			isDragOver: false,
@@ -261,7 +272,10 @@ export default {
 					date: "Data pierwszej rejestracji",
 					dateRange: "Wybierz przedział czasowy"
 				}
-			}
+			},
+			isLocationOpened: false,
+			places: [],
+			selectedPlace: null
 		};
 	},
 	computed: {
@@ -323,7 +337,11 @@ export default {
 				color: this.color === "Kolor" ? "" : this.color,
 				equipment: this.carEquipment,
 				user: this.$store.state.auth.user,
-				images: this.images
+				images: this.images,
+				username: this.username,
+				email: this.email,
+				phone: this.phone,
+				location: this.selectedPlace
 			};
 			console.log(newCar);
 			this.$axios
@@ -338,7 +356,8 @@ export default {
 						this.errors.price = response.data.errors.price ? response.data.errors.price.message : "";
 						this.errors.mileage = response.data.errors.mileage ? response.data.errors.mileage.message : "";
 						this.errors.yearOfProd = response.data.errors.yearOfProd ? response.data.errors.yearOfProd.message : "";
-						this.errors.equipment = response.data.errors.equipment ? response.data.errors.equipment.message : "";
+						this.errors.location = response.data.errors.location ? response.data.errors.location.message : "";
+						this.errors.email = response.data.errors.email ? response.data.errors.email.message : "";
 						return;
 					}
 					this.$router.push("/");
@@ -454,6 +473,26 @@ export default {
 		onTagLishItemRemoveClick(el, equipmentItem) {
 			this.carEquipment.splice(this.carEquipment.indexOf(equipmentItem), 1);
 			this.$store.dispatch("unhideEquipmentItem", equipmentItem);
+		},
+		findPlace(e) {
+			this.$axios
+				.post("/api/places/", {placeToFind: encodeURI(e.target.value)})
+				.then(response => {
+					console.log(response);
+					this.places = [];
+					response.data.predictions.forEach(place => {
+						this.places.push({placeId: place.place_id, name: place.structured_formatting.main_text, description: place.description});
+					});
+					this.isLocationOpened = true;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		selectLocation(place) {
+			this.location = place.name;
+			this.isLocationOpened = false;
+			this.selectedPlace = place;
 		}
 	},
 	mounted() {
@@ -479,6 +518,9 @@ export default {
 			this.doors.push({numOfDoors: i + 1});
 			this.seats.push({numOfSeats: i + 1});
 		}
+	},
+	created() {
+		this.findPlace = debounce(this.findPlace, 500);
 	}
 };
 </script>
@@ -502,6 +544,7 @@ export default {
 }
 .info-item.info-item--contact {
 	width: 49%;
+	position: relative;
 }
 .form-textarea {
 	height: 220px;
@@ -515,7 +558,7 @@ export default {
 }
 .drop-files-area {
 	background-color: #bdc3c7;
-	color: #2C3E50;
+	color: #2c3e50;
 	width: 100%;
 	height: 140px;
 	display: flex;
@@ -523,10 +566,11 @@ export default {
 	align-items: center;
 	border-radius: 6px;
 	margin-top: 12px;
-	transition: all .2s linear;
+	transition: all 0.2s linear;
 }
-.drop-files-area.dragOver, .drop-files-area:hover {
-	background-color: #2C3E50;
+.drop-files-area.dragOver,
+.drop-files-area:hover {
+	background-color: #2c3e50;
 	color: #edeff1;
 }
 .drop-input {
@@ -542,7 +586,11 @@ export default {
 	justify-content: center;
 	align-items: center;
 }
-.drop-input--label::before, .username-input--label::before, .email-input--label::before, .phone-input--label::before, .location-input--label::before {	
+.drop-input--label::before,
+.username-input--label::before,
+.email-input--label::before,
+.phone-input--label::before,
+.location-input--label::before {
 	font-family: "Flat-UI-Pro-Icons";
 }
 .drop-input--label::before {
@@ -553,12 +601,13 @@ export default {
 	font-size: 40px;
 	line-height: 60px;
 	vertical-align: middle;
-	color: #2C3E50;
+	color: #2c3e50;
 	opacity: 0.7;
 	text-align: center;
-	transition: all .2s linear;
+	transition: all 0.2s linear;
 }
-.drop-files-area.dragOver .drop-input--label::before, .drop-files-area:hover .drop-input--label::before {
+.drop-files-area.dragOver .drop-input--label::before,
+.drop-files-area:hover .drop-input--label::before {
 	color: #edeff1;
 }
 .username-input,
@@ -606,6 +655,16 @@ export default {
 	opacity: 0.7;
 	transition: all 0.2s linear;
 }
+.form-input:focus + .username-input--label::before,
+.form-input:focus + .email-input--label::before,
+.form-input:focus + .phone-input--label::before,
+.form-input:focus + .location-input--label::before,
+.form-input:focus + .price-input--label::before,
+.form-input:focus + .mileage-input--label::before,
+.form-input:focus + .capacity-input--label::before,
+.form-input:focus + .power-input--label::before {
+	opacity: 1;
+}
 .price-input--label::before {
 	content: "PLN";
 }
@@ -619,27 +678,55 @@ export default {
 	content: "KM";
 }
 .username-input--label::before {
-	content: "\e631"
+	content: "\e631";
 }
 .email-input--label::before {
-	content: "\e632"
+	content: "\e632";
 }
 .phone-input--label::before {
-	content: "\e621"
+	content: "\e621";
 }
 .location-input--label::before {
-	content: "\e627"
+	content: "\e627";
 }
 .mx-datepicker {
 	font: inherit;
 	width: 100%;
+}
+.places {
+	font-size: .9em;
+	background-color: #ffffff;
+	border-radius: 6px;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	margin-top: 52px;
+}
+.place {
+	cursor: pointer;
+	line-height: 1.5em;
+	padding: 4px 10px;
+}
+.place:hover {
+	background-color: #2c3e50;
+	color: #ffffff;
+}
+.place-name {
+	font-size: 1em;
+	font-weight: bold;
+	display: block;
+}
+.place-description {
+	font-size: .9em;
+	display: block;
 }
 
 @media screen and (max-width: 480px) {
 	.form {
 		padding: 5px;
 	}
-	.info-item, .info-item.info-item--contact {
+	.info-item,
+	.info-item.info-item--contact {
 		width: 100%;
 	}
 }

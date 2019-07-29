@@ -63,6 +63,10 @@ class CarsInfos {
     const registerAsAntique = req.body.registerAsAntique;
     const tunned = req.body.tunned;
     const homologated = req.body.homologated;
+    const username = req.body.username;
+    const email = req.body.email;
+    const phone = req.body.phone;
+    const location = req.body.location;
     const newCar = new CarInfo({
       brand: brand,
       model: model,
@@ -94,7 +98,11 @@ class CarsInfos {
       homologated: homologated,
       equipment: equipment,
       images: images,
-      createdBy: createdBy
+      createdBy: createdBy,
+      username: username,
+      email: email,
+      phone: phone,
+      location: location
     });
     newCar
       .save()
