@@ -18,15 +18,7 @@ export default {
   },
   head() {
     return {
-      title: "Moje konto",
-      meta: [
-        { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        {
-          name: "google-site-verification",
-          content: "8SRdc8W60miQcIKkDS-T0Tp2Da8TanZdRh69k1R7Xo4"
-        }
-      ]
+      title: "Moje konto"
     };
   }
 };
