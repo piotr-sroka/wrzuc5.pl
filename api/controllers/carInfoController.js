@@ -152,9 +152,10 @@ class CarsInfos {
     CarInfo.findById(req.params.id)
       .then(result => {
         if (jwt.decode(token).id.toString() !== result.createdBy.toString()) {
+          res.send({error: "wrong user"});
           return;
         }
-        console.log(result);
+        res.send(result);
       })
       .catch(err => {
         console.log(err);

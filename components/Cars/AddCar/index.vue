@@ -102,7 +102,7 @@
 			</div>				
 			<div class="form-group info">
 				<div class="form-group info-item" v-for="(info, index) in additionalInfo" :key="index">
-					<app-check-box :itemTitle="info.label" v-model="info.value"></app-check-box>
+					<app-check-box :itemTitle="info.label" v-model="info.value" :checked.sync="info.value"></app-check-box>
 				</div>
 			</div>
 			<div class="form-group info">
@@ -174,6 +174,7 @@ import OverlayScrollbars from "os-vue/overlay-scrollbars";
 import debounce from "debounce";
 
 export default {
+	props: ["edited-car"],
 	components: {
 		AppImageThumb,
 		AppSelectWithSearchInput,
@@ -493,6 +494,44 @@ export default {
 			this.location = place.name;
 			this.isLocationOpened = false;
 			this.selectedPlace = place;
+		},
+		parseForEdit() {
+			this.brand = this.editedCar.brand;
+			this.model = this.editedCar.model;
+			this.version = this.editedCar.version;
+			this.yearOfProd = this.editedCar.yearOfProd;
+			this.fuel = this.editedCar.fuel;
+			this.gearbox = this.editedCar.gearbox;
+			this.drive = this.editedCar.drive;
+			this.mileage = this.editedCar.mileage;
+			this.vin = this.editedCar.vin;
+			this.engineCode = this.editedCar.engineCode;
+			this.capacity = this.editedCar.capacity;
+			this.power = this.editedCar.power;
+			this.title = this.editedCar.title;
+			this.description = this.editedCar.description;
+			this.price = this.editedCar.price;
+			this.countryOfProd = this.editedCar.countryOfProd;
+			this.firstRegistration = this.editedCar.firstRegistration;
+			this.numOfDoors = this.editedCar.numOfDoors;
+			this.numOfSeats = this.editedCar.numOfSeats;
+			this.color = this.editedCar.color;
+			this.carEquipment = this.editedCar.equipment;
+			this.username = this.editedCar.username;
+			this.email = this.editedCar.email;
+			this.phone = this.editedCar.phone;
+			this.images = this.editedCar.images;
+			this.selectLocation(this.editedCar.location);
+			this.additionalInfo.registerInPoland.value = this.editedCar.registerInPoland;
+			this.additionalInfo.firstOwner.value = this.editedCar.firstOwner;
+			this.additionalInfo.damaged.value = this.editedCar.damaged;
+			this.additionalInfo.dpf.value = this.editedCar.dpf;
+			this.additionalInfo.noAccidents.value = this.editedCar.noAccidents;
+			this.additionalInfo.servisedInAso.value = this.editedCar.servisedInAso;
+			this.additionalInfo.registerAsAntique.value = this.editedCar.registerAsAntique;
+			this.additionalInfo.tunned.value = this.editedCar.tunned;
+			this.additionalInfo.homologated.value = this.editedCar.homologated;
+			console.log(this.editedCar);
 		}
 	},
 	mounted() {
@@ -521,6 +560,9 @@ export default {
 	},
 	created() {
 		this.findPlace = debounce(this.findPlace, 500);
+		if (this.editedCar) {
+			this.parseForEdit();
+		}
 	}
 };
 </script>

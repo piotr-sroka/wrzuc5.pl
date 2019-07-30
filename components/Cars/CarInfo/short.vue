@@ -32,8 +32,10 @@ export default {
 			this.$axios
 				.get("/api/cars/edit/" + this.mycar._id)
 				.then(response => {
-					console.log(response);
-					// this.$router.go();
+					if (!response.data.error) {
+          				this.$store.dispatch("checkOwner", response.config);
+						this.$router.push("/cars/edit/" + this.mycar._id);
+					}
 				})
 				.catch(err => {
 					console.log(err);

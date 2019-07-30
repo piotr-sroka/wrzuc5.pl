@@ -9,6 +9,7 @@ export const state = () => {
       token: null
     },
     cars: [],
+    carToEdit: null,
     brands: [
       {brand: "Abarth", models: ["124", "500", "595", "Grande Punto"]},
       {brand: "Acura", models: ["CL", "Integra", "Legend", "MDX", "NSX", "RDX", "RL", "RSX", "TL", "TSX", "VIGOR", "ZDX"], versions: {CL: ["C140 (1992-1998)", "C215 (1999-2006)", "C216 (2006-2013)"]}},
@@ -298,6 +299,9 @@ export const getters = {
   },
   colors: state => {
     return state.colors;
+  },
+  carToEdit: state => {
+    return state.carToEdit;
   }
 };
 export const mutations = {
@@ -320,6 +324,11 @@ export const mutations = {
   unhideEquipmentItem(state, itemToUnhide) {
     if (itemToUnhide.visible) {
       itemToUnhide.visible = "visible";
+    }
+  },
+  editCar(state, carToEdit) {
+    if (carToEdit) {
+      this.state.carToEdit = carToEdit;
     }
   }
 };
@@ -386,5 +395,23 @@ export const actions = {
   },
   unhideEquipmentItem({commit}, itemToUnhide) {
     commit("unhideEquipmentItem", itemToUnhide);
+  },
+  checkOwner({commit}, req) {
+    if (req) {
+      let carId = req.url.split("/").pop();
+      this.$axios
+        .get("/api/cars/edit/" + carId)
+        .then(response => {
+          if (response.data.error) {
+            commit("editCar", null);
+            this.$router.push("/");
+            return;
+          }
+          commit("editCar", response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };

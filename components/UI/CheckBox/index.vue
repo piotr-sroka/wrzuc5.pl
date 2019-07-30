@@ -1,22 +1,25 @@
 <template>
-  <section class="checkbox-container" :class="checked">
-    <input class="input-checkbox" type="checkbox" :id="itemTitle + '-select'" @change="toggleCheckBox" />
+  <section class="checkbox-container" :class="classChecked">
+    <input class="input-checkbox" type="checkbox" :id="itemTitle + '-select'" @change="toggleCheckBox" :checked=checked />
     <label class="form-checkbox input-checkbox--label" :for="itemTitle + '-select'">{{itemTitle}}</label>
   </section>
 </template>
 <script>
 export default {
-  props: ["itemTitle"],
+  props: ["itemTitle", "checked"],
   data() {
     return {
-      checked: ""
+      classChecked: ""
     }
   },
   methods: {
     toggleCheckBox(e) {
 			this.$emit("input", e.target.checked, this.itemTitle);
-      this.checked = this.checked === "" ? "checked" : "";
+      this.classChecked = e.target.checked ? "checked" : "";
     }
+  },
+  mounted() {
+    this.classChecked = this.checked ? "checked" : "";
   }
 };
 </script>
