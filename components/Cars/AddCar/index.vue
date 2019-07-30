@@ -521,7 +521,7 @@ export default {
 			this.email = this.editedCar.email;
 			this.phone = this.editedCar.phone;
 			this.images = this.editedCar.images;
-			this.selectLocation(this.editedCar.location);
+			if (this.editedCar.location) this.selectLocation(this.editedCar.location);
 			this.additionalInfo.registerInPoland.value = this.editedCar.registerInPoland;
 			this.additionalInfo.firstOwner.value = this.editedCar.firstOwner;
 			this.additionalInfo.damaged.value = this.editedCar.damaged;
