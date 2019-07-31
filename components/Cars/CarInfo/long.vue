@@ -377,6 +377,7 @@ export default {
 	},
 	mounted() {
 		this.checkPageTitle();
+		console.log(process.env.GOOGLE_PLACES_API_KEY);
 	}
 };
 </script>
