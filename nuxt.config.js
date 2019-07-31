@@ -38,7 +38,10 @@ module.exports = {
     baseURL: process.env.NODE_ENV === "production" ? "https://wrzuc5.herokuapp.com/" : "http://localhost:3000/"
   },
 
-  env: env.parsed,
+  // env: env.parsed,
+  env: {
+    GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY
+  },
 
   /*
    ** Build configuration
