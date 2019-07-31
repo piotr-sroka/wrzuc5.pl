@@ -2,7 +2,9 @@
   <div>
     <app-header></app-header>
     <transition name="fade">
-      <nuxt />
+      <section class="main">
+        <nuxt />
+      </section>
     </transition>
     <app-footer></app-footer>
   </div>
@@ -40,14 +42,15 @@ html {
 html,
 body {
   width: 100%;
-  max-width: 1300px;
+  /* max-width: 1300px; */
   margin: 0 auto;
   z-index: 1;
   background-color: #ecf0f2;
 }
 body {
   padding: 0 10px;
-  margin-bottom: 380px;
+  margin-top: 48px;
+  margin-bottom: 340px;
 }
 
 *,
@@ -93,10 +96,17 @@ body {
 .fade-leave-to {
   opacity: 0;
 }
+.main {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
 @media screen and (max-width: 720px) {
   body {
     padding: 0;
-    margin-bottom: 540px;
+    margin-bottom: 500px;
+    margin-top: 44px;
   }  
 }
 </style>

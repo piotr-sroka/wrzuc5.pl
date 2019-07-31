@@ -1,37 +1,39 @@
 <template>
-  <nav class="main-navigation sticky" ref="mainNav">
-    <nuxt-link class="nav-top-item nav-home" to="/">Wrzuć 5.</nuxt-link>
-    <nuxt-link v-if="$store.state.auth.isLoggedIn" to="/cars/add-car">
-      <span class="nav-top-item show-above-720">Dodaj ogłoszenie</span>
-      <span class="nav-top-item plus-icon show-below-720"></span>
-    </nuxt-link>
-    <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/login">
-      <span class="nav-top-item">Zaloguj się</span>
-    </nuxt-link>
-    <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/signup">
-      <span class="nav-top-item">Zarejestruj się</span>
-    </nuxt-link>
-    <div
-      class="nav-top-dropdown"
-      :class="navTopToggled ? 'toggle' : ''"
-      v-if="$store.state.auth.isLoggedIn"
-    >
-      <button class="nav-top-item" @click="toggleUserDropdown" v-on-clickaway="hideDropdown">
-        <span class="show-above-720">Moje konto</span>
-        <span class="dropdown-arrow show-above-720"></span>
-        <span class="user-icon show-below-720"></span>
-      </button>
-      <ul class="nav-top-dropdown-list" v-if="navTopToggled">
-        <li>
-          <nuxt-link class="nav-top-item" to="/user">Profil</nuxt-link>
-        </li>
-        <li class="nav-top-divider"></li>
-        <li>
-          <nuxt-link class="nav-top-item" to="/auth/logout" @click.native="navTopToggled = false">Wyloguj</nuxt-link>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <header class="header sticky">
+    <nav class="main-navigation" ref="mainNav">
+      <nuxt-link class="nav-top-item nav-home" to="/">Wrzuć 5.</nuxt-link>
+      <nuxt-link v-if="$store.state.auth.isLoggedIn" to="/cars/add-car">
+        <span class="nav-top-item show-above-720">Dodaj ogłoszenie</span>
+        <span class="nav-top-item plus-icon show-below-720"></span>
+      </nuxt-link>
+      <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/login">
+        <span class="nav-top-item">Zaloguj się</span>
+      </nuxt-link>
+      <nuxt-link v-if="!$store.state.auth.isLoggedIn" to="/auth/signup">
+        <span class="nav-top-item">Zarejestruj się</span>
+      </nuxt-link>
+      <div
+        class="nav-top-dropdown"
+        :class="navTopToggled ? 'toggle' : ''"
+        v-if="$store.state.auth.isLoggedIn"
+      >
+        <button class="nav-top-item" @click="toggleUserDropdown" v-on-clickaway="hideDropdown">
+          <span class="show-above-720">Moje konto</span>
+          <span class="dropdown-arrow show-above-720"></span>
+          <span class="user-icon show-below-720"></span>
+        </button>
+        <ul class="nav-top-dropdown-list" v-if="navTopToggled">
+          <li>
+            <nuxt-link class="nav-top-item" to="/user">Profil</nuxt-link>
+          </li>
+          <li class="nav-top-divider"></li>
+          <li>
+            <nuxt-link class="nav-top-item" to="/auth/logout" @click.native="navTopToggled = false">Wyloguj</nuxt-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
 </template>
 <script>
 import { directive as onClickaway } from "vue-clickaway";
@@ -61,10 +63,16 @@ export default {
 };
 </script>
 <style>
-.main-navigation {
+.header {
+  width: 100%;
   background-color: #1a2229;
+}
+.main-navigation {
+  width: 100%;
+  max-width: 1280px;
   display: flex;
   border-radius: 0 0 6px 6px;
+  margin: 0 auto;
 }
 .nav-home {
   margin-right: auto;

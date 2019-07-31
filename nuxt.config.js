@@ -9,6 +9,9 @@ module.exports = {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'pl',
+    },
     title: "wrzuc5.pl",
     meta: [{ charset: "utf-8" }, { name: "viewport", content: "width=device-width, initial-scale=1" }, { hid: "description", name: "description", content: pkg.description }, { name: "google-site-verification", content: "8SRdc8W60miQcIKkDS-T0Tp2Da8TanZdRh69k1R7Xo4" }],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]

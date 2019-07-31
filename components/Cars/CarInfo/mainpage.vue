@@ -12,7 +12,7 @@
         <p class="info-title show-above-720" v-if="car.title">{{car.title}}</p>
 				<br>
 				<br>
-        <p class="info-title show-above-720 info-location" v-if="car.location">{{car.location.name}}</p>
+        <p class="info-title show-above-720 info-location" v-if="car.location">{{car.location.description}}</p>
         <p class="info-others">
           <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>
           <span class="info-others--item show-above-720" v-if="car.fuel && car.fuel !== 'Wybierz rodzaj paliwa' ">{{car.fuel}}</span>

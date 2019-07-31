@@ -364,8 +364,11 @@ export default {
 						this.errors.email = response.data.errors.email ? response.data.errors.email.message : "";
 						return;
 					}
-					this.$router.push("/cars/" + this.editedCar._id);
-					console.log(response);
+					if (this.editedCar) {
+						this.$router.push("/cars/" + this.editedCar._id);
+					} else {
+						this.$router.push("/");
+					}
 				})
 				.catch(err => {
 					console.log("ERROR", err);
@@ -503,7 +506,7 @@ export default {
 				});
 		},
 		selectLocation(place) {
-			this.location = place.name;
+			this.location = place.description;
 			this.isLocationOpened = false;
 			this.selectedPlace = place;
 		},

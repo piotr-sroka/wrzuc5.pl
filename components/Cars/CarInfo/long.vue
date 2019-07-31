@@ -14,7 +14,7 @@
         <p class="info-contact--item info-contact--username" v-if="carInfo.username">{{carInfo.username}}</p>
         <p class="info-contact--item info-contact--email" v-if="carInfo.email"><a :href="`mailto:${carInfo.email}`">{{carInfo.email}}</a></p>
         <p class="info-contact--item info-contact--phone" v-if="carInfo.phone">{{carInfo.phone}}</p>
-        <p class="info-contact--item info-contact--location" v-if="carInfo.location">{{carInfo.location.name}}</p>
+        <p class="info-contact--item info-contact--location" v-if="carInfo.location">{{carInfo.location.description}}</p>
       </div>
       <div class="info-contact--map" v-if="carInfo.location">
         <GmapMap :center="{lat:mapInfo.lat, lng:mapInfo.lng}" :zoom="15" map-type-id="terrain" style="width: 500px; height: 240px" :options="{

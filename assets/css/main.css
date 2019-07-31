@@ -30,8 +30,9 @@ a:active {
   display: none;
 }
 .sticky {
-  position: sticky;
-  position: -webkit-sticky;
+  position: fixed;
+  /* position: -webkit-sticky; */
+  left: 0;
   top: 0;
   z-index: 999;
 }
