@@ -157,9 +157,9 @@ export default {
 	display: none;
 }
 @media screen and (max-width: 480px) {
-  .nav-home {
+  /* .nav-home { */
     /* margin-right: 0; */
-  }
+  /* } */
   .nav-top-item {
     padding: 14px 10px;
   }

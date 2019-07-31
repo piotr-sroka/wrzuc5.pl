@@ -30,7 +30,7 @@
     <p class="info-subtitle">Dane pojazdu</p>
     <article class="info-lists">
       <ul class="info-list info-technical">
-        <li class="info-list--item" v-for="(item, index) in carInfoDetails.left" :key="index" v-if="item.infoValue">
+        <li class="info-list--item" v-for="(item, index) in carInfoDetails.left" :key="index">
           <span class="info-item--title">{{item.infoName}}</span>
           <span v-if="item.infoName === 'Pojemność skokowa'">{{item.infoValue}} cm<sup>3</sup></span>
           <span v-else-if="item.infoName === 'Przebieg'">{{item.infoValue}} km</span>
@@ -39,7 +39,7 @@
         </li>
       </ul>
       <ul class="info-list info-visual">
-        <li class="info-list--item" v-for="(item, index) in carInfoDetails.right" :key="index" v-if="item.infoValue">
+        <li class="info-list--item" v-for="(item, index) in carInfoDetails.right" :key="index">
           <span class="info-item--title">{{item.infoName}}</span>
           <span>{{item.infoValue}}</span>
         </li>
@@ -303,23 +303,23 @@ export default {
 	computed: {
 		carInfoDetails() {
 			let info = {left: [], right: []};
-			info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand ? this.carInfo.brand : null});
-			info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model ? this.carInfo.model : null});
-			info.left.push({infoName: "Wersja", infoValue: this.carInfo.version ? this.carInfo.version : null});
-			info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd ? this.carInfo.yearOfProd : null});
-			info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage ? this.carInfo.mileage : null});
-			info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode ? this.carInfo.engineCode : null});
-			info.left.push({infoName: "Pojemność skokowa", infoValue: this.carInfo.capacity ? this.carInfo.capacity : null});
-			info.left.push({infoName: "Moc silnika", infoValue: this.carInfo.power ? this.carInfo.power : null});
-			info.left.push({infoName: "Rodzaj paliwa", infoValue: this.carInfo.fuel ? this.carInfo.fuel : null});
-			info.left.push({infoName: "Skrzynia biegów", infoValue: this.carInfo.gearbox ? this.carInfo.gearbox : null});
-			info.left.push({infoName: "Napęd", infoValue: this.carInfo.drive ? this.carInfo.drive : null});
+			if (this.carInfo.brand) info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand});
+			if (this.carInfo.model) info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model});
+			if (this.carInfo.version) info.left.push({infoName: "Wersja", infoValue: this.carInfo.version});
+			if (this.carInfo.yearOfProd) info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd});
+			if (this.carInfo.mileage) info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage});
+			if (this.carInfo.engineCode) info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode});
+			if (this.carInfo.capacity) info.left.push({infoName: "Pojemność skokowa", infoValue: this.carInfo.capacity});
+			if (this.carInfo.power) info.left.push({infoName: "Moc silnika", infoValue: this.carInfo.power});
+			if (this.carInfo.fuel) info.left.push({infoName: "Rodzaj paliwa", infoValue: this.carInfo.fuel});
+			if (this.carInfo.gearbox) info.left.push({infoName: "Skrzynia biegów", infoValue: this.carInfo.gearbox});
+			if (this.carInfo.drive) info.left.push({infoName: "Napęd", infoValue: this.carInfo.drive});
 
-			info.right.push({infoName: "Kolor", infoValue: this.carInfo.color ? this.carInfo.color : null});
-			info.right.push({infoName: "Liczba drzwi", infoValue: this.carInfo.numOfDoors ? this.carInfo.numOfDoors : null});
-			info.right.push({infoName: "Liczba miejsc", infoValue: this.carInfo.numOfSeats ? this.carInfo.numOfSeats : null});
-			info.right.push({infoName: "Kraj pochodzenia", infoValue: this.carInfo.countryOfProd ? this.carInfo.countryOfProd : null});
-			info.right.push({infoName: "Pierwsza rejestracja", infoValue: this.carInfo.firstRegistration ? this.formatDate(this.carInfo.firstRegistration) : null});
+			if (this.carInfo.color) info.right.push({infoName: "Kolor", infoValue: this.carInfo.color});
+			if (this.carInfo.numOfDoors) info.right.push({infoName: "Liczba drzwi", infoValue: this.carInfo.numOfDoors});
+			if (this.carInfo.numOfSeats) info.right.push({infoName: "Liczba miejsc", infoValue: this.carInfo.numOfSeats});
+			if (this.carInfo.countryOfProd) info.right.push({infoName: "Kraj pochodzenia", infoValue: this.carInfo.countryOfProd});
+			if (this.carInfo.firstRegistration) info.right.push({infoName: "Pierwsza rejestracja", infoValue: this.formatDate(this.carInfo.firstRegistration)});
 			info.right.push({infoName: "Zarejestrowany w Polsce", infoValue: this.carInfo.registerInPoland ? "Tak" : "Nie"});
 			info.right.push({infoName: "Pierwszy właściciel", infoValue: this.carInfo.firstOwner ? "Tak" : "Nie"});
 			info.right.push({infoName: "Uszkodzony", infoValue: this.carInfo.damaged ? "Tak" : "Nie"});
