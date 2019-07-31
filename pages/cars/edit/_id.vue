@@ -1,5 +1,5 @@
 <template>
-  <app-add-car v-if="carToEdit" :edited-car=carToEdit></app-add-car>
+  <app-add-car v-if="carToEdit" :edited-car="carToEdit"></app-add-car>
 </template>
 
 <script>

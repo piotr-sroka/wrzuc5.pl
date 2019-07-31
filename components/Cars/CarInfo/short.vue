@@ -33,8 +33,7 @@ export default {
 				.get("/api/cars/edit/" + this.mycar._id)
 				.then(response => {
 					if (!response.data.error) {
-          				this.$store.dispatch("checkOwner", response.config);
-						this.$router.push("/cars/edit/" + this.mycar._id);
+						this.$store.dispatch("checkOwner", response.config);
 					}
 				})
 				.catch(err => {
@@ -107,13 +106,13 @@ export default {
 	.car {
 		width: 100%;
 		max-width: 100%;
-    display: flex;
-    margin-left: 0;
-    justify-content: space-between;
-  }
-  .car-thumb {
-    height: 88px;
-  }
+		display: flex;
+		margin-left: 0;
+		justify-content: space-between;
+	}
+	.car-thumb {
+		height: 88px;
+	}
 	.car:nth-child(odd) {
 		background-color: #e8e8e8;
 	}

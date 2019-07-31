@@ -31,10 +31,10 @@ export default {
 	object-fit: cover;
 	margin: 5px;
 }
-.thumb-container.loaded:hover .thumb {
+.thumb-container.loaded:hover .thumb, .thumb-container.loaded.selected-to-remove .thumb {
   opacity: .4;
 }
-.thumb-container.loaded:hover::after {
+.thumb-container.loaded:hover::after, .thumb-container.loaded.selected-to-remove::after {
   content: "\e609";
   font-family: "Flat-UI-Pro-Icons";
   font-size: 2em;

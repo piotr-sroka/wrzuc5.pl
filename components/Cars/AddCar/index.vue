@@ -120,7 +120,7 @@
 					<label class="drop-input--label" for="drop-input">Dodaj zdjęcia</label>
 				</div>
 				<div class="images-thumbs">
-					<app-image-thumb v-for="(image, index) in images" :key="index" :image="image.thumb" @click.native="removeImage(image)"></app-image-thumb>
+					<app-image-thumb v-for="(image, index) in images" :key="index" :image="image.thumb" @click.native="editedCar ? addToRemove($event, image) : removeImage(image)"></app-image-thumb>
 				</div>
 			</div>
 			<div class="form-group info">
@@ -159,7 +159,7 @@
 					</div>
 				</div>
 			</div>
-			<button class="form-button-submit" @click.prevent="addCar">Dodaj ogłoszenie</button>
+			<button class="form-button-submit" @click.prevent="addCar">{{editedCar ? "Zapisz ogłoszenie" : "Dodaj ogłoszenie"}}</button>
 		</form>
 	</section>
 </template>
@@ -276,7 +276,8 @@ export default {
 			},
 			isLocationOpened: false,
 			places: [],
-			selectedPlace: null
+			selectedPlace: null,
+			imagesToRemove: []
 		};
 	},
 	computed: {
@@ -342,11 +343,13 @@ export default {
 				username: this.username,
 				email: this.email,
 				phone: this.phone,
-				location: this.selectedPlace
+				location: this.selectedPlace,
+				imagesToRemove: this.imagesToRemove
 			};
 			console.log(newCar);
+			let url = this.editedCar ? "/api/cars/edit/" + this.editedCar._id : "/api/cars/add-new-car/";
 			this.$axios
-				.post("/api/cars/add-new-car/", newCar)
+				.post(url, newCar)
 				.then(response => {
 					if (response.data.errors) {
 						console.log(response.data.errors);
@@ -361,7 +364,8 @@ export default {
 						this.errors.email = response.data.errors.email ? response.data.errors.email.message : "";
 						return;
 					}
-					this.$router.push("/");
+					this.$router.push("/cars/" + this.editedCar._id);
+					console.log(response);
 				})
 				.catch(err => {
 					console.log("ERROR", err);
@@ -439,6 +443,14 @@ export default {
 				});
 			});
 		},
+		addToRemove(e, image) {
+			e.target.classList.toggle("selected-to-remove");
+			if (e.target.classList.contains("selected-to-remove")) {
+				this.imagesToRemove.push(image);
+			} else {
+				this.imagesToRemove.splice(this.imagesToRemove.indexOf(image), 1);
+			}
+		},
 		removeImage(image) {
 			let urlInfo = {key: image.fileKey, url: image.thumb.src};
 			this.$axios
@@ -496,31 +508,30 @@ export default {
 			this.selectedPlace = place;
 		},
 		parseForEdit() {
-			this.brand = this.editedCar.brand;
-			this.model = this.editedCar.model;
-			this.version = this.editedCar.version;
-			this.yearOfProd = this.editedCar.yearOfProd;
-			this.fuel = this.editedCar.fuel;
-			this.gearbox = this.editedCar.gearbox;
-			this.drive = this.editedCar.drive;
-			this.mileage = this.editedCar.mileage;
-			this.vin = this.editedCar.vin;
-			this.engineCode = this.editedCar.engineCode;
-			this.capacity = this.editedCar.capacity;
-			this.power = this.editedCar.power;
-			this.title = this.editedCar.title;
-			this.description = this.editedCar.description;
-			this.price = this.editedCar.price;
-			this.countryOfProd = this.editedCar.countryOfProd;
-			this.firstRegistration = this.editedCar.firstRegistration;
-			this.numOfDoors = this.editedCar.numOfDoors;
-			this.numOfSeats = this.editedCar.numOfSeats;
-			this.color = this.editedCar.color;
-			this.carEquipment = this.editedCar.equipment;
-			this.username = this.editedCar.username;
-			this.email = this.editedCar.email;
-			this.phone = this.editedCar.phone;
-			this.images = this.editedCar.images;
+			this.brand = this.editedCar.brand || this.brand;
+			this.model = this.editedCar.model || this.model;
+			this.version = this.editedCar.version || this.version;
+			this.yearOfProd = this.editedCar.yearOfProd || this.yearOfProd;
+			this.fuel = this.editedCar.fuel || this.fuel;
+			this.gearbox = this.editedCar.gearbox || this.gearbox;
+			this.drive = this.editedCar.drive || this.drive;
+			this.mileage = this.editedCar.mileage || this.mileage;
+			this.vin = this.editedCar.vin || this.vin;
+			this.engineCode = this.editedCar.engineCode || this.engineCode;
+			this.capacity = this.editedCar.capacity || this.capacity;
+			this.power = this.editedCar.power || this.power;
+			this.title = this.editedCar.title || this.title;
+			this.description = this.editedCar.description || this.description;
+			this.price = this.editedCar.price || this.price;
+			this.countryOfProd = this.editedCar.countryOfProd || this.countryOfProd;
+			this.firstRegistration = this.editedCar.firstRegistration || this.firstRegistration;
+			this.numOfDoors = this.editedCar.numOfDoors || this.numOfDoors;
+			this.numOfSeats = this.editedCar.numOfSeats || this.numOfSeats;
+			this.color = this.editedCar.color || this.color;
+			this.username = this.editedCar.username || this.username;
+			this.email = this.editedCar.email || this.email;
+			this.phone = this.editedCar.phone || this.phone;
+			this.images = this.editedCar.images || this.images;
 			if (this.editedCar.location) this.selectLocation(this.editedCar.location);
 			this.additionalInfo.registerInPoland.value = this.editedCar.registerInPoland;
 			this.additionalInfo.firstOwner.value = this.editedCar.firstOwner;
@@ -531,7 +542,9 @@ export default {
 			this.additionalInfo.registerAsAntique.value = this.editedCar.registerAsAntique;
 			this.additionalInfo.tunned.value = this.editedCar.tunned;
 			this.additionalInfo.homologated.value = this.editedCar.homologated;
-			console.log(this.editedCar);
+			this.editedCar.equipment.forEach(eqItem => {
+				this.onEquipmentInput(eqItem.equipmentName, "Wyposażenie");
+			});
 		}
 	},
 	mounted() {
@@ -736,7 +749,7 @@ export default {
 	width: 100%;
 }
 .places {
-	font-size: .9em;
+	font-size: 0.9em;
 	background-color: #ffffff;
 	border-radius: 6px;
 	position: absolute;
@@ -759,7 +772,7 @@ export default {
 	display: block;
 }
 .place-description {
-	font-size: .9em;
+	font-size: 0.9em;
 	display: block;
 }
 

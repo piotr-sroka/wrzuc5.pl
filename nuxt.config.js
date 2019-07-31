@@ -27,7 +27,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/datepicker", ssr: false }, { src: "~/plugins/vue2-google-maps", ssr: true }],
+  plugins: [{ src: "~/plugins/datepicker", ssr: false }, { src: "~/plugins/vue2-google-maps", ssr: false }],
 
   /*
    ** Nuxt.js modules

@@ -329,6 +329,7 @@ export const mutations = {
   editCar(state, carToEdit) {
     if (carToEdit) {
       this.state.carToEdit = carToEdit;
+      this.$router.push("/cars/edit/" + carToEdit._id);
     }
   }
 };

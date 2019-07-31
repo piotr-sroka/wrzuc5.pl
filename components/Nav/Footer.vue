@@ -1,23 +1,90 @@
 <template>
-  <footer class="footer"></footer>
+  <footer class="footer">
+    <article class="footer-section footer-links">
+      <h4 class="footer-links--link footer-section--title">wrzuc5.pl</h4>
+      <p class="footer-links--link">Regulamin</p>
+      <p class="footer-links--link">Polityka prywatności</p>
+      <p class="footer-links--link">Cennik</p>
+      <p class="footer-links--link">Najczęstsze pytania</p>
+    </article>
+    <article class="footer-section footer-contact-form">
+      <form class="form">
+        <h4 class="footer-section--title">Skontaktuj się z nami</h4>
+        <input type="text" placeholder="Twoje imię" class="form-input contact-form--input">
+        <input type="email" placeholder="Twój email" class="form-input contact-form--input">
+        <textarea type="text" placeholder="Wiadomość" class="form-input form-textarea contact-form--input"></textarea>
+			  <button class="form-button-submit" @click.prevent="submitContactForm">Wyślij</button>
+      </form>
+    </article>
+  </footer>
 </template>
 
 <script>
 export default {
-  
-}
+  methods: {
+    submitContactForm() {
+      console.log("Sending form...");
+    }
+  }
+};
 </script>
 
 <style>
 .footer {
-    background-color: #1a2229;
-    height: 240px;
-    width: 100%;
-    max-width: 1280px;
-    border-radius: 6px 6px 0 0;
-    position: fixed;
-    bottom: 0;
-    margin: 0 auto;
-    z-index: -1;
+	background-color: #1a2229;
+	height: 340px;
+	width: 100%;
+	max-width: 1280px;
+	border-radius: 6px 6px 0 0;
+	position: fixed;
+	bottom: 0;
+	margin: 0 auto;
+	z-index: -1;
+	padding: 40px 240px;
+	color: #edeff1;
+	font-size: 0.8em;
+	font-weight: lighter;
+	display: flex;
+}
+.footer-section {
+	flex: 1;
+	padding: 0 80px;
+}
+.footer-links {
+	text-align: right;
+}
+.footer-links--title {
+	font-size: 1em;
+}
+.footer-links--link {
+	padding: 5px;
+	cursor: pointer;
+	transition: color 0.2s linear;
+}
+.footer-links--link:hover {
+	color: #2980b9;
+}
+.footer-section--title {
+  padding: 5px;
+  font-weight: normal;
+}
+.footer-contact-form .form {
+  background-color: transparent;
+  padding: 0;
+}
+.footer-contact-form .form .contact-form--input {
+  font-size: 1em;
+}
+.footer-contact-form .form-textarea {
+  resize: none;
+  height: 80px;
+}
+.footer-contact-form .form-button-submit {
+  border-color: #edeff1;
+  color: #edeff1;
+}
+.footer-contact-form .form-button-submit:hover {
+  background-color: #edeff1;
+  color: #1a2229;
 }
 </style>

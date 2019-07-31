@@ -16,6 +16,10 @@ img {
   max-width: 100%;
   max-height: 100%;
 }
+.gm-svpc img {
+  max-width: unset;
+  max-height: unset;
+}
 a,
 a:link,
 a:active {

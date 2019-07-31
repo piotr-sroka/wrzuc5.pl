@@ -161,6 +161,77 @@ class CarsInfos {
         console.log(err);
       });
   }
+  saveEditedCar(req, res) {
+    if (!req.headers.cookie) {
+      return;
+    }
+    let token = req.headers.cookie
+      .split(";")
+      .find(c => c.trim().startsWith("jwt="))
+      .split("=")[1];
+    CarInfo.findById(req.params.id)
+      .then(result => {
+        if (jwt.decode(token).id.toString() !== result.createdBy.toString()) {
+          res.send({error: "wrong user"});
+          return;
+        }
+        let carToEdit = new CarInfo(result);
+        let newImages = req.body.images;
+        let imagesToRemove = req.body.imagesToRemove;
+        imagesToRemove.forEach(imageToRemove => {
+          let imToRemove = newImages.find(image => {
+            return image.fileKey === imageToRemove.fileKey;
+          });
+          newImages.splice(newImages.indexOf(imToRemove), 1);
+        });
+        carToEdit
+          .updateOne({
+            brand: req.body.brand == "" ? carToEdit.brand : req.body.brand,
+            model: req.body.model == "" ? carToEdit.model : req.body.model,
+            version: req.body.version == "" ? carToEdit.version : req.body.version,
+            fuel: req.body.fuel == "" ? carToEdit.fuel : req.body.fuel,
+            price: req.body.price == "" ? carToEdit.price : req.body.price,
+            mileage: req.body.mileage == "" ? carToEdit.mileage : req.body.mileage,
+            yearOfProd: req.body.yearOfProd == "" ? carToEdit.yearOfProd : req.body.yearOfProd,
+            location: req.body.location == "" ? carToEdit.location : req.body.location,
+            email: req.body.email == "" ? carToEdit.email : req.body.email,
+            gearbox: req.body.gearbox,
+            drive: req.body.drive,
+            title: req.body.title,
+            description: req.body.description,
+            color: req.body.color,
+            engineCode: req.body.engineCode,
+            power: req.body.power,
+            capacity: req.body.capacity,
+            numOfDoors: req.body.numOfDoors,
+            numOfSeats: req.body.numOfSeats,
+            equipment: req.body.equipment,
+            images: newImages,
+            countryOfProd: req.body.countryOfProd,
+            firstRegistration: req.body.firstRegistration,
+            registerInPoland: req.body.registerInPoland,
+            firstOwner: req.body.firstOwner,
+            damaged: req.body.damaged,
+            dpf: req.body.dpf,
+            noAccidents: req.body.noAccidents,
+            servisedInAso: req.body.servisedInAso,
+            registerAsAntique: req.body.registerAsAntique,
+            tunned: req.body.tunned,
+            homologated: req.body.homologated,
+            username: req.body.username,
+            phone: req.body.phone
+          })
+          .then(result => {
+            res.status(200).send("Car edited");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 }
 
 export default CarsInfos;

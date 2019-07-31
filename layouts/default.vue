@@ -42,7 +42,7 @@ body {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  margin-bottom: 140px;
+  margin-bottom: 240px;
   z-index: 1;
   background-color: #ecf0f2;
 }
