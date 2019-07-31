@@ -40,11 +40,14 @@ html {
 html,
 body {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1300px;
   margin: 0 auto;
-  margin-bottom: 240px;
   z-index: 1;
   background-color: #ecf0f2;
+}
+body {
+  padding: 0 10px;
+  margin-bottom: 380px;
 }
 
 *,
@@ -89,5 +92,11 @@ body {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+@media screen and (max-width: 720px) {
+  body {
+    padding: 0;
+    margin-bottom: 540px;
+  }  
 }
 </style>

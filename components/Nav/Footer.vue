@@ -1,12 +1,13 @@
 <template>
   <footer class="footer">
     <article class="footer-section footer-links">
-      <h4 class="footer-links--link footer-section--title">wrzuc5.pl</h4>
+      <h4 class="footer-section--title">wrzuc5.pl</h4>
       <p class="footer-links--link">Regulamin</p>
       <p class="footer-links--link">Polityka prywatności</p>
       <p class="footer-links--link">Cennik</p>
       <p class="footer-links--link">Najczęstsze pytania</p>
     </article>
+    <span class="divider show-below-720"></span>
     <article class="footer-section footer-contact-form">
       <form class="form">
         <h4 class="footer-section--title">Skontaktuj się z nami</h4>
@@ -33,8 +34,8 @@ export default {
 .footer {
 	background-color: #1a2229;
 	height: 340px;
-	width: 100%;
-	max-width: 1280px;
+	width: Calc(100% - 20px);
+  max-width: 1280px;
 	border-radius: 6px 6px 0 0;
 	position: fixed;
 	bottom: 0;
@@ -87,5 +88,28 @@ export default {
 .footer-contact-form .form-button-submit:hover {
   background-color: #edeff1;
   color: #1a2229;
+}
+.footer .divider {
+  background-color: #edeff1;
+  width: Calc(100% - 40px);
+}
+@media screen and (max-width: 720px) {
+  .footer {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    height: 520px;
+    padding: 20px 0;
+  }  
+  .footer-section {
+    width: 100%;
+    padding: 10px 40px;
+  }
+  .footer-links {
+    text-align: left;
+  }
+	.footer .divider.show-below-720 {
+		display: block;
+	}
 }
 </style>
