@@ -27,7 +27,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [{ src: "~/plugins/datepicker", ssr: false }, { src: "~/plugins/vue2-google-maps", ssr: true }],
+  plugins: [{ src: "~/plugins/datepicker", ssr: false }, { src: "~/plugins/vue2-google-maps", ssr: false }],
 
   /*
    ** Nuxt.js modules
@@ -38,10 +38,7 @@ module.exports = {
     baseURL: process.env.NODE_ENV === "production" ? "https://wrzuc5.herokuapp.com/" : "http://localhost:3000/"
   },
 
-  // env: env.parsed,
-  env: {
-    GOOGLE_PLACES_API_KEY: process.env.GOOGLE_PLACES_API_KEY
-  },
+  env: env.parsed,
 
   /*
    ** Build configuration
