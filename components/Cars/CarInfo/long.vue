@@ -377,7 +377,6 @@ export default {
 	},
 	mounted() {
 		this.checkPageTitle();
-		console.log(process.env.AWS_SECRET_ACCESS_KEY);
 	}
 };
 </script>
