@@ -377,7 +377,7 @@ export default {
 	},
 	mounted() {
 		this.checkPageTitle();
-		console.log(process.env.GOOGLE_PLACES_API_KEY);
+		console.log(process.env.AWS_SECRET_ACCESS_KEY);
 	}
 };
 </script>

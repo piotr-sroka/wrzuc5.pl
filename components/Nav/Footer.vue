@@ -40,15 +40,16 @@ export default {
 	bottom: 0;
 	margin: 0 auto;
 	z-index: -1;
-	padding: 40px 240px;
 	color: #edeff1;
 	font-size: 0.8em;
 	font-weight: lighter;
-	display: flex;
+  display: flex;
+  justify-content: center;
 }
 .footer-section {
 	flex: 1;
-	padding: 0 80px;
+  padding: 40px;
+  max-width: 320px;
 }
 .footer-links {
 	text-align: right;
