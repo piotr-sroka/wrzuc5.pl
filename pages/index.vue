@@ -9,6 +9,11 @@ export default {
   middleware: ['check-auth'],
   components: {
     AppHome
-  }
+  },
+  head() {
+    return {
+      title: "Wrzuć5"
+    }
+  },
 };
 </script>

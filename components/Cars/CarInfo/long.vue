@@ -1,5 +1,5 @@
 <template>
-  <section class="car-page">
+  <section class="car-page" v-if="isReRendered">
     <app-gallery :images="carInfo.images" v-if="imagesLoaded && carInfo.images.length"></app-gallery>
     <h3 class="info-title">
       <span class="info-title--tag">{{carInfo.brand}}</span>
@@ -75,6 +75,7 @@ export default {
 	},
 	data() {
 		return {
+			isReRendered: true,
 			carInfo: {},
 			imagesLoaded: false,
 			pageName: "",
@@ -377,6 +378,10 @@ export default {
 	},
 	mounted() {
 		this.checkPageTitle();
+		this.isReRendered = false;
+		this.$nextTick(() => {
+			this.isReRendered = true;
+		});
 	}
 };
 </script>
@@ -408,7 +413,7 @@ export default {
 	font-size: 0.9em;
 }
 .info-title {
-	margin: 16px 0;
+	padding: 16px 0;
 	display: flex;
 	align-items: center;
 }

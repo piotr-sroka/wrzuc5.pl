@@ -56,7 +56,6 @@ export default {
   justify-content: center;
 }
 .footer-section {
-	flex: 1;
   padding: 40px;
   max-width: 320px;
 }
@@ -77,6 +76,9 @@ export default {
 .footer-section--title {
   padding: 5px;
   font-weight: normal;
+}
+.footer-contact-form {
+  flex: 1;
 }
 .footer-contact-form .form {
   background-color: transparent;

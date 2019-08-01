@@ -1,7 +1,6 @@
 <template>
   <section>
     <h3 class="info-title">Moje ogłoszenia:</h3>
-    <span class="divider"></span>
     <section class="cars-list">
       <app-short-car-info v-for="(car, index) in myCars" :key="index" :mycar="car"></app-short-car-info>
     </section>

@@ -10,6 +10,8 @@ export const state = () => {
     },
     cars: [],
     carToEdit: null,
+    searchPhrase: "",
+    findedCard: [],
     brands: [
       {brand: "Abarth", models: ["124", "500", "595", "Grande Punto"]},
       {brand: "Acura", models: ["CL", "Integra", "Legend", "MDX", "NSX", "RDX", "RL", "RSX", "TL", "TSX", "VIGOR", "ZDX"], versions: {CL: ["C140 (1992-1998)", "C215 (1999-2006)", "C216 (2006-2013)"]}},
@@ -302,6 +304,12 @@ export const getters = {
   },
   carToEdit: state => {
     return state.carToEdit;
+  },
+  searchPhrase: state => {
+    return state.searchPhrase;
+  },
+  findedCars: state => {
+    return state.findedCard;
   }
 };
 export const mutations = {
@@ -331,6 +339,15 @@ export const mutations = {
       this.state.carToEdit = carToEdit;
       this.$router.push("/cars/edit/" + carToEdit._id);
     }
+  },
+  setSearchPhrase(state, searchPhrase) {
+    this.state.searchPhrase = searchPhrase;
+  },
+  getSearchedCars(state, findedCars) {
+    this.state.findedCard = findedCars;
+  },
+  clearSearchResults(state) {
+    this.state.findedCard = [];
   }
 };
 export const actions = {
@@ -381,9 +398,9 @@ export const actions = {
     Cookie.remove("jwt");
     commit("logout");
   },
-  getCars({commit}) {
+  getCars({commit}, limit) {
     this.$axios
-      .get("/api/cars/")
+      .get("/api/cars/?limit=" + limit)
       .then(response => {
         commit("getCars", response.data);
       })
@@ -409,6 +426,32 @@ export const actions = {
             return;
           }
           commit("editCar", response.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  clearSearchResults({commit}) {
+    commit("clearSearchResults");
+  },
+  setSearchPhrase({commit}, searchPhrase) {
+    commit("setSearchPhrase", searchPhrase);
+    sessionStorage.setItem("search-phrase", searchPhrase);
+    Cookie.set("search-phrase", searchPhrase);
+  },
+  getSearchedCars({commit}, searchPhrase) {
+    if (searchPhrase) {
+      let query = {
+        limit: 10,
+        page: 1,
+        search: searchPhrase.toLowerCase(),
+        fields: {strings: ["brand", "model", "version", "fuel", "gearbox", "drive", "title", "description", "countryOfProd", "color", "engineCode", "username", "email", "phone"], numbers: ["price"]}
+      };
+      this.$axios
+        .post("/api/cars/search/", query)
+        .then(response => {
+          commit("getSearchedCars", response.data);
         })
         .catch(err => {
           console.log(err);

@@ -2,7 +2,8 @@
   <section class="container">
     <app-search-engine></app-search-engine>
     <div class="cars-list">
-      <app-main-page-car-info v-if="!car.isDeleted" v-for="(car, index) in this.cars" :key="index" :car="car"></app-main-page-car-info>
+      <h3 class="list-title">Najnowsze ogłoszenia</h3>
+      <app-main-page-car-info v-for="(car, index) in this.cars" :key="index" :car="car"></app-main-page-car-info>
     </div>
   </section>
 </template>
@@ -21,7 +22,7 @@ export default {
     ...mapGetters(["cars"])
   },
   created() {
-    this.$store.dispatch("getCars");
+    this.$store.dispatch("getCars", 5);
   }
 };
 </script>
@@ -29,6 +30,12 @@ export default {
 <style scoped>
   .container {
     align-items: flex-start;
+  }
+  .list-title {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 20px 0;
   }
   @media screen and (max-width: 720px) {
     .cars-list {

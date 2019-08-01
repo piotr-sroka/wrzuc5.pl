@@ -8,11 +8,11 @@ export default {
 	middleware: ["check-auth"],
 	components: {
 		AppAddCar
-    },
-    head() {
-        return {
-            title: "Dodaj ogłoszenie"
-        }
-    }
+	},
+	head() {
+		return {
+			title: "Dodaj ogłoszenie"
+		};
+	}
 };
 </script>

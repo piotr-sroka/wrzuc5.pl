@@ -174,7 +174,7 @@ import OverlayScrollbars from "os-vue/overlay-scrollbars";
 import debounce from "debounce";
 
 export default {
-	props: ["edited-car"],
+	props: ["edited-car", "isForSearch"],
 	components: {
 		AppImageThumb,
 		AppSelectWithSearchInput,
@@ -582,7 +582,7 @@ export default {
 	}
 };
 </script>
-<style scoped>
+<style>
 .container {
 	margin: 0 auto;
 	max-width: 900px;

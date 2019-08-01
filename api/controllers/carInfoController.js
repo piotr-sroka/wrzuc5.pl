@@ -5,7 +5,14 @@ let CarInfo = mongoose.model("CarInfo");
 
 class CarsInfos {
   loadAllCars(req, res) {
-    CarInfo.find()
+    if (isNaN(+req.query.limit) || +req.query.limit < 0) {
+      res.status(500).send("Wrong query");
+      return;
+    }
+    let limit = +req.query.limit;
+    CarInfo.find({isDeleted: false})
+      .sort({createdTime: "desc"})
+      .limit(limit)
       .then(result => {
         res.status(200).send(result);
       })
@@ -24,6 +31,27 @@ class CarsInfos {
   }
   loadCar(req, res) {
     CarInfo.findById(req.params.id)
+      .then(result => {
+        res.status(200).send(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+  findCars(req, res) {
+    let fields = req.body.fields;
+    let query = [];
+    let limit = Math.min(req.body.limit, 50);
+    let page = req.body.page;
+    let skip = (Math.max(0, +page) - 1) * limit;
+    fields.strings.forEach(path => {
+      query.push({[path]: {$regex: req.body.search, $options: "i"}});
+    });
+    CarInfo.find({isDeleted: false})
+      // .or(query, {"location.placeId": "ChIJy4gnfwTEEUcRFv628_L17qQ"})
+      .or(query)
+      .limit(limit)
+      .skip(skip)
       .then(result => {
         res.status(200).send(result);
       })

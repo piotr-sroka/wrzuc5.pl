@@ -1,22 +1,50 @@
 <template>
-  <section class="search-engine">
-    <input type="text" placeholder="czego dziś szukasz?" class="search-input" id="search-input" />
-    <label class="search-input--label" for="search-input"></label>
-    <a class="search-advanced">Wyszukiwanie zaawansowane</a>
+  <section class="search-box">
+    <article class="search-engine">
+      <input type="text" placeholder="czego dziś szukasz?" class="search-input" id="search-input" v-model="searchPhrase" @keyup.enter.prevent="search" />
+      <label class="search-input--label" for="search-input" @click.prevent="search"></label>
+      <nuxt-link class="search-advanced" to="/cars/search" @click.native="clearSearchPhrase">Wyszukiwanie zaawansowane</nuxt-link>
+    </article>
+    <span class="info-message form-message-error" v-if="searchError">{{searchError}}</span>
   </section>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      searchPhrase: "",
+      searchError: ""
+    }
+  },
+  methods: {
+    clearSearchPhrase() {
+      sessionStorage.removeItem("search-phrase");
+      this.$store.dispatch("clearSearchResults");
+    },
+    search() {
+      this.$store.dispatch("clearSearchResults");
+      this.$store.dispatch("setSearchPhrase", this.searchPhrase);
+      if (this.searchPhrase.length > 2) {
+        this.$router.push("/cars/search");
+      } else {
+        this.searchError = "Szukana fraza jest zbyt krótka. Podaj minimum 3 znaki."
+      }
+    }
+  }
+};
 </script>
 
 <style>
-.search-engine {
+.search-engine, .search-box .info-message {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
   display: flex;
   padding: 20px 14px;
   align-items: center;
+}
+.search-box .info-message {
+  padding: 0 14px;
 }
 .search-input::placeholder {
   color: #c2c2c2;
