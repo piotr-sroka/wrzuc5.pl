@@ -416,6 +416,7 @@ export default {
 	padding: 16px 0;
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 }
 .info-subtitle {
 	margin: 12px 0;
@@ -456,6 +457,13 @@ export default {
 }
 .info-contact--item {
 	margin: 4px 0;
+}
+.info-contact--item a, .info-contact--item a:link, .info-contact--item a:active {
+	color: inherit;
+	transition: color .2s linear;
+}
+.info-contact--item a:hover, .info-contact--item a:link:hover, .info-contact--item a:active:hover {
+	color: #2980b9;
 }
 .info-contact--username,
 .info-contact--email,
@@ -520,6 +528,13 @@ export default {
 	.info-title,
 	.info-subtitle {
 		padding: 0 10px;
+	}
+}
+@media screen and (max-width: 380px) {
+	.info-title--tag.title-tag--price {
+		width: 100%;
+		text-align: right;
+		margin-top: 12px;
 	}
 }
 </style>

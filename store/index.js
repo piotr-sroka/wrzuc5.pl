@@ -12,6 +12,7 @@ export const state = () => {
     carToEdit: null,
     searchPhrase: "",
     findedCard: [],
+    searching: false,
     brands: [
       {brand: "Abarth", models: ["124", "500", "595", "Grande Punto"]},
       {brand: "Acura", models: ["CL", "Integra", "Legend", "MDX", "NSX", "RDX", "RL", "RSX", "TL", "TSX", "VIGOR", "ZDX"], versions: {CL: ["C140 (1992-1998)", "C215 (1999-2006)", "C216 (2006-2013)"]}},
@@ -310,6 +311,9 @@ export const getters = {
   },
   findedCars: state => {
     return state.findedCard;
+  },
+  searching: state => {
+    return state.searching;
   }
 };
 export const mutations = {
@@ -348,6 +352,12 @@ export const mutations = {
   },
   clearSearchResults(state) {
     this.state.findedCard = [];
+  },
+  searchingStarted(state) {
+    this.state.searching = true;
+  },
+  searchingStopped(state) {
+    this.state.searching = false;
   }
 };
 export const actions = {
@@ -399,6 +409,9 @@ export const actions = {
     commit("logout");
   },
   getCars({commit}, limit) {
+    if (!limit) {
+      let limit = 50;
+    }
     this.$axios
       .get("/api/cars/?limit=" + limit)
       .then(response => {
@@ -437,25 +450,32 @@ export const actions = {
   },
   setSearchPhrase({commit}, searchPhrase) {
     commit("setSearchPhrase", searchPhrase);
-    sessionStorage.setItem("search-phrase", searchPhrase);
-    Cookie.set("search-phrase", searchPhrase);
+    let searchStorage = {type: searchPhrase.type, phrase: searchPhrase.phrase};
+    sessionStorage.setItem("search-phrase", JSON.stringify(searchStorage));
+    Cookie.set("search-phrase", JSON.stringify(searchStorage));
   },
-  getSearchedCars({commit}, searchPhrase) {
-    if (searchPhrase) {
-      let query = {
-        limit: 10,
-        page: 1,
-        search: searchPhrase.toLowerCase(),
-        fields: {strings: ["brand", "model", "version", "fuel", "gearbox", "drive", "title", "description", "countryOfProd", "color", "engineCode", "username", "email", "phone"], numbers: ["price"]}
-      };
-      this.$axios
-        .post("/api/cars/search/", query)
-        .then(response => {
-          commit("getSearchedCars", response.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+  getSearchedCars({commit}, searchQuery) {
+    let query = {
+      limit: 10,
+      page: 1,
+      type: searchQuery.type,
+      search: searchQuery.phrase,
+      fields: {strings: ["brand", "model", "version", "fuel", "gearbox", "drive", "title", "description", "countryOfProd", "color", "engineCode", "username", "email", "phone"], numbers: ["price"]}
+    };
+    if (Cookie.get("search-phrase")) {
+      let cookieSearch = JSON.parse(Cookie.get("search-phrase"));
+      query.type = cookieSearch.type;
+      query.search = cookieSearch.phrase;
     }
+    commit("searchingStarted");    
+    this.$axios
+      .post("/api/cars/search/", query)
+      .then(response => {
+        commit("getSearchedCars", response.data);
+        commit("searchingStopped");
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };

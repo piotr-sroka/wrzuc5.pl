@@ -10,8 +10,8 @@
 		  		<span class="info-price show-below-720">{{car.price}} PLN</span>
         </h3>
         <p class="info-title show-above-720" v-if="car.title">{{car.title}}</p>
-				<br>
-				<br>
+				<br class="show-above-720" v-if="!car.title">
+				<br class="show-above-720" v-if="!car.location">
         <p class="info-title show-above-720 info-location" v-if="car.location">{{car.location.description}}</p>
         <p class="info-others">
           <span class="info-others--item" v-if="car.yearOfProd">{{car.yearOfProd}}</span>

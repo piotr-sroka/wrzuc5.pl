@@ -9,7 +9,7 @@ class CarsInfos {
       res.status(500).send("Wrong query");
       return;
     }
-    let limit = +req.query.limit;
+    let limit = Math.min(+req.query.limit, 50);
     CarInfo.find({isDeleted: false})
       .sort({createdTime: "desc"})
       .limit(limit)
@@ -22,6 +22,7 @@ class CarsInfos {
   }
   loadMyCars(req, res) {
     CarInfo.find({createdBy: req.body.user})
+      .sort({createdTime: "desc"})
       .then(result => {
         res.status(200).send(result);
       })
@@ -40,24 +41,57 @@ class CarsInfos {
   }
   findCars(req, res) {
     let fields = req.body.fields;
+    let queryType = req.body.type;
     let query = [];
     let limit = Math.min(req.body.limit, 50);
     let page = req.body.page;
     let skip = (Math.max(0, +page) - 1) * limit;
-    fields.strings.forEach(path => {
-      query.push({[path]: {$regex: req.body.search, $options: "i"}});
-    });
-    CarInfo.find({isDeleted: false})
-      // .or(query, {"location.placeId": "ChIJy4gnfwTEEUcRFv628_L17qQ"})
-      .or(query)
-      .limit(limit)
-      .skip(skip)
-      .then(result => {
-        res.status(200).send(result);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    if (Object.entries(req.body.search).length === 0 && req.body.search.constructor === Object) {
+      CarInfo.find({isDeleted: false})
+        .sort({createdTime: "desc"})
+        .limit(limit)
+        .skip(skip)
+        .then(result => {
+          res.status(200).send(result);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    } else {
+      if (queryType === "simple") {
+        fields.strings.forEach(path => {
+          query.push({[path]: {$regex: req.body.search, $options: "i"}});
+        });
+        CarInfo.find({isDeleted: false})
+          .sort({createdTime: "desc"})
+          .or(query)
+          .limit(limit)
+          .skip(skip)
+          .then(result => {
+            res.status(200).send(result);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+      if (queryType === "complex") {
+        console.log(req.body.search);
+        for (let property in req.body.search) {
+          query.push({[property]: req.body.search[property]});
+        }
+        console.log(query);
+        CarInfo.find({isDeleted: false})
+          .and(query)
+          .limit(limit)
+          .skip(skip)
+          .then(result => {
+            res.status(200).send(result);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    }
   }
   addCar(req, res) {
     const brand = req.body.brand;

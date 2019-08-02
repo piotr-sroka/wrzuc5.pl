@@ -12,7 +12,7 @@
 					<app-select-with-search-input :autoclose="true" v-if="versions.length && isReRendered" v-model="version" :selectTitle="version" :selectItems="versions" itemToShow="version"></app-select-with-search-input>
 				</div>
 				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-if="countriesOfProd.length && isReRendered" v-model="countryOfProd" :selectTitle="countryOfProd" :selectItems="countriesOfProd" itemToShow="countryName"></app-select-with-search-input>
+					<app-select-with-search-input :autoclose="false" v-if="countriesOfProd.length && isReRendered" v-model="countryOfProd" selectTitle="Kraj pochodzenia" :selectItems="countriesOfProd" itemToShow="countryName" :multiselect="true"></app-select-with-search-input>
 				</div>
 			</div>
             <div class="form-group info">                
@@ -75,10 +75,10 @@
 					</div>
 				</div>
 				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-if="fuelTypes.length && isReRendered" v-model="fuel" :selectTitle="fuel" :selectItems="fuelTypes" itemToShow="fuelType"></app-select-with-search-input>
+					<app-select-with-search-input :autoclose="false" v-if="fuelTypes.length && isReRendered" v-model="fuel" selectTitle="Rodzaj paliwa" :selectItems="fuelTypes" itemToShow="fuelType" :multiselect="true"></app-select-with-search-input>
 				</div>
                 <div class="info-item">
-                    <app-select-with-search-input :autoclose="true" v-if="colors.length && isReRendered" v-model="color" :selectTitle="color" :selectItems="colors" itemToShow="colorName"></app-select-with-search-input>
+                    <app-select-with-search-input :autoclose="false" v-if="colors.length && isReRendered" v-model="color" selectTitle="Kolor" :selectItems="colors" itemToShow="colorName" :multiselect="true"></app-select-with-search-input>
                 </div>
             </div>
             <button class="toggle-more-btn" @click.prevent="toggleMoreInfo" :class="moreInfoExpanded ? 'more-info-expanded': ''">
@@ -89,12 +89,25 @@
             <div class="more-info-container" :class="moreInfoExpanded ? 'more-info-expanded': ''">
                 <div class="form-group info">
                     <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="driveTypes.length && isReRendered" v-model="drive" :selectTitle="drive" :selectItems="driveTypes" itemToShow="driveType"></app-select-with-search-input>
+                        <app-select-with-search-input :autoclose="false" v-if="driveTypes.length && isReRendered" v-model="drive" selectTitle="Napęd" :selectItems="driveTypes" itemToShow="driveType" :multiselect="true"></app-select-with-search-input>
                     </div>
                     <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="gearboxTypes.length && isReRendered" v-model="gearbox" :selectTitle="gearbox" :selectItems="gearboxTypes" itemToShow="gearboxType"></app-select-with-search-input>
+                        <app-select-with-search-input :autoclose="false" v-if="gearboxTypes.length && isReRendered" v-model="gearbox" selectTitle="Skrzynia biegów" :selectItems="gearboxTypes" itemToShow="gearboxType" :multiselect="true"></app-select-with-search-input>
                     </div>
-                    <div class="info-item"></div>
+                    <div class="info-item info-item--contact">
+						<div class="form-group">
+							<input class="form-input location-input" type="text" placeholder="Lokalizacja" v-model="location" id="location" @input="findPlace" />
+							<label for="location" class="location-input--label"></label>
+						</div>
+						<div data-simplebar class="select-scrolled places" v-if="places.length && isLocationOpened">
+							<div>
+								<p class="place" v-for="(place, index) in places" :key="index" @click="selectLocation(place)">
+									<span class="place-name">{{place.name}}</span>
+									<span class="place-description">{{place.description}}</span>
+								</p>
+							</div>
+						</div>
+					</div>
                     <div class="info-item"></div>
                 </div>            
                 <div class="form-group info">
@@ -202,7 +215,7 @@ export default {
 					value: false
 				}
 			},
-			searchEquipment: {},
+			searchEquipment: [],
 			numOfDoorsFrom: "Liczba drzwi od",
 			numOfDoorsTo: "Liczba drzwi do",
 			doors: [],
@@ -223,7 +236,10 @@ export default {
 					dateRange: "Wybierz przedział czasowy"
 				}
 			},
-			moreInfoExpanded: false
+			moreInfoExpanded: false,
+			isLocationOpened: false,
+			places: [],
+			selectedPlace: null
 		};
 	},
 	components: {
@@ -254,7 +270,97 @@ export default {
 			this.moreInfoExpanded = !this.moreInfoExpanded;
 		},
 		search() {
-			console.log("searching...");
+			let searchQuery = {};
+			if (this.brand !== "Marka samochodu") searchQuery.brand = {$regex: this.brand, $options: "i"};
+			if (this.model !== "Model samochodu") searchQuery.model = {$regex: this.model, $options: "i"};
+			if (this.version !== "Wersja") searchQuery.version = {$regex: this.version, $options: "i"};
+
+			let fromToQueries = [
+				{itemsFrom: this.priceFrom, itemsTo: this.priceTo, fromDefault: "", toDefault: "", queryField: "price", valMin: 0, valMax: 999999999999999999},
+				{itemsFrom: this.yearOfProdFrom, itemsTo: this.yearOfProdTo, fromDefault: "Rok produkcji od", toDefault: "Rok produkcji do", queryField: "yearOfProd", valMin: 1900, valMax: new Date().getFullYear()},
+				{itemsFrom: this.mileageFrom, itemsTo: this.mileageTo, fromDefault: "", toDefault: "", queryField: "mileage", valMin: 0, valMax: 999999999999999999},
+				{itemsFrom: this.capacityFrom, itemsTo: this.capacityTo, fromDefault: "", toDefault: "", queryField: "capacity", valMin: 0, valMax: 999999999999999999},
+				{itemsFrom: this.powerFrom, itemsTo: this.powerTo, fromDefault: "", toDefault: "", queryField: "power", valMin: 0, valMax: 999999999999999999},
+				{itemsFrom: this.numOfDoorsFrom, itemsTo: this.numOfDoorsTo, fromDefault: "Liczba drzwi od", toDefault: "Liczba drzwi do", queryField: "numOfDoors", valMin: 0, valMax: 999999999999999999},
+				{itemsFrom: this.numOfSeatsFrom, itemsTo: this.numOfSeatsTo, fromDefault: "Liczba miejsc od", toDefault: "Liczba miejsc do", queryField: "numOfSeats", valMin: 0, valMax: 999999999999999999}
+			];
+			this.checkFromToQuery(searchQuery, fromToQueries);
+			let optionalQueries = [
+				{items: this.countryOfProd, default: "Kraj pochodzenia", queryField: "countryOfProd"},
+				{items: this.fuel, default: "Rodzaj paliwa", queryField: "fuel"},
+				{items: this.color, default: "Kolor", queryField: "color"},
+				{items: this.drive, default: "Napęd", queryField: "drive"},
+				{items: this.gearbox, default: "Skrzynia biegów", queryField: "gearbox"}
+			];
+			this.checkOptionalQuery(searchQuery, optionalQueries);
+
+			let additionalQueries = ["registerInPoland", "firstOwner", "damaged", "dpf", "noAccidents", "servisedInAso", "registerAsAntique", "tunned", "homologated"];
+			this.checkAdditionalQuery(searchQuery, additionalQueries);
+
+			if (this.location !== "") searchQuery["location.placeId"] = this.selectedPlace.placeId;
+			
+			let selectedSearchEquipment = [];
+			this.searchEquipment.forEach(eqItem => {
+				if (eqItem.value) {
+					selectedSearchEquipment.push({equipmentName: eqItem.label, visible: "hidden"});
+				}
+			});
+			if (selectedSearchEquipment.length) searchQuery.equipment = {$in: selectedSearchEquipment};
+
+			let query = {
+				type: "complex",
+				phrase: searchQuery
+			};
+			this.$store.dispatch("clearSearchResults");
+			this.$store.dispatch("setSearchPhrase", query);
+			this.$store.dispatch("getSearchedCars", query);
+		},
+		checkAdditionalQuery(searchQuery, options) {
+			options.forEach(option => {
+				if (this.additionalInfo[option].value) searchQuery[option] = true;
+			});
+		},
+		checkFromToQuery(searchQuery, options) {
+			options.forEach(option => {
+				let selectedFromToItems = [];
+				if (option.itemsFrom !== option.fromDefault || option.itemsTo !== option.toDefault) {
+					searchQuery[option.queryField] = {
+						$gte: option.itemsFrom !== option.fromDefault ? option.itemsFrom : option.valMin,
+						$lte: option.itemsTo !== option.toDefault ? option.itemsTo : option.valMax
+					}
+				}
+			});
+		},
+		checkOptionalQuery(searchQuery, options) {
+			options.forEach(option => {
+				let selectedOptionalItems = [];
+				if (option.items !== option.default) {
+					option.items.forEach(item => {
+						selectedOptionalItems.push(item);
+					});
+					if (selectedOptionalItems.length) searchQuery[option.queryField] = {$in: selectedOptionalItems};
+				}
+			});
+		},
+		findPlace(e) {
+			this.$axios
+				.post("/api/places/", {placeToFind: encodeURI(e.target.value)})
+				.then(response => {
+					console.log(response);
+					this.places = [];
+					response.data.predictions.forEach(place => {
+						this.places.push({placeId: place.place_id, name: place.structured_formatting.main_text, description: place.description});
+					});
+					this.isLocationOpened = true;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		selectLocation(place) {
+			this.location = place.description;
+			this.isLocationOpened = false;
+			this.selectedPlace = place;
 		}
 	},
 	mounted() {
@@ -282,11 +388,23 @@ export default {
 		}
 
 		this.equipment.forEach(equipmentItem => {
-			this.searchEquipment[equipmentItem.equipmentName] = {
+			this.searchEquipment.push({
 				label: equipmentItem.equipmentName,
 				value: false
-			};
+			});
 		});
+		setTimeout(() => {
+			let query;
+			if (sessionStorage.getItem("search-phrase")) {
+				query = JSON.parse(sessionStorage.getItem("search-phrase"));
+			} else {
+				query = {
+					type: "complex",
+					phrase: {}
+				};
+			}
+			this.$store.dispatch("getSearchedCars", query);
+		}, 500);
 	}
 };
 </script>
@@ -333,6 +451,12 @@ export default {
 }
 .more-info-container.more-info-expanded {
 	max-height: 1200px;
+}
+.container-search-engine .info-item.info-item--contact {
+	width: 22%;
+}
+.container-search-engine .places {
+	z-index: 9;
 }
 
 @media screen and (max-width: 480px) {

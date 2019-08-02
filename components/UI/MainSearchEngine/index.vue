@@ -23,7 +23,7 @@ export default {
     },
     search() {
       this.$store.dispatch("clearSearchResults");
-      this.$store.dispatch("setSearchPhrase", this.searchPhrase);
+      this.$store.dispatch("setSearchPhrase", {type: "simple", phrase: this.searchPhrase});
       if (this.searchPhrase.length > 2) {
         this.$router.push("/cars/search");
       } else {
@@ -98,6 +98,7 @@ export default {
   cursor: pointer;
   position: relative;
   font-size: .85em;
+  color: #1a2229;
 }
 
 .search-engine .search-advanced::after {

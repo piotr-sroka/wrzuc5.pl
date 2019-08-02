@@ -1,6 +1,8 @@
 <template>
   <div class="thumb-container" :class="image.isLoading ? '' : 'loaded'">
-    <span class="progress-bar" v-if="image.isLoading"></span>
+    <div class="progress-bar" v-if="image.isLoading">
+      <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    </div>
     <img class="thumb" :src="image.src" :alt="image.title" v-if="!image.isLoading">
   </div>
 </template>

@@ -583,17 +583,6 @@ export default {
 };
 </script>
 <style>
-.container {
-	margin: 0 auto;
-	max-width: 900px;
-}
-.form .form-group {
-	display: flex;
-	justify-content: space-between;
-}
-.form-group.info {
-	flex-wrap: wrap;
-}
 .info-item {
 	width: 30%;
 }

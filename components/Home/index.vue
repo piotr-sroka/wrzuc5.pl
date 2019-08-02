@@ -30,6 +30,7 @@ export default {
 <style scoped>
   .container {
     align-items: flex-start;
+    max-width: 1238px;
   }
   .list-title {
     display: block;

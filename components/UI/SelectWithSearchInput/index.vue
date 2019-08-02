@@ -9,7 +9,7 @@
       <span class="dropdown-arrow"></span>
     </button>
     <div class="select-items" :class="isSelectOpened ? 'opened' : ''">
-      <input type="text" class="form-input search" ref="searchInput" @input="findItems" :value="searchValue" />
+      <input type="text" class="form-input search" ref="searchInput" @input="findItems" :value="searchValue" v-show="!multiselect" />
       <div data-simplebar class="select-scrolled">
         <div>
           <p
@@ -18,7 +18,7 @@
 			:class="item.visible && item.visible === 'hidden' ? 'hidden' : ''"
             :key="index"
             :ref="'item-' + index"
-            @click="selectItem(item[itemToShow] || item)"
+            @click="selectItem($event, item[itemToShow] || item)"
             @mouseover="focusOnItem($event.target)"
             :data-item-index="index"
             :data-item-value="item[itemToShow] || item"
@@ -35,7 +35,7 @@ import "simplebar/dist/simplebar.css";
 import {directive as onClickaway} from "vue-clickaway";
 
 export default {
-	props: ["selectTitle", "selectItems", "itemToShow", "autoclose"],
+	props: ["selectTitle", "selectItems", "itemToShow", "autoclose", "multiselect"],
 	directives: {
 		onClickaway: onClickaway
 	},
@@ -47,7 +47,8 @@ export default {
 			focusedItem: null,
 			focusedItemIndex: -1,
 			isArrowKeyDown: false,
-			scrollTop: 50
+			scrollTop: 50,
+			selectedItems: []
 		};
 	},
 	methods: {
@@ -65,10 +66,20 @@ export default {
 				document.querySelector(".select-item.hover").classList.remove("hover");
 			} catch (e) {}
 		},
-		selectItem(value) {
+		selectItem(e, value) {
 			this.$root.$emit("selectChanged", this.itemToShow);
-			this.$emit("input", value, this.selectTitle);
-			this.findItems();
+			if (this.multiselect) {
+				e.target.classList.toggle("selected");
+				if (this.selectedItems.indexOf(value) < 0) {
+					this.selectedItems.push(value);
+				} else {
+					this.selectedItems.splice(this.selectedItems.indexOf(value), 1);
+				}
+				this.$emit("input", this.selectedItems, this.selectTitle);
+			} else {
+				this.$emit("input", value, this.selectTitle);
+				this.findItems();
+			}
 			if (this.autoclose) setTimeout(this.hideDropdown, 50);
 		},
 		findItems(e) {
@@ -204,6 +215,10 @@ export default {
 .select-item {
 	cursor: pointer;
 	padding: 4px 10px;
+}
+.select-item.selected {
+	background-color: #2980b9;
+	color: #ecf0f2;
 }
 .select-item.hover {
 	background-color: #2C3E50;
