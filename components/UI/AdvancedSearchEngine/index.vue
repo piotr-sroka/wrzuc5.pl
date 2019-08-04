@@ -1,150 +1,322 @@
 <template>
-    <section class="container container-search-engine">
-		<form class="form">
-			<div class="form-group info">
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-if="brands.length && isReRendered" v-model="brand" :selectTitle="brand" :selectItems="brands" itemToShow="brand"></app-select-with-search-input>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-if="brand != 'Marka samochodu' && models.length && isReRendered" v-model="model" :selectTitle="model" :selectItems="models" itemToShow="model"></app-select-with-search-input>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-if="versions.length && isReRendered" v-model="version" :selectTitle="version" :selectItems="versions" itemToShow="version"></app-select-with-search-input>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="false" v-if="countriesOfProd.length && isReRendered" v-model="countryOfProd" selectTitle="Kraj pochodzenia" :selectItems="countriesOfProd" itemToShow="countryName" :multiselect="true"></app-select-with-search-input>
-				</div>
-			</div>
-            <div class="form-group info">                
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input price-input" type="text" placeholder="Cena od" v-model="priceFrom" id="priceFrom" />
-						<label for="priceFrom" class="price-input--label"></label>
-					</div>
-				</div>
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input price-input" type="text" placeholder="Cena do" v-model="priceTo" id="priceTo" />
-						<label for="priceTo" class="price-input--label"></label>
-					</div>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-model="yearOfProdFrom" :selectTitle="yearOfProdFrom" :selectItems="productionsYears" itemToShow="yearOfProd"></app-select-with-search-input>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="true" v-model="yearOfProdTo" :selectTitle="yearOfProdTo" :selectItems="productionsYears" itemToShow="yearOfProd"></app-select-with-search-input>
-				</div>
+  <section class="container container-search-engine">
+    <form class="form">
+      <div class="form-group info">
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="true"
+            v-if="brands.length && isReRendered"
+            v-model="brand"
+            :selectTitle="brand"
+            :selectItems="brands"
+            itemToShow="brand"
+          ></app-select-with-search-input>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="true"
+            v-if="brand != 'Marka samochodu' && models.length && isReRendered"
+            v-model="model"
+            :selectTitle="model"
+            :selectItems="models"
+            itemToShow="model"
+          ></app-select-with-search-input>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="true"
+            v-if="versions.length && isReRendered"
+            v-model="version"
+            :selectTitle="version"
+            :selectItems="versions"
+            itemToShow="version"
+          ></app-select-with-search-input>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="false"
+            v-if="countriesOfProd.length && isReRendered"
+            v-model="countryOfProd"
+            selectTitle="Kraj pochodzenia"
+            :selectItems="countriesOfProd"
+            itemToShow="countryName"
+            :multiselect="true"
+          ></app-select-with-search-input>
+        </div>
+      </div>
+      <div class="form-group info">
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input price-input"
+              type="text"
+              placeholder="Cena od"
+              v-model="priceFrom"
+              id="priceFrom"
+            />
+            <label for="priceFrom" class="price-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input price-input"
+              type="text"
+              placeholder="Cena do"
+              v-model="priceTo"
+              id="priceTo"
+            />
+            <label for="priceTo" class="price-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="true"
+            v-model="yearOfProdFrom"
+            :selectTitle="yearOfProdFrom"
+            :selectItems="productionsYears"
+            itemToShow="yearOfProd"
+          ></app-select-with-search-input>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="true"
+            v-model="yearOfProdTo"
+            :selectTitle="yearOfProdTo"
+            :selectItems="productionsYears"
+            itemToShow="yearOfProd"
+          ></app-select-with-search-input>
+        </div>
+      </div>
+      <div class="form-group info">
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input mileage-input"
+              type="text"
+              placeholder="Przebieg od"
+              v-model="mileageFrom"
+              id="mileageFrom"
+            />
+            <label for="mileageFrom" class="mileage-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input mileage-input"
+              type="text"
+              placeholder="Przebieg do"
+              v-model="mileageTo"
+              id="mileageTo"
+            />
+            <label for="mileageTo" class="mileage-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input capacity-input"
+              type="text"
+              placeholder="Pojemność skokowa od"
+              v-model="capacityFrom"
+              id="capacityFrom"
+            />
+            <label for="capacityFrom" class="capacity-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input capacity-input"
+              type="text"
+              placeholder="Pojemność skokowa do"
+              v-model="capacityTo"
+              id="capacityTo"
+            />
+            <label for="capacityTo" class="capacity-input--label"></label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group info">
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input power-input"
+              type="text"
+              placeholder="Moc od"
+              v-model="powerFrom"
+              id="powerFrom"
+            />
+            <label for="powerFrom" class="power-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="form-group">
+            <input
+              class="form-input power-input"
+              type="text"
+              placeholder="Moc do"
+              v-model="powerTo"
+              id="powerTo"
+            />
+            <label for="powerTo" class="power-input--label"></label>
+          </div>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="false"
+            v-if="fuelTypes.length && isReRendered"
+            v-model="fuel"
+            selectTitle="Rodzaj paliwa"
+            :selectItems="fuelTypes"
+            itemToShow="fuelType"
+            :multiselect="true"
+          ></app-select-with-search-input>
+        </div>
+        <div class="info-item">
+          <app-select-with-search-input
+            :autoclose="false"
+            v-if="colors.length && isReRendered"
+            v-model="color"
+            selectTitle="Kolor"
+            :selectItems="colors"
+            itemToShow="colorName"
+            :multiselect="true"
+          ></app-select-with-search-input>
+        </div>
+      </div>
+      <button
+        class="toggle-more-btn"
+        @click.prevent="toggleMoreInfo"
+        :class="moreInfoExpanded ? 'more-info-expanded': ''"
+      >
+        <span v-if="moreInfoExpanded">Pokaż mniej</span>
+        <span v-else>Pokaż więcej</span>
+        <span class="dropdown-arrow"></span>
+      </button>
+      <div class="more-info-container" :class="moreInfoExpanded ? 'more-info-expanded': ''">
+        <div class="form-group info">
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="false"
+              v-if="driveTypes.length && isReRendered"
+              v-model="drive"
+              selectTitle="Napęd"
+              :selectItems="driveTypes"
+              itemToShow="driveType"
+              :multiselect="true"
+            ></app-select-with-search-input>
+          </div>
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="false"
+              v-if="gearboxTypes.length && isReRendered"
+              v-model="gearbox"
+              selectTitle="Skrzynia biegów"
+              :selectItems="gearboxTypes"
+              itemToShow="gearboxType"
+              :multiselect="true"
+            ></app-select-with-search-input>
+          </div>
+          <div class="info-item info-item--contact">
+            <div class="form-group">
+              <input
+                class="form-input location-input"
+                type="text"
+                placeholder="Lokalizacja"
+                v-model="location"
+                id="location"
+                @input="findPlace"
+              />
+              <label for="location" class="location-input--label"></label>
             </div>
-            <div class="form-group info">
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input mileage-input" type="text" placeholder="Przebieg od" v-model="mileageFrom" id="mileageFrom" />
-						<label for="mileageFrom" class="mileage-input--label"></label>
-					</div>
-				</div>
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input mileage-input" type="text" placeholder="Przebieg do" v-model="mileageTo" id="mileageTo" />
-						<label for="mileageTo" class="mileage-input--label"></label>
-					</div>
-				</div>
-				<div class="info-item">
-                    <div class="form-group">
-                        <input class="form-input capacity-input" type="text" placeholder="Pojemność skokowa od" v-model="capacityFrom" id="capacityFrom" />
-                        <label for="capacityFrom" class="capacity-input--label"></label>
-                    </div>
-				</div>
-				<div class="info-item">
-                    <div class="form-group">
-                        <input class="form-input capacity-input" type="text" placeholder="Pojemność skokowa do" v-model="capacityTo" id="capacityTo" />
-                        <label for="capacityTo" class="capacity-input--label"></label>
-                    </div>
-				</div>
-			</div>
-			<div class="form-group info">                
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input power-input" type="text" placeholder="Moc od" v-model="powerFrom" id="powerFrom" />
-						<label for="powerFrom" class="power-input--label"></label>
-					</div>
-				</div>                
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input power-input" type="text" placeholder="Moc do" v-model="powerTo" id="powerTo" />
-						<label for="powerTo" class="power-input--label"></label>
-					</div>
-				</div>
-				<div class="info-item">
-					<app-select-with-search-input :autoclose="false" v-if="fuelTypes.length && isReRendered" v-model="fuel" selectTitle="Rodzaj paliwa" :selectItems="fuelTypes" itemToShow="fuelType" :multiselect="true"></app-select-with-search-input>
-				</div>
-                <div class="info-item">
-                    <app-select-with-search-input :autoclose="false" v-if="colors.length && isReRendered" v-model="color" selectTitle="Kolor" :selectItems="colors" itemToShow="colorName" :multiselect="true"></app-select-with-search-input>
-                </div>
+            <div
+              data-simplebar
+              class="select-scrolled places"
+              v-if="places.length && isLocationOpened"
+            >
+              <div>
+                <p
+                  class="place"
+                  v-for="(place, index) in places"
+                  :key="index"
+                  @click="selectLocation(place)"
+                >
+                  <span class="place-name">{{place.name}}</span>
+                  <span class="place-description">{{place.description}}</span>
+                </p>
+              </div>
             </div>
-            <button class="toggle-more-btn" @click.prevent="toggleMoreInfo" :class="moreInfoExpanded ? 'more-info-expanded': ''">
-                <span v-if="moreInfoExpanded">Pokaż mniej</span>
-                <span v-else>Pokaż więcej</span>
-                <span class="dropdown-arrow"></span>
-            </button>
-            <div class="more-info-container" :class="moreInfoExpanded ? 'more-info-expanded': ''">
-                <div class="form-group info">
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="false" v-if="driveTypes.length && isReRendered" v-model="drive" selectTitle="Napęd" :selectItems="driveTypes" itemToShow="driveType" :multiselect="true"></app-select-with-search-input>
-                    </div>
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="false" v-if="gearboxTypes.length && isReRendered" v-model="gearbox" selectTitle="Skrzynia biegów" :selectItems="gearboxTypes" itemToShow="gearboxType" :multiselect="true"></app-select-with-search-input>
-                    </div>
-                    <div class="info-item info-item--contact">
-						<div class="form-group">
-							<input class="form-input location-input" type="text" placeholder="Lokalizacja" v-model="location" id="location" @input="findPlace" />
-							<label for="location" class="location-input--label"></label>
-						</div>
-						<div data-simplebar class="select-scrolled places" v-if="places.length && isLocationOpened">
-							<div>
-								<p class="place" v-for="(place, index) in places" :key="index" @click="selectLocation(place)">
-									<span class="place-name">{{place.name}}</span>
-									<span class="place-description">{{place.description}}</span>
-								</p>
-							</div>
-						</div>
-					</div>
-                    <div class="info-item"></div>
-                </div>            
-                <div class="form-group info">
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="doors.length && isReRendered" v-model="numOfDoorsFrom" :selectTitle="numOfDoorsFrom" :selectItems="doors" itemToShow="numOfDoors"></app-select-with-search-input>
-                    </div>
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="doors.length && isReRendered" v-model="numOfDoorsTo" :selectTitle="numOfDoorsTo" :selectItems="doors" itemToShow="numOfDoors"></app-select-with-search-input>
-                    </div>
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="seats.length && isReRendered" v-model="numOfSeatsFrom" :selectTitle="numOfSeatsFrom" :selectItems="seats" itemToShow="numOfSeats"></app-select-with-search-input>
-                    </div>
-                    <div class="info-item">
-                        <app-select-with-search-input :autoclose="true" v-if="seats.length && isReRendered" v-model="numOfSeatsTo" :selectTitle="numOfSeatsTo" :selectItems="seats" itemToShow="numOfSeats"></app-select-with-search-input>
-                    </div>
-                </div>			
-                <span class="divider"></span>
-                <div class="form-group info flex-30">
-                    <div class="form-group info-item" v-for="(info, index) in additionalInfo" :key="index">
-                        <app-check-box :itemTitle="info.label" v-model="info.value" :checked.sync="info.value"></app-check-box>
-                    </div>
-                </div>
-                <span class="divider"></span>
-                <div class="form-group info flex-20">
-                    <div class="form-group info-item" v-for="(item, index) in searchEquipment" :key="index">
-                        <app-check-box :itemTitle="item.label" v-model="item.value" :checked.sync="item.value"></app-check-box>
-                    </div>
-                </div>
-            </div>
-			<button class="form-button-submit" @click.prevent="search">Szukaj</button>
-		</form>
-		<article class="search-filters">
-			<ul>
-				<li v-for="(filter, index) in filters" :key="index">{{filter.name}}</li>
-			</ul>
-		</article>
-    </section>
+          </div>
+          <div class="info-item"></div>
+        </div>
+        <div class="form-group info">
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="true"
+              v-if="doors.length && isReRendered"
+              v-model="numOfDoorsFrom"
+              :selectTitle="numOfDoorsFrom"
+              :selectItems="doors"
+              itemToShow="numOfDoors"
+            ></app-select-with-search-input>
+          </div>
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="true"
+              v-if="doors.length && isReRendered"
+              v-model="numOfDoorsTo"
+              :selectTitle="numOfDoorsTo"
+              :selectItems="doors"
+              itemToShow="numOfDoors"
+            ></app-select-with-search-input>
+          </div>
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="true"
+              v-if="seats.length && isReRendered"
+              v-model="numOfSeatsFrom"
+              :selectTitle="numOfSeatsFrom"
+              :selectItems="seats"
+              itemToShow="numOfSeats"
+            ></app-select-with-search-input>
+          </div>
+          <div class="info-item">
+            <app-select-with-search-input
+              :autoclose="true"
+              v-if="seats.length && isReRendered"
+              v-model="numOfSeatsTo"
+              :selectTitle="numOfSeatsTo"
+              :selectItems="seats"
+              itemToShow="numOfSeats"
+            ></app-select-with-search-input>
+          </div>
+        </div>
+        <span class="divider"></span>
+        <div class="form-group info flex-30">
+          <div class="form-group info-item" v-for="(info, index) in additionalInfo" :key="index">
+            <app-check-box :itemTitle="info.label" v-model="info.value" :checked.sync="info.value"></app-check-box>
+          </div>
+        </div>
+        <span class="divider"></span>
+        <div class="form-group info flex-20">
+          <div class="form-group info-item" v-for="(item, index) in searchEquipment" :key="index">
+            <app-check-box :itemTitle="item.label" v-model="item.value" :checked.sync="item.value"></app-check-box>
+          </div>
+        </div>
+      </div>
+      <button class="form-button-submit" @click.prevent="search">Szukaj</button>
+    </form>
+    <article class="search-filters">
+      <ul class="search-filter--list">
+        <li class="info-equipment--item search-filter" v-for="(filter, index) in filters" :key="index">
+			{{filter.value}}			
+      		<button class="item-remove-btn" @click.prevent="removeFilter(filter)"></button>
+		</li>
+      </ul>
+    </article>
+  </section>
 </template>
 
 <script>
@@ -245,7 +417,12 @@ export default {
 			isLocationOpened: false,
 			places: [],
 			selectedPlace: null,
-			filters: []
+			filters: [],
+			standardFieldsDefaultValues: [
+				{name: "brand", value: "Marka samochodu"},
+				{name: "model", value: "Model samochodu"},
+				{name: "version", value: "Wersja"},
+			]
 		};
 	},
 	components: {
@@ -367,6 +544,39 @@ export default {
 			this.location = place.description;
 			this.isLocationOpened = false;
 			this.selectedPlace = place;
+		},
+		removeFilter(filter) {
+			this.standardFieldsDefaultValues.forEach(field => {
+				if (field.name === filter.name) {
+					this[filter.name] = field.value;
+				}
+			});
+		},
+		checkFields(fieldName, val) {
+			this.standardFieldsDefaultValues.forEach(field => {
+				if (fieldName === field.name) {
+					if (val !== field.value) {
+						if (!this.filters.includes(field.name)) {
+							this.filters.push(field);
+						}
+					} else {
+						if (this.filters.includes(field)) {
+							this.filters.splice(this.filters.indexOf(field), 1);
+						}
+					}
+				}
+			});
+		}
+	},
+	watch: {
+		brand: function(val) {
+			this.checkFields("brand", val);
+		},
+		model: function(val) {
+			this.checkFields("model", val);
+		},
+		version: function(val) {
+			this.checkFields("version", val);
 		}
 	},
 	mounted() {
@@ -417,81 +627,99 @@ export default {
 
 <style>
 .toggle-more-btn {
-	background-color: transparent;
-	border: none;
-	outline-color: transparent;
-	color: #1a2229;
-	cursor: pointer;
-	margin: 12px 0;
-	text-align: right;
-	padding: 0;
-	transition: color 0.2s linear;
+  background-color: transparent;
+  border: none;
+  outline-color: transparent;
+  color: #1a2229;
+  cursor: pointer;
+  margin: 12px 0;
+  text-align: right;
+  padding: 0;
+  transition: color 0.2s linear;
 }
 .toggle-more-btn .dropdown-arrow {
-	border-color: #ecf0f2;
-	border-top-color: #1a2229;
-	transition: all 0.2s linear;
+  border-color: #ecf0f2;
+  border-top-color: #1a2229;
+  transition: all 0.2s linear;
 }
 .toggle-more-btn.more-info-expanded .dropdown-arrow {
-	transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 .toggle-more-btn:hover {
-	color: #2980b9;
+  color: #2980b9;
 }
 .toggle-more-btn:hover .dropdown-arrow {
-	border-top-color: #2980b9;
+  border-top-color: #2980b9;
 }
 .container-search-engine .info-item {
-	width: 22%;
+  width: 22%;
 }
 .container-search-engine .flex-30 .info-item {
-	width: 30%;
+  width: 30%;
 }
 .container-search-engine .flex-20 .info-item {
-	width: 20%;
+  width: 20%;
 }
 .more-info-container {
-	max-height: 0;
-	overflow: hidden;
-	transition: max-height 0.2s linear;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s linear;
 }
 .more-info-container.more-info-expanded {
-	max-height: 1200px;
+  max-height: 1200px;
 }
 .container-search-engine .info-item.info-item--contact {
-	width: 22%;
+  width: 22%;
 }
 .container-search-engine .places {
-	z-index: 9;
+  z-index: 9;
+}
+.search-filters {
+	padding: 24px;
+}
+
+.search-filter--list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	padding: 0;
+}
+
+.info-equipment--item.search-filter {
+	padding: 8px 20px;
+	list-style-type: none;
+	margin-right: 8px;
+	margin-bottom: 8px;
+	font-size: .75em;
 }
 
 @media screen and (max-width: 480px) {
-	.container-search-engine .info-item {
-		width: 48%;
-	}
-	.container-search-engine .flex-20 .info-item {
-		width: 50%;
-	}
-	.container-search-engine .flex-30 .info-item {
-		width: 48%;
-	}
-	.more-info-container {
-		transition: max-height 0.6s linear;
-	}
-	.more-info-container.more-info-expanded {
-		max-height: 2000px;
-	}
+  .container-search-engine .info-item {
+    width: 48%;
+  }
+  .container-search-engine .flex-20 .info-item {
+    width: 50%;
+  }
+  .container-search-engine .flex-30 .info-item {
+    width: 48%;
+  }
+  .more-info-container {
+    transition: max-height 0.6s linear;
+  }
+  .more-info-container.more-info-expanded {
+    max-height: 2000px;
+  }
 }
 @media screen and (max-width: 374px) {
-	.container-search-engine .info-item,
-	.container-search-engine .flex-30 .info-item {
-		width: 100%;
-	}
-	.more-info-container {
-		transition: max-height 0.8s linear;
-	}
-	.more-info-container.more-info-expanded {
-		max-height: 2400px;
-	}
+  .container-search-engine .info-item,
+  .container-search-engine .flex-30 .info-item {
+    width: 100%;
+  }
+  .more-info-container {
+    transition: max-height 0.8s linear;
+  }
+  .more-info-container.more-info-expanded {
+    max-height: 2400px;
+  }
 }
 </style>
