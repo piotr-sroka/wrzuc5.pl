@@ -139,6 +139,11 @@
             </div>
 			<button class="form-button-submit" @click.prevent="search">Szukaj</button>
 		</form>
+		<article class="search-filters">
+			<ul>
+				<li v-for="(filter, index) in filters" :key="index">{{filter.name}}</li>
+			</ul>
+		</article>
     </section>
 </template>
 
@@ -239,7 +244,8 @@ export default {
 			moreInfoExpanded: false,
 			isLocationOpened: false,
 			places: [],
-			selectedPlace: null
+			selectedPlace: null,
+			filters: []
 		};
 	},
 	components: {
