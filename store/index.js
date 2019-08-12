@@ -375,14 +375,18 @@ export const actions = {
       if (!req.headers.cookie) {
         return;
       }
-      token = req.headers.cookie
-        .split(";")
-        .find(c => c.trim().startsWith("jwt="))
-        .split("=")[1];
-      user = req.headers.cookie
-        .split(";")
-        .find(c => c.trim().startsWith("logged-user="))
-        .split("=")[1];
+      try {
+        token = req.headers.cookie
+          .split(";")
+          .find(c => c.trim().startsWith("jwt="))
+          .split("=")[1];
+        user = req.headers.cookie
+          .split(";")
+          .find(c => c.trim().startsWith("logged-user="))
+          .split("=")[1];
+      } catch (err) {
+        return;
+      }
     } else {
       user = localStorage.getItem("logged-user");
       token = localStorage.getItem("jwt");
