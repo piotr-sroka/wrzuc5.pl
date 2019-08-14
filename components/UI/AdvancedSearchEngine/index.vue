@@ -306,7 +306,7 @@
           </div>
         </div>
       </div>
-      <!-- <button class="form-button-submit" @click.prevent="search">Szukaj</button> -->
+      <button class="form-button-submit" @click.prevent="search">Szukaj</button>
     </form>
     <article class="search-filters" v-if="filters.length">
       <ul class="search-filter--list">
