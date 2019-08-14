@@ -41,9 +41,10 @@ export default {
 </script>
 
 <style>
-    .search-page.progress-bar {
+    .search-page .progress-bar {
         width: 60px;
         height: 60px;
+        position: relative;
     }
     .info-no-results {
         max-width: 900px;

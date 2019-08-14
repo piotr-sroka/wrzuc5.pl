@@ -306,12 +306,12 @@
           </div>
         </div>
       </div>
-      <button class="form-button-submit" @click.prevent="search">Szukaj</button>
+      <!-- <button class="form-button-submit" @click.prevent="search">Szukaj</button> -->
     </form>
-    <article class="search-filters">
+    <article class="search-filters" v-if="filters.length">
       <ul class="search-filter--list">
         <li class="info-equipment--item search-filter" v-for="(filter, index) in filters" :key="index">
-			{{filter.value}}			
+			{{standardFieldsDefaultValues[filter]}}			
       		<button class="item-remove-btn" @click.prevent="removeFilter(filter)"></button>
 		</li>
       </ul>
@@ -326,6 +326,7 @@ import AppSelectWithSearchInput from "@/components/UI/SelectWithSearchInput";
 import AppTagLishItem from "@/components/UI/TagLishItem";
 import AppCheckBox from "@/components/UI/CheckBox";
 import OverlayScrollbars from "os-vue/overlay-scrollbars";
+import debounce from "debounce";
 
 export default {
 	data() {
@@ -418,11 +419,7 @@ export default {
 			places: [],
 			selectedPlace: null,
 			filters: [],
-			standardFieldsDefaultValues: [
-				{name: "brand", value: "Marka samochodu"},
-				{name: "model", value: "Model samochodu"},
-				{name: "version", value: "Wersja"},
-			]
+			standardFieldsDefaultValues: {brand: "Marka samochodu", model: "Model samochodu", version: "Wersja", color: "Kolor", countryOfProd: "Kraj pochodzenia"}
 		};
 	},
 	components: {
@@ -481,7 +478,7 @@ export default {
 			this.checkAdditionalQuery(searchQuery, additionalQueries);
 
 			if (this.location !== "") searchQuery["location.placeId"] = this.selectedPlace.placeId;
-			
+
 			let selectedSearchEquipment = [];
 			this.searchEquipment.forEach(eqItem => {
 				if (eqItem.value) {
@@ -510,7 +507,7 @@ export default {
 					searchQuery[option.queryField] = {
 						$gte: option.itemsFrom !== option.fromDefault ? option.itemsFrom : option.valMin,
 						$lte: option.itemsTo !== option.toDefault ? option.itemsTo : option.valMax
-					}
+					};
 				}
 			});
 		},
@@ -529,7 +526,6 @@ export default {
 			this.$axios
 				.post("/api/places/", {placeToFind: encodeURI(e.target.value)})
 				.then(response => {
-					console.log(response);
 					this.places = [];
 					response.data.predictions.forEach(place => {
 						this.places.push({placeId: place.place_id, name: place.structured_formatting.main_text, description: place.description});
@@ -546,53 +542,53 @@ export default {
 			this.selectedPlace = place;
 		},
 		removeFilter(filter) {
-			this.standardFieldsDefaultValues.forEach(field => {
-				if (field.name === filter.name) {
-					this[filter.name] = field.value;
-				}
-			});
+      if (this.filters.includes(filter)) {
+        this.filters.splice(this.filters.indexOf(filter), 1);
+        this[filter] = this.standardFieldsDefaultValues[filter];
+      }
+      if (filter === "brand") {
+        this.removeFilter("model");
+      }
+      if (filter === "model") {
+        this.removeFilter("version");
+      }
+			this.search();
 		},
 		checkFields(fieldName, val) {
-			this.standardFieldsDefaultValues.forEach(field => {
-				if (fieldName === field.name) {
-					if (val !== field.value) {
-						if (!this.filters.includes(field.name)) {
-							this.filters.push(field);
-						}
-					} else {
-						if (this.filters.includes(field)) {
-							this.filters.splice(this.filters.indexOf(field), 1);
-						}
-					}
-				}
-			});
+			if (!this.filters.includes(fieldName) && val != this.standardFieldsDefaultValues[fieldName]) {
+				this.filters.push(fieldName);
+			}
+      this.search();
 		}
 	},
 	watch: {
-		brand: function(val) {
+		brand: function(val, oldVal) {
 			this.checkFields("brand", val);
+      this.removeFilter("model");
 		},
 		model: function(val) {
 			this.checkFields("model", val);
+      this.removeFilter("version");
 		},
 		version: function(val) {
 			this.checkFields("version", val);
-		}
+		},
+    countryOfProd: function(val) {
+      this.checkFields("countryOfProd", val);
+    },
+    color: function(val) {
+      this.checkFields("color", val);
+    }
 	},
 	mounted() {
 		this.$root.$on("selectChanged", data => {
-			if (data === "brand") {
-				this.model = "Model samochodu";
-			}
-			if (data === "model") {
-				this.version = "Wersja";
-			}
 			if (data === "brand" || data === "model" || data === "fuel") {
 				this.isReRendered = false;
 				this.$nextTick(() => {
 					this.isReRendered = true;
 				});
 			}
+			this.search();
 		});
 		let currentYear = new Date().getFullYear();
 		for (let i = currentYear; i > 1900; i--) {
@@ -621,58 +617,61 @@ export default {
 			}
 			this.$store.dispatch("getSearchedCars", query);
 		}, 500);
+	},
+	created() {
+		this.search = debounce(this.search, 500);
 	}
 };
 </script>
 
 <style>
 .toggle-more-btn {
-  background-color: transparent;
-  border: none;
-  outline-color: transparent;
-  color: #1a2229;
-  cursor: pointer;
-  margin: 12px 0;
-  text-align: right;
-  padding: 0;
-  transition: color 0.2s linear;
+	background-color: transparent;
+	border: none;
+	outline-color: transparent;
+	color: #1a2229;
+	cursor: pointer;
+	margin: 12px 0;
+	text-align: right;
+	padding: 0;
+	transition: color 0.2s linear;
 }
 .toggle-more-btn .dropdown-arrow {
-  border-color: #ecf0f2;
-  border-top-color: #1a2229;
-  transition: all 0.2s linear;
+	border-color: #ecf0f2;
+	border-top-color: #1a2229;
+	transition: all 0.2s linear;
 }
 .toggle-more-btn.more-info-expanded .dropdown-arrow {
-  transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 .toggle-more-btn:hover {
-  color: #2980b9;
+	color: #2980b9;
 }
 .toggle-more-btn:hover .dropdown-arrow {
-  border-top-color: #2980b9;
+	border-top-color: #2980b9;
 }
 .container-search-engine .info-item {
-  width: 22%;
+	width: 22%;
 }
 .container-search-engine .flex-30 .info-item {
-  width: 30%;
+	width: 30%;
 }
 .container-search-engine .flex-20 .info-item {
-  width: 20%;
+	width: 20%;
 }
 .more-info-container {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s linear;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.2s linear;
 }
 .more-info-container.more-info-expanded {
-  max-height: 1200px;
+	max-height: 1200px;
 }
 .container-search-engine .info-item.info-item--contact {
-  width: 22%;
+	width: 22%;
 }
 .container-search-engine .places {
-  z-index: 9;
+	z-index: 9;
 }
 .search-filters {
 	padding: 24px;
@@ -690,36 +689,36 @@ export default {
 	list-style-type: none;
 	margin-right: 8px;
 	margin-bottom: 8px;
-	font-size: .75em;
+	font-size: 0.75em;
 }
 
 @media screen and (max-width: 480px) {
-  .container-search-engine .info-item {
-    width: 48%;
-  }
-  .container-search-engine .flex-20 .info-item {
-    width: 50%;
-  }
-  .container-search-engine .flex-30 .info-item {
-    width: 48%;
-  }
-  .more-info-container {
-    transition: max-height 0.6s linear;
-  }
-  .more-info-container.more-info-expanded {
-    max-height: 2000px;
-  }
+	.container-search-engine .info-item {
+		width: 48%;
+	}
+	.container-search-engine .flex-20 .info-item {
+		width: 50%;
+	}
+	.container-search-engine .flex-30 .info-item {
+		width: 48%;
+	}
+	.more-info-container {
+		transition: max-height 0.6s linear;
+	}
+	.more-info-container.more-info-expanded {
+		max-height: 2000px;
+	}
 }
 @media screen and (max-width: 374px) {
-  .container-search-engine .info-item,
-  .container-search-engine .flex-30 .info-item {
-    width: 100%;
-  }
-  .more-info-container {
-    transition: max-height 0.8s linear;
-  }
-  .more-info-container.more-info-expanded {
-    max-height: 2400px;
-  }
+	.container-search-engine .info-item,
+	.container-search-engine .flex-30 .info-item {
+		width: 100%;
+	}
+	.more-info-container {
+		transition: max-height 0.8s linear;
+	}
+	.more-info-container.more-info-expanded {
+		max-height: 2400px;
+	}
 }
 </style>
