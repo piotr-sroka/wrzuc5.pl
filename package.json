@@ -2,7 +2,7 @@
   "name": "wrzuc5.pl",
   "version": "1.0.0",
   "engines": {
-    "node": "11.13.0"
+    "node": "12.14.0"
   },
   "description": "My phenomenal Nuxt.js project",
   "author": "poncki",
@@ -35,7 +35,7 @@
     "os-vue": "^1.1.1",
     "path": "^0.12.7",
     "read-blob": "^1.1.0",
-    "sharp": "^0.22.1",
+    "sharp": "^0.23.4",
     "simplebar-vue": "^1.1.0",
     "stickyfill": "^1.1.1-strict",
     "vue-clickaway": "^2.2.2",

@@ -307,6 +307,7 @@ export default {
 			if (this.carInfo.brand) info.left.push({infoName: "Marka samochodu", infoValue: this.carInfo.brand});
 			if (this.carInfo.model) info.left.push({infoName: "Model samochodu", infoValue: this.carInfo.model});
 			if (this.carInfo.version) info.left.push({infoName: "Wersja", infoValue: this.carInfo.version});
+			if (this.carInfo.category) info.left.push({infoName: "Kategoria", infoValue: this.carInfo.category});
 			if (this.carInfo.yearOfProd) info.left.push({infoName: "Rok produkcji", infoValue: this.carInfo.yearOfProd});
 			if (this.carInfo.mileage) info.left.push({infoName: "Przebieg", infoValue: this.carInfo.mileage});
 			if (this.carInfo.engineCode) info.left.push({infoName: "Kod silnika", infoValue: this.carInfo.engineCode});

@@ -21,36 +21,40 @@
 					<span class="info-message form-message-error" v-if="errors.yearOfProd !== ''">{{ errors.yearOfProd }}</span>
 				</div>
 				<div class="info-item">
+					<app-select-with-search-input :autoclose="true" v-model="category" :selectTitle="category" :selectItems="categories" itemToShow="categoryName"></app-select-with-search-input>
+					<span class="info-message form-message-error" v-if="errors.category !== ''">{{ errors.category }}</span>
+				</div>
+				<div class="info-item">
 					<div class="form-group">
 						<input class="form-input mileage-input" type="text" placeholder="Przebieg" v-model="mileage" id="mileage" />
 						<label for="mileage" class="mileage-input--label"></label>
 					</div>
 					<span class="info-message form-message-error" v-if="errors.mileage !=='' ">{{ errors.mileage }}</span>
 				</div>
+			</div>
+			<div class="form-group info">
 				<div class="info-item">
 					<app-select-with-search-input :autoclose="true" v-if="fuelTypes.length && isReRendered" v-model="fuel" :selectTitle="fuel" :selectItems="fuelTypes" itemToShow="fuelType"></app-select-with-search-input>
 					<span class="info-message form-message-error" v-if="errors.fuel !== ''">{{ errors.fuel }}</span>
 				</div>
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input" type="text" placeholder="VIN" v-model="vin" />
+					</div>
+				</div>
 			</div>
 			<div class="form-group info">
+				<div class="info-item">
+					<div class="form-group">
+						<input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title" />
+					</div>
+				</div>
 				<div class="info-item">
 					<div class="form-group">
 						<input class="form-input price-input" type="text" placeholder="Cena" v-model="price" id="price" />
 						<label for="price" class="price-input--label"></label>
 					</div>
 					<span class="info-message form-message-error" v-if="errors.price !=='' ">{{ errors.price }}</span>
-				</div>
-			</div>
-			<div class="form-group info">
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input" type="text" placeholder="VIN" v-model="vin" />
-					</div>
-				</div>
-				<div class="info-item">
-					<div class="form-group">
-						<input class="form-input" type="text" placeholder="Tytuł Ogłoszenia" v-model="title" />
-					</div>
 				</div>
 				<div class="info-item full-width">
 					<div class="form-group">
@@ -186,6 +190,7 @@ export default {
 		return {
 			brand: "Marka samochodu",
 			model: "Model samochodu",
+			category: "Kategoria",
 			version: "Wersja",
 			yearOfProd: "Rok produkcji",
 			productionsYears: [],
@@ -253,6 +258,7 @@ export default {
 			errors: {
 				brand: "",
 				model: "",
+				category: "",
 				version: "",
 				fuel: "",
 				price: "",
@@ -281,7 +287,7 @@ export default {
 		};
 	},
 	computed: {
-		...mapGetters(["brands", "equipment", "fuelTypes", "gearboxTypes", "driveTypes", "countriesOfProd", "colors", "user"]),
+		...mapGetters(["brands", "categories", "equipment", "fuelTypes", "gearboxTypes", "driveTypes", "countriesOfProd", "colors", "user"]),
 		models() {
 			let brandModels = [];
 			if (this.brands.filter(brand => brand.brand === this.brand)[0]) {
@@ -309,9 +315,11 @@ export default {
 			this.checkFilesAndResize(e.target.files || e.dataTransfer.files);
 		},
 		addCar() {
+			console.log(this.category);
 			let newCar = {
 				brand: this.brand === "Marka samochodu" ? "" : this.brand,
 				model: this.model === "Model samochodu" ? "" : this.model,
+				category: this.category === "Kategoria" ? "" : this.category,
 				version: this.version === "Wersja" ? "" : this.version,
 				fuel: this.fuel === "Rodzaj paliwa" ? "" : this.fuel,
 				gearbox: this.gearbox === "Skrzynia biegów" ? "" : this.gearbox,
@@ -346,15 +354,16 @@ export default {
 				location: this.selectedPlace,
 				imagesToRemove: this.imagesToRemove
 			};
-			console.log(newCar);
+			// console.log(newCar);
 			let url = this.editedCar ? "/api/cars/edit/" + this.editedCar._id : "/api/cars/add-new-car/";
 			this.$axios
 				.post(url, newCar)
 				.then(response => {
 					if (response.data.errors) {
-						console.log(response.data.errors);
+						// console.log(response.data.errors);
 						this.errors.brand = response.data.errors.brand ? response.data.errors.brand.message : "";
 						this.errors.model = response.data.errors.model ? response.data.errors.model.message : "";
+						this.errors.category = response.data.errors.category ? response.data.errors.category.message : "";
 						this.errors.version = response.data.errors.version ? response.data.errors.version.message : "";
 						this.errors.fuel = response.data.errors.fuel ? response.data.errors.fuel.message : "";
 						this.errors.price = response.data.errors.price ? response.data.errors.price.message : "";
@@ -513,6 +522,7 @@ export default {
 		parseForEdit() {
 			this.brand = this.editedCar.brand || this.brand;
 			this.model = this.editedCar.model || this.model;
+			this.category = this.editedCar.category || this.category;
 			this.version = this.editedCar.version || this.version;
 			this.yearOfProd = this.editedCar.yearOfProd || this.yearOfProd;
 			this.fuel = this.editedCar.fuel || this.fuel;
