@@ -8,7 +8,7 @@
   "author": "poncki",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon index.js --watch server",
+    "dev": "cross-env NODE_ENV=development nodemon index.js --watch api",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node index.js",
     "generate": "nuxt generate",
