@@ -427,11 +427,8 @@ export const actions = {
     commit("logout");
   },
   getCars({commit}, limit) {
-    if (!limit) {
-      let limit = 50;
-    }
     this.$axios
-      .get("/api/cars/?limit=" + limit)
+      .get("/api/cars/?limit=" + (limit || 50))
       .then(response => {
         commit("getCars", response.data);
       })
