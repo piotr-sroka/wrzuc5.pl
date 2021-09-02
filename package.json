@@ -18,7 +18,7 @@
     "@nuxtjs/auth": "^4.6.6",
     "@nuxtjs/axios": "^5.5.4",
     "aws-sdk": "^2.482.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cross-env": "^5.2.0",
