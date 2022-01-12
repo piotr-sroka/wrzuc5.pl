@@ -8,7 +8,7 @@
   "author": "poncki",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon index.js --watch server",
+    "dev": "cross-env NODE_ENV=development NODE_OPTIONS='--openssl-legacy-provider' nodemon index.js --watch server",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node index.js",
     "generate": "nuxt generate",
@@ -18,7 +18,7 @@
     "@nuxtjs/auth": "^4.6.6",
     "@nuxtjs/axios": "^5.5.4",
     "aws-sdk": "^2.482.0",
-    "axios": "^0.19.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cross-env": "^5.2.0",
@@ -35,7 +35,6 @@
     "os-vue": "^1.1.1",
     "path": "^0.12.7",
     "read-blob": "^1.1.0",
-    "sharp": "^0.22.1",
     "simplebar-vue": "^1.1.0",
     "stickyfill": "^1.1.1-strict",
     "vue-clickaway": "^2.2.2",
@@ -43,6 +42,6 @@
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "nodemon": "^2.0.15"
   }
 }

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import aws from "aws-sdk";
-import Sharp from "sharp";
+// import Sharp from "sharp";
 import fs from "fs";
 import readBlob from "read-blob";
 

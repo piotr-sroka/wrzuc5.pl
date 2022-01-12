@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/public'));
 
 mongoose.Promise = global.Promise;
 
-mongoose.set('useCreateIndex', true);
+// mongoose.set('useCreateIndex', true);
 mongoose.connect(process.env.MONGODB_URL, {useNewUrlParser: true});
 
 module.exports = {
