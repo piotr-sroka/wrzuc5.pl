@@ -15,6 +15,9 @@ let CarInfoSchema = new Schema({
         type: String,
         default: "NO_VERSION"
     },
+    category: {
+        type: String
+    },
     fuel: {
         type: String,
         default: "Wybierz rodzaj paliwa"

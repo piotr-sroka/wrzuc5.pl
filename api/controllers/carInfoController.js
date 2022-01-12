@@ -97,6 +97,7 @@ class CarsInfos {
     const brand = req.body.brand;
     const model = req.body.model;
     const version = req.body.version;
+    const category = req.body.category;
     const fuel = req.body.fuel;
     const gearbox = req.body.gearbox;
     const drive = req.body.drive;
@@ -133,6 +134,7 @@ class CarsInfos {
       brand: brand,
       model: model,
       version: version,
+      category: category,
       fuel: fuel,
       gearbox: gearbox,
       drive: drive,
@@ -251,6 +253,7 @@ class CarsInfos {
             brand: req.body.brand == "" ? carToEdit.brand : req.body.brand,
             model: req.body.model == "" ? carToEdit.model : req.body.model,
             version: req.body.version == "" ? carToEdit.version : req.body.version,
+            category: req.body.category == "" ? carToEdit.category : req.body.category,
             fuel: req.body.fuel == "" ? carToEdit.fuel : req.body.fuel,
             price: req.body.price == "" ? carToEdit.price : req.body.price,
             mileage: req.body.mileage == "" ? carToEdit.mileage : req.body.mileage,

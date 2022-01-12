@@ -158,6 +158,17 @@ export const state = () => {
       {brand: "Żuk", models: ["Model A", "Model B"]},
       {brand: "Inny", models: []}
     ],
+    categories: [
+      {categoryName: "Miejskie"},
+      {categoryName: "Małe"},
+      {categoryName: "Kompaktowe"},
+      {categoryName: "Rodzinne"},
+      {categoryName: "Luksusowe"},
+      {categoryName: "Sportowe"},
+      {categoryName: "Terenowe"},
+      {categoryName: "Kabriolety"},
+      {categoryName: "Vany"},
+    ],
     equipment: [
       {equipmentName: "ABS", visible: "visible"},
       {equipmentName: "CD", visible: "visible"},
@@ -278,6 +289,9 @@ export const state = () => {
 export const getters = {
   brands: state => {
     return state.brands;
+  },
+  categories: state => {
+    return state.categories;
   },
   equipment: state => {
     return state.equipment;
@@ -413,11 +427,8 @@ export const actions = {
     commit("logout");
   },
   getCars({commit}, limit) {
-    if (!limit) {
-      let limit = 50;
-    }
     this.$axios
-      .get("/api/cars/?limit=" + limit)
+      .get("/api/cars/?limit=" + (limit || 50))
       .then(response => {
         commit("getCars", response.data);
       })
