@@ -57,5 +57,6 @@ module.exports = {
     extend(config, ctx) {}
   },
   vendor: ["vue2-google-maps"],
-  serverMiddleware: [bodyParser.json(), "~/api"]
+  serverMiddleware: [bodyParser.json(), "~/api"],
+  telemetry: false
 };

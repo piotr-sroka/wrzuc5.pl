@@ -4,7 +4,7 @@
       <app-gallery-item
         v-for="(image, index) in images"
         :key="index"
-        :image="image.thumb"
+        :image="image"
         @click.native="changeByIndex(index)"
       ></app-gallery-item>
     </section>
@@ -13,7 +13,7 @@
         ref="galleryPreviewImage"
         class="gallery-preview--image"
         :class="imageIsChanging ? 'image-changing' : ''"
-        :image="images[currentImage].thumb"
+        :image="images[currentImage]"
       ></app-gallery-item-preview>
       <div class="gallery-nav">
         <button
