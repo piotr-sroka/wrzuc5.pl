@@ -1,9 +1,6 @@
 {
   "name": "wrzuc5.pl",
   "version": "1.0.0",
-  "engines": {
-    "node": "17.1.0"
-  },
   "description": "My phenomenal Nuxt.js project",
   "author": "poncki",
   "private": true,

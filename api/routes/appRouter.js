@@ -14,7 +14,7 @@ const places = new Places();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const dest = `uploaded-images/${req.body.directory}`;
+    const dest = `/uploaded-images/${req.body.directory}`;
     fs.access(dest, (error) => {
       if (error) {
         return fs.mkdir(dest, (error) => cb(error, dest));
