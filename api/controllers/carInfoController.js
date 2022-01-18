@@ -244,7 +244,7 @@ class CarsInfos {
         let imagesToRemove = req.body.imagesToRemove;
         imagesToRemove.forEach(imageToRemove => {
           let imToRemove = newImages.find(image => {
-            return image.fileKey === imageToRemove.fileKey;
+            return image.src === imageToRemove.src;
           });
           newImages.splice(newImages.indexOf(imToRemove), 1);
         });

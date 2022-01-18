@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import aws from "aws-sdk";
-// import Sharp from "sharp";
 import readBlob from "read-blob";
 import path from "path";
 import fs from "fs-extra";
+import sharp from "sharp";
 // import multer from "multer";
 
 // const S3_BUCKET = process.env.S3_BUCKET;
@@ -15,7 +15,22 @@ let Image = mongoose.model("Image");
 // const upload = multer({dest: 'uploaded-images/'});
 
 class Images {
-  addImage(req, res) {
+  async addImage(req, res) {
+    // const tes = await function (ttt) {
+    //   setTimeout(() => {
+    //     console.log("ok");
+    //   }, 1000);
+    // }
+    // tes();
+    await sharp(req.file.path)
+      .resize(1024, 1024, { fit: sharp.fit.inside })
+      .toBuffer((err, buffer) => {
+        fs.writeFile(
+          path.resolve(req.file.destination, req.file.filename),
+          buffer
+        );
+      });
+    // fs.unlinkSync(req.file.path);
     res.send(req.file);
   }
   removeImage(req, res) {}

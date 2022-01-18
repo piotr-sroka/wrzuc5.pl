@@ -795,22 +795,22 @@ export default {
       } else {
         this.imagesToRemove.splice(this.imagesToRemove.indexOf(image), 1);
       }
-      console.log(this.imagesToRemove)
     },
     removeImage(image) {
       console.log(image);
+      let urlInfo = {src: image.src}
     // 	let urlInfo = {key: image.fileKey, url: image.thumb.src};
-    // 	this.$axios
-    // 		.post("/api/images/remove/", urlInfo)
-    // 		.then(response => {
-    // 			if (response.statusText === "OK") {
-    // 				this.images.splice(this.images.indexOf(image), 1);
-    // 			}
-    // 		})
-    // 		.catch(err => {
-    // 			console.log(err);
-    // 		});
-    // },
+    	this.$axios
+    		.post("/api/images/remove/", urlInfo)
+    		.then(response => {
+    			if (response.statusText === "OK") {
+    				this.images.splice(this.images.indexOf(image), 1);
+    			}
+    		})
+    		.catch(err => {
+    			console.log(err);
+    		});
+    },
     // urltoFile(url, filename, mimeType) {
     // 	mimeType = mimeType || (url.match(/^data:([^;]+);/) || "")[1];
     // 	return fetch(url)
@@ -820,7 +820,7 @@ export default {
     // 		.then(function(buf) {
     // 			return new File([buf], filename, {type: mimeType});
     // 		});
-    },
+    // },
     onEquipmentInput(value, selectTitle) {
       if (selectTitle === "Wyposażenie") {
         let elToHide = this.equipment.find((el) => {
