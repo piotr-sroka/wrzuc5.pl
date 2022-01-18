@@ -713,7 +713,7 @@ export default {
           // let thumb = { src: image.path, title: image.originalname, isLoading: true };
           // this.images.push({ thumb: thumb, file: image });
           // });
-          imageToUpload.src = uploadedImage.path;
+          imageToUpload.src = `\\${uploadedImage.path}`;
           imageToUpload.title = uploadedImage.originalname;
           imageToUpload.isLoading = false;
         })
@@ -795,8 +795,10 @@ export default {
       } else {
         this.imagesToRemove.splice(this.imagesToRemove.indexOf(image), 1);
       }
+      console.log(this.imagesToRemove)
     },
-    // removeImage(image) {
+    removeImage(image) {
+      console.log(image);
     // 	let urlInfo = {key: image.fileKey, url: image.thumb.src};
     // 	this.$axios
     // 		.post("/api/images/remove/", urlInfo)
@@ -818,7 +820,7 @@ export default {
     // 		.then(function(buf) {
     // 			return new File([buf], filename, {type: mimeType});
     // 		});
-    // },
+    },
     onEquipmentInput(value, selectTitle) {
       if (selectTitle === "Wyposażenie") {
         let elToHide = this.equipment.find((el) => {

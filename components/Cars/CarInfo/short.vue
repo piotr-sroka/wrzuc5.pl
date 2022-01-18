@@ -2,7 +2,7 @@
   <article class="car">
     <div class="car-info">
       <nuxt-link class="car-info--link" :to="'/cars/' + mycar._id">
-        <img class="car-thumb" :src="mycar.images[0].path" alt="" v-if="mycar.images.length">
+        <img class="car-thumb" :src="mycar.images[0].src" alt="" v-if="mycar.images.length">
         <span class="car-brand">{{mycar.brand}} {{mycar.model}}</span>
         <span class="car-title">{{mycar.title}}</span>
       </nuxt-link>

@@ -1,6 +1,6 @@
 <template>
   <div class="gallery-thumb">
-    <img :src="image.path" :alt="image.title" />
+    <img :src="image.src" :alt="image.title" />
   </div>
 </template>
 

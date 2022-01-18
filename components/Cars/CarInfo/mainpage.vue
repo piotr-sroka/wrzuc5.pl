@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="carLink" class="car">
     <!-- <img class="thumb" :src="car.images[0].thumb.src" v-if="car.images.length" /> -->
-    <img class="thumb" :src="car.images[0].path" v-if="car.images.length" />
+    <img class="thumb" :src="car.images[0].src" v-if="car.images.length" />
     <div class="info">
       <div class="info-group group-left">
         <h3 class="info-header">

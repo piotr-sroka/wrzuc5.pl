@@ -1,3 +1,5 @@
+// const express = require("express");
+// const path = require("path");
 import express from "express";
 import mongoose from "mongoose";
 import userSchema from "./models/userSchema";
@@ -9,7 +11,9 @@ import routes from "./routes/appRouter";
 
 const app = express();
 
-app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
+app.use("/uploaded-images", express.static(path.join(__dirname, "..", "uploaded-images")));
+// app.use("uploaded-images", express.static(path.join(__dirname, "..", "uploaded-images")));
 
 mongoose.Promise = global.Promise;
 
@@ -20,3 +24,7 @@ module.exports = {
   path: "/api",
   handler: routes,
 };
+
+// app.listen(3000, () => {
+//   console.log("listening on port 3000");
+// })
