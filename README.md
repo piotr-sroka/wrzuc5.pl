@@ -1,4 +1,4 @@
-# wrzuc5.pl
+# http://ps-dev.ovh
 
 > My phenomenal Nuxt.js project
 
