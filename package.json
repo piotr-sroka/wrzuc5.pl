@@ -43,6 +43,6 @@
     "vue2-google-maps": "^0.10.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.20"
   }
 }
