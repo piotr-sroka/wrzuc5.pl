@@ -1,7 +1,3 @@
-# http://ps-dev.ovh
-
-> My phenomenal Nuxt.js project
-
 ## Build Setup
 
 ``` bash
